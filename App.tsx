@@ -1,6 +1,7 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import Icon from 'react-native-vector-icons/Ionicons';
 import HomeScreen from './src/screens/HomeScreen';
 import ExploreScreen from './src/screens/ExploreScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
@@ -40,7 +41,17 @@ const App = () => {
             borderTopWidth: 0,
           },
         }}>
-        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{
+            tabBarLabel: 'Home',
+            tabBarIcon: ({color, size}) => (
+              <Icon name="home" color={color} size={size} />
+            ),
+            tabBarLabelPosition: 'beside-icon',
+          }}
+        />
         <Tab.Screen name="Settings" component={SettingsScreen} />
         <Tab.Screen name="Explore" component={ExploreScreen} />
         <Tab.Screen name="Profile" component={ProfileScreen} />
