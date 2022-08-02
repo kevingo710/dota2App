@@ -1,10 +1,12 @@
-import {View, Text, Image} from 'react-native';
+import {View, Text, Image, ScrollView} from 'react-native';
 import React from 'react';
 import colors from '../styles/colors';
 
 const ProfileScreen = () => {
   return (
-    <View style={{padding: 15}}>
+    <ScrollView
+      contentContainerStyle={{paddingBottom: 50}}
+      style={{padding: 15, marginBottom: 80, flex: 1}}>
       <Text>ProfileScreen</Text>
       <View
         style={{alignItems: 'center', justifyContent: 'center', padding: 15}}>
@@ -81,7 +83,35 @@ const ProfileScreen = () => {
           resizeMode={'contain'}
         />
       </View>
-    </View>
+      <Text
+        style={{
+          color: colors.orange,
+          fontSize: 15,
+          fontWeight: 'bold',
+          marginTop: 20,
+        }}>
+        Story Of Juggernaut
+      </Text>
+      <Text
+        style={{
+          color: 'white',
+          fontSize: 15,
+          textAlign: 'justify',
+          marginTop: 10,
+        }}>
+        No one has ever seen the face hidden beneath the mask of Yurnero the
+        Juggernaut. It is only speculation that he even has one. For defying a
+        corrupt lord, Yurnero was exiled from the ancient Isle of Masks--a
+        punishment that saved his life. The isle soon after vanished beneath the
+        waves in a night of vengeful magic. He alone remains to carry on the
+        Isle's long Juggernaut tradition, one of ritual and swordplay. The last
+        practitioner of the art, Yurnero's confidence and courage are the result
+        of endless practice; his inventive bladework proves that he has never
+        stopped challenging himself. Still, his motives are as unreadable as his
+        expression. For a hero who has lost everything twice over, he fights as
+        if victory is a foregone conclusion.
+      </Text>
+    </ScrollView>
   );
 };
 
