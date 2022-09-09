@@ -33,14 +33,44 @@ const Navigator = () => {
         options={{
           tabBarLabel: 'Home',
           tabBarIcon: ({color, size}) => (
-            <Icon name="home" color={color} size={size} />
+            <Icon name="home-outline" color={color} size={size} />
           ),
           tabBarLabelPosition: 'beside-icon',
         }}
       />
-      <Tab.Screen name="Settings" component={SettingsScreen} />
-      <Tab.Screen name="Explore" component={ExploreScreen} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
+      <Tab.Screen
+        name="Explore"
+        component={ExploreScreen}
+        options={{
+          tabBarLabel: 'Explore',
+          tabBarIcon: ({color, size}) => (
+            <Icon name="compass-outline" color={color} size={size} />
+          ),
+          tabBarLabelPosition: 'beside-icon',
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          tabBarLabel: 'Profile',
+          tabBarIcon: ({color, size}) => (
+            <Icon name="person-circle-outline" color={color} size={size} />
+          ),
+          tabBarLabelPosition: 'beside-icon',
+        }}
+      />
+      <Tab.Screen
+        name="Settings"
+        component={SettingsScreen}
+        options={{
+          tabBarLabel: 'Settings',
+          tabBarIcon: ({color, size}) => (
+            <Icon name="hammer-outline" color={color} size={size} />
+          ),
+          tabBarLabelPosition: 'beside-icon',
+        }}
+      />
     </Tab.Navigator>
   );
 };
