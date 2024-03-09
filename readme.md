@@ -9,3 +9,8 @@ RCT-Folly
 
 ### This command is required by use legacy react-native & node version
 NODE_OPTIONS=--openssl-legacy-provider 
+
+
+### Better screenshots remove shadow
+
+´defaults write com.apple.screencapture disable-shadow -bool TRUE; killall SystemUIServer´ 
