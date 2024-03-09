@@ -1,3 +1,10 @@
+## Screenshots
+
+<div style="display: flex; flex-direction: 'row';">
+<img src="./screenshots/heroScreenshot.png" width=70%>
+</div>
+
+
 ## To run this app
 ´´´yarn install´´´
 
