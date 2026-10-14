@@ -3,10 +3,10 @@ import React, {useMemo} from 'react';
 import {LegendList} from '@legendapp/list/react-native';
 import type {LegendListRenderItemProps} from '@legendapp/list/react-native';
 import {Ionicons as Icon} from '@react-native-vector-icons/ionicons/static';
-import {useHeroStats} from '../hooks/useHeroStats';
-import {SimpleHero} from '../interfaces/heroInterfaces';
+import {useHeroes} from '../hooks/useHeroes';
+import type {Hero} from '../../domain/entities/Hero';
 
-const renderPicture = ({item}: LegendListRenderItemProps<SimpleHero>) => (
+const renderPicture = ({item}: LegendListRenderItemProps<Hero>) => (
   <Image
     source={{uri: item.picture}}
     style={{width: 120, height: 120, borderRadius: 100}}
@@ -14,10 +14,10 @@ const renderPicture = ({item}: LegendListRenderItemProps<SimpleHero>) => (
 );
 
 const HomeScreen = () => {
-  const {simpleHeroList} = useHeroStats();
+  const {heroes} = useHeroes();
   const heroesWithPicture = useMemo(
-    () => simpleHeroList.filter(hero => hero.picture),
-    [simpleHeroList],
+    () => heroes.filter(hero => hero.picture),
+    [heroes],
   );
 
   return (

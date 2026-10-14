@@ -1,6 +1,6 @@
 import {View, Text, Image, ScrollView} from 'react-native';
 import React from 'react';
-import colors from '../styles/colors';
+import colors from '../theme/colors';
 
 const ProfileScreen = () => {
   return (
@@ -11,7 +11,7 @@ const ProfileScreen = () => {
       <View
         style={{alignItems: 'center', justifyContent: 'center', padding: 15}}>
         <Image
-          source={require('../../assets/jugger.png')}
+          source={require('../../../assets/jugger.png')}
           style={{width: 350, height: 350, marginTop: 20}}
           resizeMode={'contain'}
         />
