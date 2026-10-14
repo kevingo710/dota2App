@@ -31,12 +31,13 @@ export const useHeroStats = () => {
         return {id, picture, name};
       })
       .filter(item => item.name !== 'Dawnbreaker');
-    setSimpleHeroList([...simpleHeroList, ...newHeroList]);
+    setSimpleHeroList(prevList => [...prevList, ...newHeroList]);
     setIsLoading(false);
   };
 
   useEffect(() => {
     loadHeroes();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return {
