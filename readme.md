@@ -35,7 +35,8 @@ src/
   data/            DTOs, mappers, data sources, repository implementations
   infrastructure/  HttpClient (axios)
   core/di/         TYPES tokens, ContainerModules, container, DIProvider/useInjection
+  core/query/      TanStack Query client (AppState-driven refetch on focus)
   presentation/    screens, navigation, hooks, theme
 ```
 
-Dependencies point inwards: `presentation -> domain <- data -> infrastructure`. Bindings live in `src/core/di/modules.ts`; components resolve use cases with `useInjection(TYPES.X)`, and tests can `container.rebind(...)` any dependency.
+Dependencies point inwards: `presentation -> domain <- data -> infrastructure`. Bindings live in `src/core/di/modules.ts`; components resolve use cases with `useInjection(TYPES.X)` and call them from TanStack Query hooks (`useQuery({queryKey, queryFn: () => useCase.execute()})`), and tests can `container.rebind(...)` any dependency.
