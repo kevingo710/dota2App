@@ -1,11 +1,11 @@
-import {View, Text, FlatList, Image, ActivityIndicator} from 'react-native';
+import {View, Text, FlatList, Image} from 'react-native';
 import React from 'react';
-import Icon from 'react-native-vector-icons/Ionicons';
+import {Ionicons as Icon} from '@react-native-vector-icons/ionicons/static';
 import {useHeroStats} from '../hooks/useHeroStats';
 import {SimpleHero} from '../interfaces/heroInterfaces';
 
 const HomeScreen = () => {
-  const {simpleHeroList, loadHeroes} = useHeroStats();
+  const {simpleHeroList} = useHeroStats();
   console.log({simpleHeroList});
 
   const renderPicture = (item: SimpleHero) => {
@@ -13,17 +13,6 @@ const HomeScreen = () => {
       <Image
         source={{uri: item.picture}}
         style={{width: 120, height: 120, borderRadius: 100}}
-      />
-    );
-  };
-
-  const renderActivityIndicator = (item: SimpleHero) => {
-    return (
-      <ActivityIndicator
-        size={50}
-        style={{height: 20, width: 20}}
-        color="grey"
-        key={String(item.id)}
       />
     );
   };
