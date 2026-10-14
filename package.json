@@ -16,7 +16,7 @@
     "appcenter": "4.4.5",
     "appcenter-analytics": "4.4.5",
     "appcenter-crashes": "4.4.5",
-    "axios": "1.1.15",
+    "axios": "^1.20.0",
     "react": "17.0.2",
     "react-native": "0.66.4",
     "react-native-dotenv": "^3.3.1",
@@ -28,8 +28,8 @@
     "react-native-vector-icons": "^9.1.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.9",
-    "@babel/runtime": "^7.12.5",
+    "@babel/core": "^7.26.10",
+    "@babel/runtime": "^7.26.10",
     "@react-native-community/eslint-config": "^2.0.0",
     "@types/jest": "^26.0.23",
     "@types/react-native": "^0.66.4",
@@ -39,7 +39,6 @@
     "@typescript-eslint/eslint-plugin": "^5.7.0",
     "@typescript-eslint/parser": "^5.7.0",
     "babel-jest": "^26.6.3",
-    "detox": "^19.6.5",
     "eslint": "^7.14.0",
     "jest": "^26.6.3",
     "metro-react-native-babel-preset": "^0.66.2",
