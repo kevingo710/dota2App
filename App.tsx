@@ -1,13 +1,14 @@
 import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
+import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
+import type {Theme} from '@react-navigation/native';
 import colors from './src/styles/colors';
 import Navigator from './src/navigator/Navigator';
 
 // import {ENV_VAR} from '@env';
 // import {API_EV} from '@env';
 
-const MyTheme = {
-  dark: false,
+const MyTheme: Theme = {
+  ...DefaultTheme,
   colors: {
     primary: colors.orange,
     background: colors.darkBlue,
