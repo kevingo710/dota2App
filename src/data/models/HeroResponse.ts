@@ -32,11 +32,3 @@ export enum Role {
   Pusher = 'Pusher',
   Support = 'Support',
 }
-
-//creada por mi
-export interface SimpleHero {
-  id: number;
-  name: string;
-  picture: string;
-  color?: string;
-}

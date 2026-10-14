@@ -6,7 +6,7 @@ import SettingsScreen from '../screens/SettingsScreen';
 import ExploreScreen from '../screens/ExploreScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import {Ionicons as Icon} from '@react-native-vector-icons/ionicons/static';
-import colors from '../styles/colors';
+import colors from '../theme/colors';
 
 const Tab = createBottomTabNavigator();
 

@@ -25,3 +25,17 @@ yarn ios      # or: yarn android
 ### Better screenshots remove shadow
 
 ´defaults write com.apple.screencapture disable-shadow -bool TRUE; killall SystemUIServer´ 
+## Architecture
+
+Clean Architecture with an [InversifyJS](https://inversify.io) container (`reflect-metadata` + legacy decorators via Babel):
+
+```
+src/
+  domain/          entities, repository interfaces, use cases (no framework imports)
+  data/            DTOs, mappers, data sources, repository implementations
+  infrastructure/  HttpClient (axios)
+  core/di/         TYPES tokens, ContainerModules, container, DIProvider/useInjection
+  presentation/    screens, navigation, hooks, theme
+```
+
+Dependencies point inwards: `presentation -> domain <- data -> infrastructure`. Bindings live in `src/core/di/modules.ts`; components resolve use cases with `useInjection(TYPES.X)`, and tests can `container.rebind(...)` any dependency.
