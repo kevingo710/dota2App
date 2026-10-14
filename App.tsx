@@ -1,8 +1,10 @@
 import React from 'react';
 import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
 import type {Theme} from '@react-navigation/native';
-import colors from './src/styles/colors';
-import Navigator from './src/navigator/Navigator';
+import colors from './src/presentation/theme/colors';
+import Navigator from './src/presentation/navigation/Navigator';
+import {DIProvider} from './src/core/di/DIContext';
+import {container} from './src/core/di/container';
 
 // import {ENV_VAR} from '@env';
 // import {API_EV} from '@env';
@@ -20,9 +22,11 @@ const MyTheme: Theme = {
 };
 const App = () => {
   return (
-    <NavigationContainer theme={MyTheme}>
-      <Navigator />
-    </NavigationContainer>
+    <DIProvider container={container}>
+      <NavigationContainer theme={MyTheme}>
+        <Navigator />
+      </NavigationContainer>
+    </DIProvider>
   );
 };
 
