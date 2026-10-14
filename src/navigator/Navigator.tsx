@@ -5,12 +5,12 @@ import HomeScreen from '../screens/HomeScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import ExploreScreen from '../screens/ExploreScreen';
 import ProfileScreen from '../screens/ProfileScreen';
-import Icon from 'react-native-vector-icons/Ionicons';
+import {Ionicons as Icon} from '@react-native-vector-icons/ionicons/static';
 import colors from '../styles/colors';
 
-const Navigator = () => {
-  const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator();
 
+const Navigator = () => {
   return (
     <Tab.Navigator
       initialRouteName="Home"
