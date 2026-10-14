@@ -55,6 +55,6 @@
     "@react-native/jest-preset/babel-jest": "^30.5.2",
     "@react-native/jest-preset/jest-environment-node": "^30.5.2",
     "@react-native/jest-preset/@jest/create-cache-key-function": "^30.5.1",
-    "@istanbuljs/load-nyc-config/js-yaml": "^4.1.1"
+    "**/@istanbuljs/load-nyc-config/js-yaml": "^4.1.1"
   }
 }
