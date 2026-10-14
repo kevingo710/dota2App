@@ -1,35 +1,35 @@
-import {View, Text, FlatList, Image} from 'react-native';
-import React from 'react';
+import {View, Text, Image} from 'react-native';
+import React, {useMemo} from 'react';
+import {LegendList} from '@legendapp/list/react-native';
+import type {LegendListRenderItemProps} from '@legendapp/list/react-native';
 import {Ionicons as Icon} from '@react-native-vector-icons/ionicons/static';
 import {useHeroStats} from '../hooks/useHeroStats';
 import {SimpleHero} from '../interfaces/heroInterfaces';
 
+const renderPicture = ({item}: LegendListRenderItemProps<SimpleHero>) => (
+  <Image
+    source={{uri: item.picture}}
+    style={{width: 120, height: 120, borderRadius: 100}}
+  />
+);
+
 const HomeScreen = () => {
   const {simpleHeroList} = useHeroStats();
-  console.log({simpleHeroList});
-
-  const renderPicture = (item: SimpleHero) => {
-    return (
-      <Image
-        source={{uri: item.picture}}
-        style={{width: 120, height: 120, borderRadius: 100}}
-      />
-    );
-  };
+  const heroesWithPicture = useMemo(
+    () => simpleHeroList.filter(hero => hero.picture),
+    [simpleHeroList],
+  );
 
   return (
-    <View>
+    <View style={{flex: 1}}>
       <Text>HomeScreen</Text>
-      <FlatList
-        data={simpleHeroList}
-        keyExtractor={(hero, _index) => `${hero.id}`}
-        renderItem={
-          ({item}) => (item.picture ? renderPicture(item) : <></>)
-
-          // <Text style={{color: 'white'}}>{item.id}</Text>
-        }
-        // onEndReached={loadHeroes}
-        // onEndReachedThreshold={0.4}
+      <LegendList
+        style={{flex: 1}}
+        data={heroesWithPicture}
+        renderItem={renderPicture}
+        keyExtractor={hero => `${hero.id}`}
+        estimatedItemSize={120}
+        recycleItems
       />
       <Text>
         <Icon name="airplane-outline" size={80} color="#900" />

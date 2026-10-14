@@ -1340,6 +1340,13 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
+"@legendapp/list@^3.6.0":
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/@legendapp/list/-/list-3.6.0.tgz#4f4fe797b6d4e1ebd5813e8e0c95c508656d3741"
+  integrity sha512-ndGQjSYdA32LWErJYbXEm4+eta+4bo0NxQO7eA3Xcvh0rXSb1mTGPbUtUkpea5w4MYciLKaE+0hoPxlMcaMtrw==
+  dependencies:
+    use-sync-external-store "^1.5.0"
+
 "@nicolo-ribaudo/eslint-scope-5-internals@5.1.1-v1":
   version "5.1.1-v1"
   resolved "https://registry.yarnpkg.com/@nicolo-ribaudo/eslint-scope-5-internals/-/eslint-scope-5-internals-5.1.1-v1.tgz#dbf733a965ca47b1973177dc0bb6c889edcfb129"
