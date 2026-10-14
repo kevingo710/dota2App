@@ -5,6 +5,8 @@ import colors from './src/presentation/theme/colors';
 import Navigator from './src/presentation/navigation/Navigator';
 import {DIProvider} from './src/core/di/DIContext';
 import {container} from './src/core/di/container';
+import {QueryClientProvider} from '@tanstack/react-query';
+import {queryClient} from './src/core/query/queryClient';
 
 // import {ENV_VAR} from '@env';
 // import {API_EV} from '@env';
@@ -22,11 +24,13 @@ const MyTheme: Theme = {
 };
 const App = () => {
   return (
-    <DIProvider container={container}>
-      <NavigationContainer theme={MyTheme}>
-        <Navigator />
-      </NavigationContainer>
-    </DIProvider>
+    <QueryClientProvider client={queryClient}>
+      <DIProvider container={container}>
+        <NavigationContainer theme={MyTheme}>
+          <Navigator />
+        </NavigationContainer>
+      </DIProvider>
+    </QueryClientProvider>
   );
 };
 
