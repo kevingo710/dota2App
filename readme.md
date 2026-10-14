@@ -13,17 +13,14 @@
 
 
 ## To run this app
-´´´yarn install´´´
 
-´´´ios/pod install´´
+Requirements: Node >= 22.11, Yarn 1, JDK 17 (Android), Xcode + CocoaPods (iOS).
 
-### Legacy versions react-native on xCode 14
-Fix Yoga |
-RCT-Folly
-
-### This command is required by use legacy react-native & node version
-NODE_OPTIONS=--openssl-legacy-provider 
-
+```sh
+yarn install
+cd ios && bundle install && bundle exec pod install && cd ..
+yarn ios      # or: yarn android
+```
 
 ### Better screenshots remove shadow
 
