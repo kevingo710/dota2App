@@ -1,5 +1,6 @@
-import {View, Text, Image} from 'react-native';
+import {Text, Image} from 'react-native';
 import React, {useMemo} from 'react';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {LegendList} from '@legendapp/list/react-native';
 import type {LegendListRenderItemProps} from '@legendapp/list/react-native';
 import {Ionicons as Icon} from '@react-native-vector-icons/ionicons/static';
@@ -21,7 +22,7 @@ const HomeScreen = () => {
   );
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView edges={['top']} style={{flex: 1}}>
       <Text>HomeScreen</Text>
       <LegendList
         style={{flex: 1}}
@@ -34,7 +35,7 @@ const HomeScreen = () => {
       <Text>
         <Icon name="airplane-outline" size={80} color="#900" />
       </Text>
-    </View>
+    </SafeAreaView>
   );
 };
 
