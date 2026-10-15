@@ -1,33 +1,61 @@
+# Dota 2 App
+
+React Native app that lists Dota 2 heroes from the [OpenDota API](https://docs.opendota.com/) and shows a hero profile.
+
 ## Screenshots
 
-<div style="display: flex; flex-direction: 'row';">
-<img src="./screenshots/heroScreenshot.png" width=30%>
-</div>
+Release build on an Android 15 emulator (Pixel 7).
+
+<p>
+  <img src="./screenshots/home.png" width="30%" alt="Heroes list" />
+  <img src="./screenshots/profile.png" width="30%" alt="Hero profile" />
+</p>
 
 ## Demo
 
-<div style="display: flex; flex-direction: 'row';">
-<img src="./screenshots/heroeList.gif" width=30%>
+<img src="./screenshots/demo.gif" width="30%" alt="Scrolling the heroes list" />
 
-</div>
+## Tech stack
 
+- React Native 0.87 (New Architecture), React 19, TypeScript
+- React Navigation 7 (bottom tabs)
+- [TanStack Query](https://tanstack.com/query/latest) for server state
+- [InversifyJS](https://inversify.io) + `reflect-metadata` for dependency injection
+- [LegendList](https://legendapp.com/open-source/list/) for the heroes list
+- Axios, Jest, ESLint, Prettier
 
-## To run this app
+Hero and ability images are loaded from Valve's Steam CDN (`cdn.cloudflare.steamstatic.com`).
 
-Requirements: Node >= 22.11, Yarn 1, JDK 17 (Android), Xcode + CocoaPods (iOS).
+## Getting started
+
+Requirements: Node >= 22.11, Yarn 1, JDK 17 + Android SDK (Android), Xcode + CocoaPods (iOS, macOS only).
 
 ```sh
 yarn install
+
+# iOS
 cd ios && bundle install && bundle exec pod install && cd ..
-yarn ios      # or: yarn android
+yarn ios
+
+# Android
+yarn android
 ```
 
-### Better screenshots remove shadow
+`yarn start` runs Metro on its own if you launch the app from Android Studio / Xcode.
 
-´defaults write com.apple.screencapture disable-shadow -bool TRUE; killall SystemUIServer´ 
+## Scripts
+
+| Command | Description |
+| --- | --- |
+| `yarn start` | Start Metro |
+| `yarn android` / `yarn ios` | Build and run on an emulator/simulator or device |
+| `yarn test` | Run Jest |
+| `yarn lint` | Run ESLint |
+| `npx tsc --noEmit` | Type-check |
+
 ## Architecture
 
-Clean Architecture with an [InversifyJS](https://inversify.io) container (`reflect-metadata` + legacy decorators via Babel):
+Clean Architecture with an InversifyJS container (`reflect-metadata` + legacy decorators via Babel):
 
 ```
 src/
@@ -35,8 +63,29 @@ src/
   data/            DTOs, mappers, data sources, repository implementations
   infrastructure/  HttpClient (axios)
   core/di/         TYPES tokens, ContainerModules, container, DIProvider/useInjection
-  core/query/      TanStack Query client (AppState-driven refetch on focus)
+  core/query/      TanStack Query client (refetch when the app returns to foreground)
   presentation/    screens, navigation, hooks, theme
 ```
 
-Dependencies point inwards: `presentation -> domain <- data -> infrastructure`. Bindings live in `src/core/di/modules.ts`; components resolve use cases with `useInjection(TYPES.X)` and call them from TanStack Query hooks (`useQuery({queryKey, queryFn: () => useCase.execute()})`), and tests can `container.rebind(...)` any dependency.
+Dependencies point inwards: `presentation -> domain <- data -> infrastructure`.
+
+```
+HomeScreen -> useHeroes -> useQuery -> GetHeroesUseCase -> HeroRepository -> HeroRemoteDataSource -> HttpClient
+```
+
+Bindings live in `src/core/di/modules.ts`. Components resolve use cases with `useInjection(TYPES.X)` and call them from TanStack Query hooks; tests can `container.rebind(...)` any dependency with a fake.
+
+### Adding a feature
+
+1. Add the entity, repository interface and use case in `src/domain`.
+2. Implement the data source / repository in `src/data` (map API DTOs to entities in `src/data/mappers`).
+3. Add tokens in `src/core/di/types.ts` and bind them in `src/core/di/modules.ts`.
+4. Expose it to screens through a hook in `src/presentation/hooks` using `useQuery` / `useMutation`.
+
+## Tips
+
+Remove the window shadow from macOS screenshots:
+
+```sh
+defaults write com.apple.screencapture disable-shadow -bool TRUE; killall SystemUIServer
+```
