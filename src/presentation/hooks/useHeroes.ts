@@ -6,10 +6,10 @@ import {heroQueryKeys} from '../queries/heroQueryKeys';
 
 export const useHeroes = () => {
   const getHeroes = useInjection<GetHeroesUseCase>(TYPES.GetHeroesUseCase);
-  const {data, isLoading, error, refetch} = useQuery({
+  const {data, isLoading, error, refetch, isRefetching} = useQuery({
     queryKey: heroQueryKeys.all,
     queryFn: () => getHeroes.execute(),
   });
 
-  return {heroes: data ?? [], isLoading, error, refetch};
+  return {heroes: data ?? [], isLoading, error, refetch, isRefetching};
 };

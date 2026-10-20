@@ -13,12 +13,13 @@ import {queryClient} from './src/core/query/queryClient';
 
 const MyTheme: Theme = {
   ...DefaultTheme,
+  dark: true,
   colors: {
     primary: colors.orange,
     background: colors.darkBlue,
-    card: 'rgb(255, 255, 255)',
-    text: colors.gray,
-    border: colors.darkBlue,
+    card: colors.darkBlue,
+    text: colors.text,
+    border: colors.border,
     notification: colors.orange,
   },
 };
