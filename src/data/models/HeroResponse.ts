@@ -17,6 +17,7 @@ export enum AttackType {
 
 export enum PrimaryAttr {
   Agi = 'agi',
+  All = 'all',
   Int = 'int',
   Str = 'str',
 }
