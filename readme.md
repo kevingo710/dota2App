@@ -12,7 +12,9 @@ React Native app that lists the 127 Dota 2 heroes from the [OpenDota API](https:
 
 ## Screenshots
 
-Captured on the iPhone 18 Pro simulator (iOS 27).
+Captured on the iPhone 18 Pro simulator (iOS 27). Regenerate them with
+`scripts/screenshots.sh` (booted simulator + `yarn ios`); the process is
+documented in [docs/screenshots.md](./docs/screenshots.md).
 
 <p>
   <img src="./screenshots/home.png" width="24%" alt="Home: searchable heroes grid" />
@@ -61,6 +63,7 @@ yarn android
 | `yarn test` | Run Jest |
 | `yarn lint` | Run ESLint |
 | `npx tsc --noEmit` | Type-check |
+| `scripts/screenshots.sh` | Recapture the README screenshots on the iOS simulator |
 
 ## Architecture
 
