@@ -9,7 +9,16 @@ import type {HeroRepository} from '../../src/domain/repositories/HeroRepository'
 import {useHeroes} from '../../src/presentation/hooks/useHeroes';
 
 test('useHeroes loads heroes through the injected use case', async () => {
-  const heroes = [{id: 1, name: 'Anti-Mage', picture: 'url'}];
+  const heroes = [
+    {
+      id: 1,
+      name: 'Anti-Mage',
+      picture: 'url',
+      primaryAttr: 'agi' as const,
+      attackType: 'Melee' as const,
+      roles: ['Carry'],
+    },
+  ];
   const repository: HeroRepository = {
     getHeroes: jest.fn().mockResolvedValue(heroes),
   };
