@@ -1,28 +1,37 @@
 # Dota 2 App
 
-React Native app that lists Dota 2 heroes from the [OpenDota API](https://docs.opendota.com/) and shows a hero profile.
+React Native app that lists the 127 Dota 2 heroes from the [OpenDota API](https://docs.opendota.com/) and shows a full hero profile (stats, attributes and abilities) from Valve's Dota 2 data.
+
+## Screens
+
+- **Home** — searchable roster in a two-column grid
+- **Explore** — same roster filtered by primary attribute and role
+- **Spotlight** — hero of the day with stats, hype quote and lore
+- **Hero detail** — attributes, combat stats and abilities with icons
+- **Settings** — data sources, cache controls and app info
 
 ## Screenshots
 
-Release build on an Android 15 emulator (Pixel 7).
+Captured on the iPhone 18 Pro simulator (iOS 27).
 
 <p>
-  <img src="./screenshots/home.png" width="30%" alt="Heroes list" />
-  <img src="./screenshots/profile.png" width="30%" alt="Hero profile" />
+  <img src="./screenshots/home.png" width="24%" alt="Home: searchable heroes grid" />
+  <img src="./screenshots/explore.png" width="24%" alt="Explore: attribute and role filters" />
+  <img src="./screenshots/spotlight.png" width="24%" alt="Spotlight: hero of the day" />
 </p>
-
-## Demo
-
-<img src="./screenshots/demo.gif" width="30%" alt="Scrolling the heroes list" />
+<p>
+  <img src="./screenshots/detail.png" width="24%" alt="Hero detail: attributes, stats and abilities" />
+  <img src="./screenshots/settings.png" width="24%" alt="Settings: data sources and cache" />
+</p>
 
 ## Tech stack
 
 - React Native 0.87 (New Architecture), React 19, TypeScript
-- React Navigation 7 (bottom tabs)
+- React Navigation 7 (bottom tabs + native stack)
 - [TanStack Query](https://tanstack.com/query/latest) for server state
 - [InversifyJS](https://inversify.io) + `reflect-metadata` for dependency injection
-- [LegendList](https://legendapp.com/open-source/list/) for the heroes list
-- Axios, Jest, ESLint, Prettier
+- [LegendList](https://legendapp.com/open-source/list/) for the heroes lists
+- Ionicons (`@react-native-vector-icons/ionicons`), Axios, Jest, ESLint, Prettier
 
 Hero and ability images are loaded from Valve's Steam CDN (`cdn.cloudflare.steamstatic.com`).
 
@@ -64,13 +73,14 @@ src/
   infrastructure/  HttpClient (axios)
   core/di/         TYPES tokens, ContainerModules, container, DIProvider/useInjection
   core/query/      TanStack Query client (refetch when the app returns to foreground)
-  presentation/    screens, navigation, hooks, theme
+  presentation/    screens (Home, Explore, Spotlight, Settings, HeroDetail), navigation, components, hooks, theme
 ```
 
 Dependencies point inwards: `presentation -> domain <- data -> infrastructure`.
 
 ```
 HomeScreen -> useHeroes -> useQuery -> GetHeroesUseCase -> HeroRepository -> HeroRemoteDataSource -> HttpClient
+HeroDetailScreen -> useHeroDetails -> GetHeroDetailsUseCase -> ...
 ```
 
 Bindings live in `src/core/di/modules.ts`. Components resolve use cases with `useInjection(TYPES.X)` and call them from TanStack Query hooks; tests can `container.rebind(...)` any dependency with a fake.
