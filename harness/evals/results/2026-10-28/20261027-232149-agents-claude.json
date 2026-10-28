@@ -1,0 +1,139 @@
+{
+  "kind": "agents",
+  "backend": "claude",
+  "timestamp": "20261027-232149",
+  "git": {
+    "commit": "23427c7",
+    "dirty": true
+  },
+  "roster": {
+    "fingerprint": "ffe345090f30",
+    "backend": "claude",
+    "agents": {
+      "implementer": {
+        "hash": "b26635c25b32",
+        "model": "inherit",
+        "tools": [
+          "Read",
+          "Edit",
+          "Write",
+          "Grep",
+          "Glob",
+          "Bash"
+        ],
+        "eval_cases": 3
+      },
+      "planner": {
+        "hash": "9271cf5b3525",
+        "model": "opus",
+        "tools": [
+          "Read",
+          "Grep",
+          "Glob"
+        ],
+        "eval_cases": 4
+      },
+      "reviewer": {
+        "hash": "3a5499452bbb",
+        "model": "opus",
+        "tools": [
+          "Read",
+          "Grep",
+          "Glob",
+          "Bash"
+        ],
+        "eval_cases": 4
+      },
+      "test-writer": {
+        "hash": "ecbc2f88e14a",
+        "model": "sonnet",
+        "tools": [
+          "Read",
+          "Edit",
+          "Write",
+          "Grep",
+          "Glob",
+          "Bash"
+        ],
+        "eval_cases": 2
+      },
+      "visual-qa": {
+        "hash": "fcd4919e2a93",
+        "model": "sonnet",
+        "tools": [
+          "Bash",
+          "Read"
+        ],
+        "eval_cases": 3
+      }
+    },
+    "skill": "3bd15cfe6c63",
+    "hooks": "a9549c71f05c",
+    "pipeline": "280ee3b334bc"
+  },
+  "summary": {
+    "planner": {
+      "runs": 1,
+      "pass_rate": 1.0,
+      "score": 1.0,
+      "seconds": 27.9,
+      "tokens": 29576,
+      "cost_usd": 0.1518
+    },
+    "ALL": {
+      "runs": 1,
+      "pass_rate": 1.0,
+      "score": 1.0,
+      "seconds": 27.9,
+      "tokens": 29576,
+      "cost_usd": 0.1518
+    }
+  },
+  "cases": [
+    {
+      "agent": "planner",
+      "case": "ui-copy-settings",
+      "attempt": 1,
+      "pass": true,
+      "score": 1.0,
+      "graders": [
+        {
+          "type": "json_keys",
+          "pass": true,
+          "detail": ""
+        },
+        {
+          "type": "json_equals",
+          "pass": true,
+          "detail": "screens = [\"settings\"]"
+        },
+        {
+          "type": "json_contains",
+          "pass": true,
+          "detail": "files = [\"src/presentation/screens/SettingsScreen.tsx\"]"
+        },
+        {
+          "type": "json_contains",
+          "pass": true,
+          "detail": "expect_text.settings = [\"Built with\", \"Claude Code agents\"]"
+        },
+        {
+          "type": "json_subset",
+          "pass": true,
+          "detail": ""
+        },
+        {
+          "type": "unchanged",
+          "pass": true,
+          "detail": ""
+        }
+      ],
+      "error": "",
+      "seconds": 27.9,
+      "turns": 6,
+      "tokens": 29576,
+      "cost_usd": 0.1518,
+      "changed": []
+    }
+  ]
+}

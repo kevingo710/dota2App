@@ -1,0 +1,82 @@
+{
+  "agent": "reviewer",
+  "about": "Seeded diffs with known defects must be blocked, and a clean diff must pass: a reviewer that blocks everything is as useless as one that blocks nothing.",
+  "cases": [
+    {
+      "id": "axios-in-screen",
+      "plan": {"summary": "Show the number of heroes on Home", "files": ["src/presentation/screens/HomeScreen.tsx"],
+               "screens": ["home"], "acceptance": ["Home shows '<n> heroes' under the search box"]},
+      "setup": {"edits": [
+        {"file": "src/presentation/screens/HomeScreen.tsx",
+         "old": "import colors from '../theme/colors';\n",
+         "new": "import colors from '../theme/colors';\nimport axios from 'axios';\n"},
+        {"file": "src/presentation/screens/HomeScreen.tsx",
+         "old": "  const [query, setQuery] = useState('');\n",
+         "new": "  const [query, setQuery] = useState('');\n  const [total, setTotal] = useState(0);\n  React.useEffect(() => {\n    axios\n      .get('https://api.opendota.com/api/heroes')\n      .then(response => setTotal(response.data.length));\n  }, []);\n"}
+      ]},
+      "prompt": "Review the working-tree diff against this plan:\n{plan}",
+      "graders": [
+        {"type": "json_equals", "path": "verdict", "value": "fail"},
+        {"type": "json_regex", "path": "blocking", "regex": "HomeScreen"},
+        {"type": "json_regex", "path": "blocking", "regex": "(?i)axios|layer|architecture|data source|repository|hook"},
+        {"type": "unchanged"}
+      ]
+    },
+    {
+      "id": "hex-and-console-log",
+      "plan": {"summary": "Add a 'Built with' row to Settings", "files": ["src/presentation/screens/SettingsScreen.tsx"],
+               "screens": ["settings"], "acceptance": ["About shows 'Built with: Claude Code agents' using the theme"]},
+      "setup": {"edits": [
+        {"file": "src/presentation/screens/SettingsScreen.tsx",
+         "old": "          <Row label=\"Platform\" value={Platform.OS} />\n",
+         "new": "          <Row label=\"Platform\" value={Platform.OS} />\n          <View style={styles.divider} />\n          <Text style={{color: '#FFD700'}}>Built with Claude Code agents</Text>\n"},
+        {"file": "src/presentation/screens/SettingsScreen.tsx",
+         "old": "        <Text style={styles.sectionTitle}>About</Text>\n",
+         "new": "        <Text style={styles.sectionTitle}>About</Text>\n        {console.log('settings rendered') as unknown as null}\n"}
+      ]},
+      "prompt": "Review the working-tree diff against this plan:\n{plan}",
+      "graders": [
+        {"type": "json_equals", "path": "verdict", "value": "fail"},
+        {"type": "json_regex", "path": "blocking", "regex": "(?i)console\\.log"},
+        {"type": "json_regex", "path": "blocking", "regex": "(?i)#FFD700|hex|theme|colou?r"},
+        {"type": "unchanged"}
+      ]
+    },
+    {
+      "id": "scope-creep",
+      "plan": {"summary": "Add a 'Built with' row to Settings", "files": ["src/presentation/screens/SettingsScreen.tsx"],
+               "screens": ["settings"], "acceptance": ["About shows a 'Built with' row; nothing else changes"]},
+      "setup": {"edits": [
+        {"file": "src/presentation/screens/SettingsScreen.tsx",
+         "old": "          <Row label=\"Platform\" value={Platform.OS} />\n",
+         "new": "          <Row label=\"Platform\" value={Platform.OS} />\n          <View style={styles.divider} />\n          <Row label=\"Built with\" value=\"Claude Code agents\" />\n"},
+        {"file": "src/presentation/theme/colors.ts",
+         "old": "  danger: '#FF6B6B',",
+         "new": "  danger: '#E11D48',"}
+      ]},
+      "prompt": "Review the working-tree diff against this plan:\n{plan}",
+      "graders": [
+        {"type": "json_equals", "path": "verdict", "value": "fail"},
+        {"type": "json_regex", "path": "blocking", "regex": "colors\\.ts|danger"},
+        {"type": "unchanged"}
+      ]
+    },
+    {
+      "id": "clean-change-passes",
+      "about": "False-positive guard.",
+      "plan": {"summary": "Add a 'Built with' row to Settings", "files": ["src/presentation/screens/SettingsScreen.tsx"],
+               "screens": ["settings"], "acceptance": ["About shows a 'Built with' row with value 'Claude Code agents', using Row and a divider"]},
+      "setup": {"edits": [
+        {"file": "src/presentation/screens/SettingsScreen.tsx",
+         "old": "          <Row label=\"Platform\" value={Platform.OS} />\n",
+         "new": "          <Row label=\"Platform\" value={Platform.OS} />\n          <View style={styles.divider} />\n          <Row label=\"Built with\" value=\"Claude Code agents\" />\n"}
+      ]},
+      "prompt": "Review the working-tree diff against this plan:\n{plan}",
+      "graders": [
+        {"type": "json_equals", "path": "verdict", "value": "pass"},
+        {"type": "json_len_lte", "path": "blocking", "max": 0},
+        {"type": "unchanged"}
+      ]
+    }
+  ]
+}

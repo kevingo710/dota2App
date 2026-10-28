@@ -1,0 +1,202 @@
+{
+  "kind": "system",
+  "backend": "claude",
+  "timestamp": "20261028-120507",
+  "git": {
+    "commit": "23427c7",
+    "dirty": true
+  },
+  "roster": {
+    "fingerprint": "a5131ff5b8ba",
+    "backend": "claude",
+    "agents": {
+      "implementer": {
+        "hash": "b26635c25b32",
+        "model": "inherit",
+        "route": "claude",
+        "tools": [
+          "Read",
+          "Edit",
+          "Write",
+          "Grep",
+          "Glob",
+          "Bash"
+        ],
+        "eval_cases": 3
+      },
+      "planner": {
+        "hash": "9271cf5b3525",
+        "model": "opus",
+        "route": "claude",
+        "tools": [
+          "Read",
+          "Grep",
+          "Glob"
+        ],
+        "eval_cases": 4
+      },
+      "reviewer": {
+        "hash": "3a5499452bbb",
+        "model": "opus",
+        "route": "claude",
+        "tools": [
+          "Read",
+          "Grep",
+          "Glob",
+          "Bash"
+        ],
+        "eval_cases": 4
+      },
+      "test-writer": {
+        "hash": "ecbc2f88e14a",
+        "model": "sonnet",
+        "route": "claude",
+        "tools": [
+          "Read",
+          "Edit",
+          "Write",
+          "Grep",
+          "Glob",
+          "Bash"
+        ],
+        "eval_cases": 2
+      },
+      "visual-qa": {
+        "hash": "fcd4919e2a93",
+        "model": "sonnet",
+        "route": "claude",
+        "tools": [
+          "Bash",
+          "Read"
+        ],
+        "eval_cases": 3
+      }
+    },
+    "skill": "3bd15cfe6c63",
+    "hooks": "a9549c71f05c",
+    "pipeline": "280ee3b334bc"
+  },
+  "routes": {},
+  "summary": {
+    "system": {
+      "runs": 4,
+      "pass_rate": 0.5,
+      "score": 0.625,
+      "seconds": 144.8,
+      "tokens": 803893,
+      "cost_usd": 2.1577,
+      "infra_failures": 0
+    },
+    "ALL": {
+      "runs": 4,
+      "pass_rate": 0.5,
+      "score": 0.625,
+      "seconds": 144.8,
+      "tokens": 803893,
+      "cost_usd": 2.1577,
+      "infra_failures": 0
+    }
+  },
+  "cases": [
+    {
+      "agent": "system",
+      "case": "settings-row",
+      "attempt": 1,
+      "pass": true,
+      "score": 1.0,
+      "graders": [
+        {
+          "type": "run_passed",
+          "pass": true,
+          "detail": ""
+        },
+        {
+          "type": "diff_regex",
+          "pass": true,
+          "detail": "/Built with/ found in added lines of src/presentation/screens/SettingsScreen.tsx"
+        }
+      ],
+      "error": "",
+      "seconds": 128.1,
+      "turns": 10,
+      "tokens": 200974,
+      "cost_usd": 0.6205,
+      "fix_iterations": 0
+    },
+    {
+      "agent": "system",
+      "case": "home-count",
+      "attempt": 1,
+      "pass": false,
+      "score": 0.5,
+      "graders": [
+        {
+          "type": "run_passed",
+          "pass": true,
+          "detail": ""
+        },
+        {
+          "type": "diff_regex",
+          "pass": false,
+          "detail": "/heroes/ not found in added lines of src/presentation/screens/HomeScreen.tsx"
+        }
+      ],
+      "error": "",
+      "seconds": 223.2,
+      "turns": 12,
+      "tokens": 317965,
+      "cost_usd": 0.8243,
+      "fix_iterations": 0
+    },
+    {
+      "agent": "system",
+      "case": "mapper-test",
+      "attempt": 1,
+      "pass": true,
+      "score": 1.0,
+      "graders": [
+        {
+          "type": "run_passed",
+          "pass": true,
+          "detail": ""
+        },
+        {
+          "type": "changed_include",
+          "pass": true,
+          "detail": ""
+        },
+        {
+          "type": "mutation_killed",
+          "pass": true,
+          "detail": "mutant killed"
+        }
+      ],
+      "error": "",
+      "seconds": 135.0,
+      "turns": 10,
+      "tokens": 284954,
+      "cost_usd": 0.7129,
+      "fix_iterations": 0
+    },
+    {
+      "agent": "system",
+      "case": "guardrail-layers",
+      "attempt": 1,
+      "pass": false,
+      "score": 0.0,
+      "graders": [
+        {
+          "type": "run_passed",
+          "pass": false,
+          "detail": "rail-layers-1/harness/run.py\", line 293, in execute\n    self.event(\"failed\", stage=exc.stage)\n    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: Run.event() got multiple values for argument 'stage'\n"
+        }
+      ],
+      "error": "",
+      "seconds": 92.7,
+      "turns": 0,
+      "tokens": 0,
+      "cost_usd": 0.0,
+      "fix_iterations": null
+    }
+  ]
+}

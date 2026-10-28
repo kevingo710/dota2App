@@ -1,0 +1,139 @@
+{
+  "kind": "agents",
+  "backend": "opencode",
+  "timestamp": "20261027-233037",
+  "git": {
+    "commit": "23427c7",
+    "dirty": true
+  },
+  "roster": {
+    "fingerprint": "fd29d1ef6515",
+    "backend": "opencode",
+    "agents": {
+      "implementer": {
+        "hash": "b26635c25b32",
+        "model": "ollama/qwen3-agent:latest",
+        "tools": [
+          "Read",
+          "Edit",
+          "Write",
+          "Grep",
+          "Glob",
+          "Bash"
+        ],
+        "eval_cases": 3
+      },
+      "planner": {
+        "hash": "9271cf5b3525",
+        "model": "ollama/qwen3-agent:latest",
+        "tools": [
+          "Read",
+          "Grep",
+          "Glob"
+        ],
+        "eval_cases": 4
+      },
+      "reviewer": {
+        "hash": "3a5499452bbb",
+        "model": "ollama/qwen3-agent:latest",
+        "tools": [
+          "Read",
+          "Grep",
+          "Glob",
+          "Bash"
+        ],
+        "eval_cases": 4
+      },
+      "test-writer": {
+        "hash": "ecbc2f88e14a",
+        "model": "ollama/qwen3-agent:latest",
+        "tools": [
+          "Read",
+          "Edit",
+          "Write",
+          "Grep",
+          "Glob",
+          "Bash"
+        ],
+        "eval_cases": 2
+      },
+      "visual-qa": {
+        "hash": "fcd4919e2a93",
+        "model": "ollama/gemma4-agent:latest",
+        "tools": [
+          "Bash",
+          "Read"
+        ],
+        "eval_cases": 3
+      }
+    },
+    "skill": "3bd15cfe6c63",
+    "hooks": "a9549c71f05c",
+    "pipeline": "280ee3b334bc"
+  },
+  "summary": {
+    "planner": {
+      "runs": 1,
+      "pass_rate": 0.0,
+      "score": 0.167,
+      "seconds": 1200.0,
+      "tokens": 0,
+      "cost_usd": 0.0
+    },
+    "ALL": {
+      "runs": 1,
+      "pass_rate": 0.0,
+      "score": 0.167,
+      "seconds": 1200.0,
+      "tokens": 0,
+      "cost_usd": 0.0
+    }
+  },
+  "cases": [
+    {
+      "agent": "planner",
+      "case": "ui-copy-settings",
+      "attempt": 1,
+      "pass": false,
+      "score": 0.167,
+      "graders": [
+        {
+          "type": "json_keys",
+          "pass": false,
+          "detail": "no JSON block in the answer"
+        },
+        {
+          "type": "json_equals",
+          "pass": false,
+          "detail": "no JSON block in the answer"
+        },
+        {
+          "type": "json_contains",
+          "pass": false,
+          "detail": "no JSON block in the answer"
+        },
+        {
+          "type": "json_contains",
+          "pass": false,
+          "detail": "no JSON block in the answer"
+        },
+        {
+          "type": "json_subset",
+          "pass": false,
+          "detail": "no JSON block in the answer"
+        },
+        {
+          "type": "unchanged",
+          "pass": true,
+          "detail": ""
+        }
+      ],
+      "error": "timed out after 20 min",
+      "seconds": 1200.0,
+      "turns": 0,
+      "tokens": 0,
+      "cost_usd": 0.0,
+      "changed": []
+    }
+  ]
+}

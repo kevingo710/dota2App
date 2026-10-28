@@ -1,0 +1,7 @@
+# Candidate for implementer and test-writer: the same family as qwen3-agent at
+# 14B, which is the largest dense Qwen3 that fits in 24 GB with 32k context.
+FROM qwen3:14b
+PARAMETER num_ctx 32768
+PARAMETER temperature 0.6
+PARAMETER top_p 0.95
+PARAMETER top_k 20

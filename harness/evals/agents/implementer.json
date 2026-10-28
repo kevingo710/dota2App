@@ -1,0 +1,65 @@
+{
+  "agent": "implementer",
+  "about": "Given a fixed plan, the change must pass the gate, touch only planned files and follow the codebase rules.",
+  "cases": [
+    {
+      "id": "settings-row",
+      "plan": {
+        "summary": "Add a 'Built with' row to the About section of Settings",
+        "layers": ["presentation"],
+        "files": ["src/presentation/screens/SettingsScreen.tsx"],
+        "screens": ["settings"],
+        "expect_text": {"settings": ["Built with"]},
+        "acceptance": ["About section shows a row labelled 'Built with' with value 'Claude Code agents', using the existing Row component and a divider like the other rows"],
+        "tests": []
+      },
+      "prompt": "Implement this plan:\n{plan}",
+      "graders": [
+        {"type": "gate"},
+        {"type": "diff_regex", "file": "src/presentation/screens/SettingsScreen.tsx", "regex": "Built with"},
+        {"type": "diff_regex", "file": "src/presentation/screens/SettingsScreen.tsx", "regex": "Claude Code agents"},
+        {"type": "changed_within", "files": ["src/presentation/screens/SettingsScreen.tsx"]}
+      ]
+    },
+    {
+      "id": "theme-token-not-hex",
+      "about": "Colours must go through the theme: a new token in colors.ts, never a hex literal in the screen.",
+      "plan": {
+        "summary": "Render the Superstar hero name in gold",
+        "layers": ["presentation"],
+        "files": ["src/presentation/theme/colors.ts", "src/presentation/screens/SuperstarScreen.tsx"],
+        "screens": ["superstar"],
+        "expect_text": {},
+        "acceptance": ["colors.ts gains a `gold` token with value #FFD700", "The hero name on Superstar uses colors.gold"],
+        "tests": []
+      },
+      "prompt": "Implement this plan:\n{plan}",
+      "graders": [
+        {"type": "gate"},
+        {"type": "diff_regex", "file": "src/presentation/theme/colors.ts", "regex": "gold"},
+        {"type": "diff_regex", "file": "src/presentation/screens/SuperstarScreen.tsx", "regex": "colors\\.gold"},
+        {"type": "diff_regex", "file": "src/presentation/screens/SuperstarScreen.tsx", "regex": "#[Ff]{2}[Dd]700", "absent": true},
+        {"type": "changed_within", "files": ["src/presentation/theme/colors.ts", "src/presentation/screens/SuperstarScreen.tsx"]}
+      ]
+    },
+    {
+      "id": "logic-in-presentation",
+      "plan": {
+        "summary": "Show how many heroes match the search on Home",
+        "layers": ["presentation"],
+        "files": ["src/presentation/screens/HomeScreen.tsx"],
+        "screens": ["home"],
+        "expect_text": {"home": ["127 heroes"]},
+        "acceptance": ["Under the search box Home shows '<n> heroes' for the filtered list, '1 hero' for a single result", "The count derives from the existing filteredHeroes; no new fetching"],
+        "tests": []
+      },
+      "prompt": "Implement this plan:\n{plan}",
+      "graders": [
+        {"type": "gate"},
+        {"type": "diff_regex", "file": "src/presentation/screens/HomeScreen.tsx", "regex": "filteredHeroes\\.length"},
+        {"type": "diff_regex", "file": "src/presentation/screens/HomeScreen.tsx", "regex": "axios|fetch\\(", "absent": true},
+        {"type": "changed_within", "files": ["src/presentation/screens/HomeScreen.tsx"]}
+      ]
+    }
+  ]
+}

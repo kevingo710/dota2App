@@ -1,0 +1,15 @@
+{
+  "planner": "planner",
+  "build": [
+    {"agent": "implementer", "prompt": "Implement this plan:"},
+    {"agent": "test-writer", "prompt": "Write the tests this plan lists:", "when": "plan.tests"}
+  ],
+  "checks": [
+    {"agent": "reviewer", "artifact": "review",
+     "prompt": "Review the working-tree diff against this plan:"},
+    {"agent": "visual-qa", "artifact": "visual", "when": "visual",
+     "prompt": "Capture and verify the screens of this plan:"}
+  ],
+  "fixer": "implementer",
+  "max_fix": 3
+}

@@ -1,0 +1,31 @@
+name: CI
+
+# The same deterministic gate the agents must pass locally (harness/gate.sh):
+# types, lint, tests, Clean Architecture layers and a secret scan.
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+# Read-only token: the gate never needs to write to the repo.
+permissions:
+  contents: read
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+      - run: yarn install --frozen-lockfile
+      - run: harness/gate.sh --json gate.json
+      - name: Eval harness self-test (no models)
+        run: harness/evals/selftest.py
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gate-report
+          path: gate.json

@@ -1,0 +1,4 @@
+# visual-qa on the local backend: the only installed model with vision + tools.
+FROM gemma4:12b
+PARAMETER num_ctx 32768
+PARAMETER temperature 0.2

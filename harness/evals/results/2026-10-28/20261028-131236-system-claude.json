@@ -1,0 +1,139 @@
+{
+  "kind": "system",
+  "backend": "claude",
+  "timestamp": "20261028-131236",
+  "git": {
+    "commit": "23427c7",
+    "dirty": true
+  },
+  "roster": {
+    "fingerprint": "a5131ff5b8ba",
+    "backend": "claude",
+    "agents": {
+      "implementer": {
+        "hash": "b26635c25b32",
+        "model": "inherit",
+        "route": "claude",
+        "tools": [
+          "Read",
+          "Edit",
+          "Write",
+          "Grep",
+          "Glob",
+          "Bash"
+        ],
+        "eval_cases": 3
+      },
+      "planner": {
+        "hash": "9271cf5b3525",
+        "model": "opus",
+        "route": "claude",
+        "tools": [
+          "Read",
+          "Grep",
+          "Glob"
+        ],
+        "eval_cases": 4
+      },
+      "reviewer": {
+        "hash": "3a5499452bbb",
+        "model": "opus",
+        "route": "claude",
+        "tools": [
+          "Read",
+          "Grep",
+          "Glob",
+          "Bash"
+        ],
+        "eval_cases": 4
+      },
+      "test-writer": {
+        "hash": "ecbc2f88e14a",
+        "model": "sonnet",
+        "route": "claude",
+        "tools": [
+          "Read",
+          "Edit",
+          "Write",
+          "Grep",
+          "Glob",
+          "Bash"
+        ],
+        "eval_cases": 2
+      },
+      "visual-qa": {
+        "hash": "fcd4919e2a93",
+        "model": "sonnet",
+        "route": "claude",
+        "tools": [
+          "Bash",
+          "Read"
+        ],
+        "eval_cases": 3
+      }
+    },
+    "skill": "3bd15cfe6c63",
+    "hooks": "a9549c71f05c",
+    "pipeline": "280ee3b334bc"
+  },
+  "routes": {},
+  "summary": {
+    "system": {
+      "runs": 1,
+      "pass_rate": 1.0,
+      "score": 1.0,
+      "seconds": 204.3,
+      "tokens": 285377,
+      "cost_usd": 0.837,
+      "infra_failures": 0
+    },
+    "ALL": {
+      "runs": 1,
+      "pass_rate": 1.0,
+      "score": 1.0,
+      "seconds": 204.3,
+      "tokens": 285377,
+      "cost_usd": 0.837,
+      "infra_failures": 0
+    }
+  },
+  "cases": [
+    {
+      "agent": "system",
+      "case": "home-count",
+      "attempt": 1,
+      "pass": true,
+      "score": 1.0,
+      "graders": [
+        {
+          "type": "run_passed",
+          "pass": true,
+          "detail": ": "
+        },
+        {
+          "type": "changed_include",
+          "pass": true,
+          "detail": ""
+        },
+        {
+          "type": "diff_regex",
+          "pass": true,
+          "detail": "/(?i)count|\\.length/ found in added lines of src/presentation/screens/HomeScreen.tsx"
+        },
+        {
+          "type": "gate",
+          "pass": true,
+          "detail": ""
+        }
+      ],
+      "error": "",
+      "seconds": 204.3,
+      "turns": 12,
+      "tokens": 285377,
+      "cost_usd": 0.837,
+      "fix_iterations": 0,
+      "diff": " __tests__/presentation/formatHeroCount.test.ts | 19 +++++++++++++++++++\n src/presentation/screens/HomeScreen.tsx        | 22 ++++++++++++++--------\n src/presentation/utils/formatHeroCount.ts      |  3 +++\n 3 files changed, 36 insertions(+), 8 deletions(-)\n",
+      "artifacts": ".harness/evals/runs/claude-20261028-130912-on-home-under-the-search-box-show-how-ma"
+    }
+  ]
+}

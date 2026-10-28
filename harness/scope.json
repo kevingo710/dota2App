@@ -1,0 +1,29 @@
+{
+  "description": "What a change touches, for choosing how much to verify while iterating. Read by harness/scope.py and by the planner. Every shared prefix says why: a change there can break screens it does not mention.",
+  "shared": [
+    {"prefix": "src/core/", "why": "DI container and query client: every screen resolves through it"},
+    {"prefix": "src/domain/", "why": "entities and repository contracts used by every layer"},
+    {"prefix": "src/presentation/theme/", "why": "colour and spacing tokens used by every screen"},
+    {"prefix": "src/presentation/components/", "why": "components shared by several screens"},
+    {"prefix": "src/presentation/navigation/", "why": "routes and params of every screen"},
+    {"prefix": "src/presentation/queries/", "why": "query keys shared by hooks and screens"},
+    {"prefix": "package.json", "why": "dependencies and scripts"},
+    {"prefix": "yarn.lock", "why": "dependency versions"},
+    {"prefix": "tsconfig.json", "why": "type-check configuration"},
+    {"prefix": "babel.config.js", "why": "transpilation (decorators, reflect-metadata)"},
+    {"prefix": "jest.config.js", "why": "test configuration"},
+    {"prefix": "jest.setup.js", "why": "test configuration"},
+    {"prefix": ".eslintrc.js", "why": "lint configuration"},
+    {"prefix": "App.tsx", "why": "app root and providers"},
+    {"prefix": ".claude/", "why": "agents and hooks: the gate also checks these"},
+    {"prefix": "harness/", "why": "the harness judges every change"},
+    {"prefix": "scripts/", "why": "capture and delivery scripts"}
+  ],
+  "screens": {
+    "src/presentation/screens/HomeScreen.tsx": "home",
+    "src/presentation/screens/ExploreScreen.tsx": "explore",
+    "src/presentation/screens/SuperstarScreen.tsx": "superstar",
+    "src/presentation/screens/SettingsScreen.tsx": "settings",
+    "src/presentation/screens/HeroDetailScreen.tsx": "detail"
+  }
+}
