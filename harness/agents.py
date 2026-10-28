@@ -87,6 +87,13 @@ def eval_cases(name: str) -> list[dict]:
     return json.loads(path.read_text())["cases"] if path.exists() else []
 
 
+def model_of(agent: Agent, route: str) -> str:
+    """The model a route runs `agent` on, named the way eval results name it."""
+    if route.startswith("claude"):
+        return route.partition(":")[2] or agent.model
+    return agent.model_for("opencode") if route == "opencode" else route
+
+
 def snapshot(backend: str, route=None) -> dict:
     """What an eval result was produced with. Compared by eval.py.
 
@@ -99,14 +106,12 @@ def snapshot(backend: str, route=None) -> dict:
         where = route(agent.name)
         if where.startswith("claude"):
             # Hash what actually runs: on Claude that is the source .md...
-            model = where.partition(":")[2] or agent.model
             digest = agent.hash
         else:
             # ...on opencode the generated file, whose permissions and model
             # come from more than the source.
-            model = agent.model_for("opencode") if where == "opencode" else where
             digest = hashlib.sha256(render_opencode(agent).encode()).hexdigest()[:12]
-        info = {"hash": digest, "model": model, "route": where, "tools": agent.tools,
+        info = {"hash": digest, "model": model_of(agent, where), "route": where, "tools": agent.tools,
                 "eval_cases": len(eval_cases(agent.name))}
         if route(agent.name, True) != where:
             info["escalation"] = route(agent.name, True)

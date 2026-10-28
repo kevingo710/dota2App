@@ -60,6 +60,16 @@ Measured with the repo's own evals ([docs/benchmarks.md](./docs/benchmarks.md)):
 | End to end, Claude | 4/4 tasks | $3.71 | 2.4 min/task |
 | End to end, **hybrid** (Claude judges, local builds, escalation) | 4/4 tasks | **$0.49** | 23 min/task |
 
+### Watch it live
+
+The agents, their routes and every run live in **Neo4j**; `harness/graph.py
+serve` redraws the graph while the agents work. Here a real hybrid run
+(51 min, replayed): the reviewer blocks the first change, the local
+implementer times out, the gate goes red, the fix **escalates to Claude
+Haiku** and the run passes ([docs/graph.md](./docs/graph.md)).
+
+![Live agent graph: pipeline, model routes and a run with an escalation](./docs/media/agent-graph.gif)
+
 ### How it works
 
 - **5 single-purpose agents** (`.claude/agents/`): judges are read-only and
@@ -106,6 +116,7 @@ Measured with the repo's own evals ([docs/benchmarks.md](./docs/benchmarks.md)):
 | [hybrid.md](./docs/hybrid.md) | Per-agent routes, tolerance, escalation, local model candidates |
 | [benchmarks.md](./docs/benchmarks.md) | All the numbers, the findings and the harness bugs the evals found |
 | [local-backend.md](./docs/local-backend.md) | opencode + Ollama, shared guardrails |
+| [graph.md](./docs/graph.md) | The agent system in Neo4j: live viewer, graph model, Cypher queries |
 | [openclaw-telegram-flow.blog.md](./docs/openclaw-telegram-flow.blog.md) | The first version of the loop, on OpenClaw, and what broke |
 
 ## Tech stack
@@ -156,6 +167,7 @@ yarn android
 | `harness/run.py --backend hybrid` | A route per agent: Claude where it decides the result, local where a check backs it up |
 | `harness/eval.py matrix` | Pass rate and cost per agent × model, and the suggested hybrid routes |
 | `harness/retro.py` | Repeated ad-hoc commands that should become a script |
+| `harness/graph.py up\|serve\|replay` | Agents and runs in Neo4j, live viewer on `localhost:7475` |
 
 ## Architecture
 

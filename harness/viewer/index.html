@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agent Graph Live</title>
+<!-- Served by harness/graph.py serve. Polls /api/graph (Cypher on Neo4j) and
+     draws the pipeline, the routes per model and the run as it happens. -->
+<style>
+  :root {
+    --bg: #0d1016; --panel: #151a23; --line: #2a3140; --text: #e6e9ef; --muted: #8a93a6;
+    --agent: #1c2330; --judge: #7aa2f7; --builder: #9ece6a; --claude: #bb9af7; --local: #2ac3de;
+    --run: #e0af68; --ok: #9ece6a; --bad: #f7768e; --esc: #ff9e64;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+         font: 14px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, sans-serif; }
+  header { display: flex; gap: 16px; align-items: center; padding: 14px 22px;
+           border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+  header h1 { font-size: 16px; margin: 0; font-weight: 650; letter-spacing: .2px; }
+  .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--muted); display: inline-block; }
+  .live .dot { background: var(--run); animation: blink 1s infinite; }
+  .badge { padding: 3px 9px; border-radius: 99px; background: var(--panel); border: 1px solid var(--line);
+           color: var(--muted); font-size: 12px; white-space: nowrap; }
+  .badge b { color: var(--text); font-weight: 600; }
+  .badge.pass { border-color: var(--ok); color: var(--ok); }
+  .badge.fail { border-color: var(--bad); color: var(--bad); }
+  .badge.running { border-color: var(--run); color: var(--run); }
+  .request { color: var(--muted); flex: 1 1 320px; min-width: 0; overflow: hidden;
+             text-overflow: ellipsis; white-space: nowrap; }
+  select { background: var(--panel); color: var(--text); border: 1px solid var(--line);
+           border-radius: 6px; padding: 4px 6px; max-width: 240px; }
+  main { display: grid; grid-template-columns: 1fr 330px; min-height: calc(100vh - 56px); }
+  svg { width: 100%; height: auto; display: block; }
+  aside { border-left: 1px solid var(--line); padding: 16px 18px; background: var(--panel); }
+  aside h2 { font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--muted);
+             margin: 0 0 10px; font-weight: 600; }
+  #log { font: 11.5px/1.65 ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--muted);
+         white-space: pre-wrap; word-break: break-word; }
+  #log div:last-child { color: var(--text); }
+  .legend { margin-top: 22px; display: grid; gap: 7px; font-size: 12px; color: var(--muted); }
+  .legend span { display: inline-block; width: 22px; height: 0; border-top: 2px solid; vertical-align: middle;
+                 margin-right: 8px; }
+  .empty { padding: 60px; color: var(--muted); }
+  @keyframes blink { 50% { opacity: .25; } }
+  @keyframes flow { to { stroke-dashoffset: -24; } }
+  @keyframes pulse { 50% { stroke-opacity: .25; } }
+  .flow { stroke-dasharray: 8 4; animation: flow .6s linear infinite; }
+  .pulse { animation: pulse 1s ease-in-out infinite; }
+  text { fill: var(--text); font-family: inherit; }
+  .small { font-size: 11px; fill: var(--muted); }
+  .section { font-size: 10.5px; letter-spacing: 1.6px; fill: var(--muted); font-weight: 600; }
+  @media (max-width: 900px) { main { grid-template-columns: 1fr; } aside { border-left: 0; } }
+</style>
+</head>
+<body>
+<header id="head">
+  <h1><span class="dot"></span>&nbsp; Agent graph</h1>
+  <span class="request" id="request">waiting for a run…</span>
+  <span id="badges"></span>
+  <select id="runs" title="run"></select>
+</header>
+<main>
+  <div id="canvas"><div class="empty">Start Neo4j and <code>harness/graph.py serve</code>, then run
+    <code>harness/run.py</code> or <code>harness/graph.py replay</code>.</div></div>
+  <aside>
+    <h2>Events</h2>
+    <div id="log"></div>
+    <div class="legend">
+      <div><span style="border-color:var(--claude)"></span>route to a Claude model</div>
+      <div><span style="border-color:var(--local)"></span>route to a local model (Ollama)</div>
+      <div><span style="border-color:var(--esc);border-top-style:dashed"></span>escalation after a failed local fix</div>
+      <div><span style="border-color:var(--bad);border-top-style:dashed"></span>a failed check sends the fix back</div>
+      <div><span style="border-color:var(--run)"></span>running now</div>
+    </div>
+  </aside>
+</main>
+<script>
+const W = 1300, STAGE_Y = 395, MODEL_Y = 640, TL_Y = 112, TL_ROW = 92;
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmt = t => { t = Math.round(t || 0); return t >= 60 ? `${Math.floor(t / 60)}m${String(t % 60).padStart(2, "0")}s` : `${t}s`; };
+const params = new URLSearchParams(location.search);
+let selected = params.get("run"), lastJson = "";
+
+function stagePositions(stages) {
+  const gap = (W - 160) / Math.max(stages.length - 1, 1);
+  return Object.fromEntries(stages.map((s, i) => [s.name, 80 + i * gap]));
+}
+
+function modelPositions(routes, xs) {
+  const by = {};
+  for (const r of routes) (by[r.model] ||= { ...r, xs: [] }).xs.push(xs[r.agent]);
+  const models = Object.values(by).map(m => ({ ...m, x: m.xs.reduce((a, b) => a + b) / m.xs.length }))
+    .sort((a, b) => a.x - b.x);
+  for (let i = 1; i < models.length; i++) models[i].x = Math.max(models[i].x, models[i - 1].x + 165);
+  const over = models.length ? models.at(-1).x - (W - 90) : 0;
+  if (over > 0) models.forEach(m => m.x -= over);
+  return Object.fromEntries(models.map(m => [m.model, m]));
+}
+
+function timeline(steps) {
+  let x = 24, row = 0;
+  return steps.map(s => {
+    const w = s.type === "Call" ? 122 : 40;
+    if (x + w > W - 20) { x = 24; row++; }
+    const item = { ...s, x, w, y: TL_Y + row * TL_ROW };
+    x += w + 16;
+    return item;
+  });
+}
+
+function render(d) {
+  const xs = stagePositions(d.stages);
+  const routes = d.routes.filter(r => xs[r.agent] !== undefined);
+  const models = modelPositions(routes, xs);
+  const steps = timeline(d.steps);
+  const active = steps.find(s => s.type === "Call" && s.status === "running");
+  const running = d.run?.status === "running";
+  const prev = active ? steps[steps.indexOf(active) - 1] : running ? steps.at(-1) : null;
+  const failingFrom = prev && ((prev.type === "Check" && !prev.ok && prev.kind === "gate") ? "gate"
+    : (prev.type === "Call" && prev.verdict === "fail") ? prev.agent : null);
+  const calls = {};
+  for (const s of d.steps) if (s.type === "Call") calls[s.agent] = (calls[s.agent] || 0) + 1;
+  const height = MODEL_Y + 80;
+  const o = [];
+  o.push(`<svg viewBox="0 0 ${W} ${height}" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    ${["muted", "bad", "esc", "run", "claude", "local"].map(c =>
+      `<marker id="a-${c}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="var(--${c === "muted" ? "line" : c})"/></marker>`).join("")}
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6"/></filter>
+  </defs>
+  <text x="24" y="70" class="section">RUN · ${esc(d.run?.id || "")}</text>
+  <text x="24" y="${STAGE_Y - 82}" class="section">PIPELINE · pipeline.json</text>
+  <text x="24" y="${MODEL_Y + 62}" class="section">MODELS · backends.json (${esc(d.backend)}) · pass rate from the evals</text>`);
+
+  // Pipeline: NEXT edges, then ON_FAIL arcs back to the fixer.
+  d.stages.slice(1).forEach((s, i) => {
+    const a = xs[d.stages[i].name] + 62, b = xs[s.name] - 66;
+    o.push(`<line x1="${a}" y1="${STAGE_Y}" x2="${b}" y2="${STAGE_Y}" stroke="var(--line)" stroke-width="2" marker-end="url(#a-muted)"/>`);
+  });
+  d.stages.filter(s => s.on_fail.length).forEach((s, i) => {
+    const from = xs[s.name], to = xs[s.on_fail[0]], lift = 62 + i * 16, hot = failingFrom === s.name;
+    o.push(`<path d="M${from},${STAGE_Y - 34} C${from},${STAGE_Y - 34 - lift} ${to},${STAGE_Y - 34 - lift} ${to + 10},${STAGE_Y - 36}"
+      fill="none" stroke="var(--bad)" stroke-opacity="${hot ? 1 : .35}" stroke-width="${hot ? 2.5 : 1.3}"
+      stroke-dasharray="5 4" class="${hot ? "flow" : ""}" marker-end="url(#a-bad)"/>`);
+    if (i === d.stages.filter(t => t.on_fail.length).length - 1)
+      o.push(`<text x="${(from + to) / 2}" y="${STAGE_Y - 34 - lift * .76}" class="small" text-anchor="middle">fail → fix</text>`);
+  });
+
+  // Routes agent -> model.
+  for (const r of routes) {
+    const m = models[r.model], x1 = xs[r.agent], x2 = m.x, y1 = STAGE_Y + 34, y2 = MODEL_Y - 22;
+    const escalation = r.kind === "ESCALATES_TO";
+    const hot = (active && active.agent === r.agent && active.model === r.model)
+      || (escalation && running && d.run.last === "escalate");
+    const color = hot ? "run" : escalation ? "esc" : r.local ? "local" : "claude";
+    o.push(`<path d="M${x1},${y1} C${x1},${y1 + 90} ${x2},${y2 - 90} ${x2},${y2}" fill="none"
+      stroke="var(--${color})" stroke-opacity="${hot ? 1 : .55}" stroke-width="${hot ? 3 : 1.6}"
+      ${escalation && !hot ? 'stroke-dasharray="6 5"' : ""} class="${hot ? "flow" : ""}" marker-end="url(#a-${color})"/>`);
+    if (r.pass_rate != null) {
+      // On the curve, near the agent for a route and further down for an escalation.
+      const t = escalation ? .62 : .3, u = 1 - t;
+      const lx = u ** 3 * x1 + 3 * u * u * t * x1 + 3 * u * t * t * x2 + t ** 3 * x2;
+      const ly = u ** 3 * y1 + 3 * u * u * t * (y1 + 90) + 3 * u * t * t * (y2 - 90) + t ** 3 * y2;
+      o.push(`<rect x="${lx - 19}" y="${ly - 10}" width="38" height="17" rx="8" fill="var(--bg)"/>
+        <text x="${lx}" y="${ly + 3}" class="small" text-anchor="middle">${Math.round(r.pass_rate * 100)}%</text>`);
+    }
+  }
+
+  // Stages.
+  for (const s of d.stages) {
+    const x = xs[s.name], hot = (active && active.agent === s.agent)
+      || (s.kind === "check" && steps.at(-1)?.kind === "gate" && !active && d.run?.status === "running");
+    const stroke = hot ? "var(--run)" : s.role === "judge" ? "var(--judge)" : s.role === "builder" ? "var(--builder)" : "var(--muted)";
+    if (hot) o.push(`<rect x="${x - 64}" y="${STAGE_Y - 32}" width="128" height="64" rx="14" fill="var(--run)" opacity=".35" filter="url(#glow)"/>`);
+    if (s.kind === "agent") {
+      o.push(`<rect x="${x - 62}" y="${STAGE_Y - 30}" width="124" height="60" rx="12" fill="var(--agent)" stroke="${stroke}" stroke-width="${hot ? 2.5 : 1.5}"/>
+        <text x="${x}" y="${STAGE_Y - 5}" text-anchor="middle" font-weight="600">${esc(s.name)}</text>
+        <text x="${x}" y="${STAGE_Y + 15}" text-anchor="middle" class="small">${esc(s.role)}${s.when ? " · if " + esc(s.when.replace("plan.", "")) : ""}</text>`);
+      if (calls[s.agent]) o.push(`<circle cx="${x + 58}" cy="${STAGE_Y - 28}" r="11" fill="var(--bg)" stroke="${stroke}"/>
+        <text x="${x + 58}" y="${STAGE_Y - 24}" text-anchor="middle" font-size="11" font-weight="600">×${calls[s.agent]}</text>`);
+    } else if (s.kind === "check") {
+      o.push(`<path d="M${x},${STAGE_Y - 34} L${x + 40},${STAGE_Y} L${x},${STAGE_Y + 34} L${x - 40},${STAGE_Y} z" fill="var(--agent)" stroke="${hot ? "var(--run)" : "var(--muted)"}" stroke-width="1.5"/>
+        <text x="${x}" y="${STAGE_Y + 4}" text-anchor="middle" font-weight="600">gate</text>
+        <text x="${x}" y="${STAGE_Y + 52}" text-anchor="middle" class="small">tsc · eslint · jest · layers · secrets</text>`);
+    } else {
+      const done = d.run?.status === "pass" ? "var(--ok)" : d.run?.status === "fail" ? "var(--bad)" : "var(--muted)";
+      o.push(`<circle cx="${x}" cy="${STAGE_Y}" r="28" fill="var(--agent)" stroke="${done}" stroke-width="1.8"/>
+        <text x="${x}" y="${STAGE_Y + 4}" text-anchor="middle" font-weight="600" font-size="12">${esc(s.name)}</text>`);
+    }
+  }
+
+  // Models.
+  for (const m of Object.values(models)) {
+    const hot = active && active.model === m.model, c = hot ? "run" : m.local ? "local" : "claude";
+    o.push(`<rect x="${m.x - 72}" y="${MODEL_Y - 22}" width="144" height="44" rx="22" fill="var(--agent)" stroke="var(--${c})" stroke-width="${hot ? 2.5 : 1.5}"/>
+      <text x="${m.x}" y="${MODEL_Y - 1}" text-anchor="middle" font-weight="600">${esc(m.label)}</text>
+      <text x="${m.x}" y="${MODEL_Y + 14}" text-anchor="middle" class="small">${m.local ? "local · Ollama · $0" : "Claude Code"}</text>`);
+  }
+
+  // Run timeline.
+  steps.slice(1).forEach((s, i) => {
+    const p = steps[i];
+    if (p.y === s.y) o.push(`<line x1="${p.x + p.w + 2}" y1="${s.y}" x2="${s.x - 4}" y2="${s.y}" stroke="var(--line)" stroke-width="2" marker-end="url(#a-muted)"/>`);
+  });
+  if (active) {
+    const x = xs[active.agent];
+    if (x !== undefined) o.push(`<line x1="${active.x + active.w / 2}" y1="${active.y + 27}" x2="${x}" y2="${STAGE_Y - 32}"
+      stroke="var(--run)" stroke-width="1.5" stroke-dasharray="3 4" class="flow"/>`);
+  }
+  for (const s of steps) {
+    if (s.type === "Call") {
+      const running = s.status === "running", bad = s.status === "error" || s.verdict === "fail";
+      const stroke = running ? "var(--run)" : bad ? "var(--bad)" : s.escalated ? "var(--esc)" : "var(--ok)";
+      const tag = running ? `▶ ${s.label}` : s.status === "error" ? (s.error || "error").replace(" after ", " · ").slice(0, 21)
+        : s.verdict === "fail" ? "blocked the change" : s.verdict === "pass" ? `approved · ${fmt(s.seconds)}`
+        : `${s.label} · ${fmt(s.seconds)}`;
+      o.push(`<rect x="${s.x}" y="${s.y - 27}" width="${s.w}" height="54" rx="10" fill="var(--agent)" stroke="${stroke}"
+          stroke-width="${running ? 2.5 : 1.5}" class="${running ? "pulse" : ""}"/>
+        <text x="${s.x + 10}" y="${s.y - 7}" font-weight="600" font-size="12.5">${s.n} · ${esc(s.agent)}</text>
+        <text x="${s.x + 10}" y="${s.y + 12}" class="small" style="fill:${bad ? "var(--bad)" : "var(--muted)"}">${esc(tag)}</text>`);
+      if (s.escalated) o.push(`<rect x="${s.x + s.w - 64}" y="${s.y - 38}" width="64" height="18" rx="9" fill="var(--esc)"/>
+        <text x="${s.x + s.w - 32}" y="${s.y - 25}" text-anchor="middle" font-size="10.5" font-weight="700" style="fill:#1a1b26">↑ escalated</text>`);
+    } else {
+      const ok = s.ok, c = ok ? "var(--ok)" : "var(--bad)", cx = s.x + s.w / 2;
+      const shape = s.kind === "commit"
+        ? `<circle cx="${cx}" cy="${s.y}" r="18" fill="var(--agent)" stroke="${c}" stroke-width="1.8"/>`
+        : `<path d="M${cx},${s.y - 20} L${cx + 20},${s.y} L${cx},${s.y + 20} L${cx - 20},${s.y} z" fill="var(--agent)" stroke="${c}" stroke-width="1.8"/>`;
+      o.push(`${shape}<text x="${cx}" y="${s.y + 5}" text-anchor="middle" font-weight="700" style="fill:${c}">${ok ? "✓" : "✗"}</text>
+        <text x="${cx}" y="${s.y + 38}" text-anchor="middle" class="small">${esc(s.kind === "ocr" ? s.screen : s.kind)}</text>`);
+    }
+  }
+  o.push("</svg>");
+  document.getElementById("canvas").innerHTML = o.join("");
+}
+
+function header(d) {
+  const r = d.run || {};
+  document.getElementById("head").classList.toggle("live", r.status === "running");
+  document.getElementById("request").textContent = r.request || r.id || "waiting for a run…";
+  const status = r.status || "idle";
+  document.getElementById("badges").innerHTML = [
+    `<span class="badge ${esc(status)}"><b>${esc(status)}</b></span>`,
+    `<span class="badge">backend <b>${esc(d.backend)}</b></span>`,
+    `<span class="badge">t <b>${fmt(r.t)}</b></span>`,
+    `<span class="badge">escalations <b>${r.escalations || 0}</b></span>`,
+    r.cost != null ? `<span class="badge">cost <b>$${Number(r.cost).toFixed(2)}</b></span>` : "",
+    r.replay ? `<span class="badge">replay</span>` : "",
+  ].join(" ");
+  document.getElementById("log").innerHTML = (r.log || []).map(l => `<div>${esc(l)}</div>`).join("");
+  const sel = document.getElementById("runs");
+  const options = [`<option value="">latest run</option>`].concat(d.runs.map(x =>
+    `<option value="${esc(x.id)}" ${x.id === selected ? "selected" : ""}>${esc(x.id)} · ${esc(x.status)}</option>`));
+  if (sel.dataset.v !== options.join("")) { sel.innerHTML = options.join(""); sel.dataset.v = options.join(""); }
+}
+
+async function tick() {
+  try {
+    const res = await fetch("/api/graph" + (selected ? `?run=${encodeURIComponent(selected)}` : ""));
+    const text = await res.text();
+    if (text !== lastJson) {
+      lastJson = text;
+      const d = JSON.parse(text);
+      header(d);
+      if (d.stages.length) render(d);
+    }
+  } catch (e) { /* the server restarts: try again on the next tick */ }
+  setTimeout(tick, 600);
+}
+document.getElementById("runs").onchange = e => { selected = e.target.value || null; lastJson = ""; };
+tick();
+</script>
+</body>
+</html>

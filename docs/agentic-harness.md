@@ -87,6 +87,7 @@ flowchart LR
 | `harness/pipeline.py` + `pipeline.json` | deterministic orchestrator; the stage list is shared with `/ship` |
 | `.opencode/` | generated agents + plugin that runs the same hooks under opencode |
 | `scripts/telegram.sh` | capture + OCR (`--expect`) + send; `--text` for reports |
+| `harness/graph.py` + `harness/viewer/` | the agents, routes and runs in Neo4j, live viewer ([graph.md](./graph.md)) |
 | `.github/workflows/ci.yml` | the same gate on every push/PR |
 
 ## Usage
