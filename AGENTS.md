@@ -62,7 +62,8 @@ Feature and UI requests go through `/ship <request>` (planner → implementer �
 test-writer → gate → reviewer → visual-qa → Telegram). Unattended:
 `harness/run.py "<request>"` (add `--backend opencode` for local models,
 `--backend hybrid` for a route per agent, see docs/hybrid.md);
-from the phone: `harness/bot.py`. See
+from the phone: `harness/bot.py`; watch it live: `harness/graph.py serve`
+(Neo4j, docs/graph.md). See
 [docs/agentic-harness.md](./docs/agentic-harness.md).
 
 ## Changing an agent

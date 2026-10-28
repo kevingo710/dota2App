@@ -102,6 +102,7 @@ class Pipeline:
                 verdict = self.agent_json(
                     check["agent"], f"Run directory: {self.dir}\n{check['prompt']}\n{plan_text}",
                     {"verdict"}, check["artifact"])
+                self.event("verdict", agent=check["agent"], verdict=verdict["verdict"])
                 if verdict["verdict"] != "pass":
                     findings = verdict.get("blocking") or verdict.get("screens") or verdict
                     feedback = f"{check['agent']} failed:\n{json.dumps(findings, indent=2)}"

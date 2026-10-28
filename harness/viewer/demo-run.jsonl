@@ -1,0 +1,25 @@
+{"t": 0.0, "stage": "start", "request": "On Home, under the search box, show how many heroes match the current search, e.g. '127 heroes'. Use the singular for one result.", "backend": "hybrid"}
+{"t": 1.0, "stage": "isolate", "base": "main", "branch": "agent/20261028-132502-on-home-under-the-search-box-show-how-ma"}
+{"t": 1.0, "stage": "agent:planner", "step": 1, "route": "claude:sonnet"}
+{"t": 20.3, "stage": "agent:planner:done", "turns": 5, "seconds": 18, "error": null}
+{"t": 20.3, "stage": "agent:implementer", "step": 2, "route": "ollama/qwen3-14b-agent:latest"}
+{"t": 257.8, "stage": "agent:implementer:done", "turns": 4, "seconds": 237, "error": null}
+{"t": 257.8, "stage": "agent:test-writer", "step": 3, "route": "claude:haiku"}
+{"t": 286.9, "stage": "agent:test-writer:done", "turns": 6, "seconds": 28, "error": null}
+{"t": 289.6, "stage": "gate", "ok": true}
+{"t": 289.6, "stage": "agent:reviewer", "step": 4, "route": "claude:sonnet"}
+{"t": 299.3, "stage": "agent:reviewer:done", "turns": 3, "seconds": 8, "error": null}
+{"t": 299.3, "stage": "verdict", "agent": "reviewer", "verdict": "fail"}
+{"t": 299.3, "stage": "agent:implementer", "step": 5, "route": "ollama/qwen3-14b-agent:latest"}
+{"t": 2999.3, "stage": "agent:implementer:done", "turns": 0, "seconds": 2700, "error": "timed out after 45 min"}
+{"t": 3002.8, "stage": "gate", "ok": false}
+{"t": 3002.8, "stage": "escalate", "agent": "implementer", "route": "claude:haiku"}
+{"t": 3002.8, "stage": "agent:implementer", "step": 6, "route": "claude:haiku"}
+{"t": 3034.3, "stage": "agent:implementer:done", "turns": 6, "seconds": 30, "error": null}
+{"t": 3036.8, "stage": "gate", "ok": true}
+{"t": 3036.8, "stage": "agent:reviewer", "step": 7, "route": "claude:sonnet"}
+{"t": 3048.8, "stage": "agent:reviewer:done", "turns": 3, "seconds": 11, "error": null}
+{"t": 3048.8, "stage": "verdict", "agent": "reviewer", "verdict": "pass"}
+{"t": 3051.4, "stage": "gate", "ok": true}
+{"t": 3051.5, "stage": "commit", "status": "pass"}
+{"t": 3051.6, "stage": "end", "status": "pass", "cost": 0.1278}

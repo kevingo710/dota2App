@@ -285,6 +285,7 @@ class Run:
     def execute(self) -> int:
         self.base = None
         summary, status, failure = self.args.request, "fail", None
+        self.event("start", request=self.args.request, backend=self.backend.name)
         try:
             flags = ["--backend", self.backend.name]
             flags += [f"--route={a}={r}" for a, r in self.backend.routes.items()]
@@ -320,6 +321,7 @@ class Run:
                 self.commit(summary, status)
 
         text = self.report(status, summary, failure)
+        self.event("end", status=status, cost=round(self.usage["cost_usd"], 4))
         visual = {s.get("screen"): s for s in read_json(self.dir / "visual.json").get("screens", [])}
         for shot in self.shots:
             caption = visual.get(shot["screen"], {}).get("caption") or summary

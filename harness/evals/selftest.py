@@ -219,6 +219,27 @@ def check_redact() -> None:
     check("redact: output is still valid JSON", json.loads(out)["n"] == 1)
 
 
+
+def check_graph() -> None:
+    """The live graph: structure covers the roster, the demo run replays into
+    the expected chain (no Neo4j needed: statements are checked, not sent)."""
+    from graph import DEMO, Tracker, literal, structure
+    params = [p for _, ps in structure() for p in ps.values()]
+    names = {a["name"] for p in params if isinstance(p, list) for a in p
+             if isinstance(a, dict) and "role" in a}
+    check("graph: every agent is in the structure", names == set(load_roster()))
+    tracker, steps = Tracker("demo", load_roster()), []
+    for line in DEMO.read_text().splitlines():
+        for statement, ps in tracker.apply(json.loads(line), now=0):
+            if "CREATE (r)-[:HAS]->" in statement:
+                steps.append(ps["props"])
+    calls = [s for s in steps if "agent" in s]
+    check("graph: demo replays to 7 calls and 5 checks", (len(calls), len(steps) - len(calls)) == (7, 5))
+    check("graph: the escalated call runs on Haiku",
+          [c["model"] for c in calls if c["escalated"]] == ["haiku"])
+    check("graph: Cypher literals keep keys unquoted", literal({"a": [1, "x"]}) == '{`a`: [1, "x"]}')
+
+
 def main() -> int:
     with tempfile.TemporaryDirectory(prefix="dota2app-selftest-") as tmp:
         tmp = Path(tmp)
@@ -279,6 +300,7 @@ def main() -> int:
     check_design_rules()
     check_retro()
     check_redact()
+    check_graph()
     print(f"\n{'selftest: PASS' if not failures else f'selftest: {failures} FAILED'}")
     return 1 if failures else 0
 
