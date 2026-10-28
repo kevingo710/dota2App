@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "neo4j": {
+      "command": "docker",
+      "args": [
+        "run", "-i", "--rm",
+        "mcp/neo4j-cypher@sha256:b252997d16d37633a5a1b30e21ac0bf368b1c64e5895e4005313c84d77a05310",
+        "mcp-neo4j-cypher", "--read-only", "--schema-sample-size", "100"
+      ]
+    }
+  }
+}

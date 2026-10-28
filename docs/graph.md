@@ -23,7 +23,7 @@ harness/graph.py replay                       # or replay the bundled demo run
 ```
 
 Neo4j Browser is at http://localhost:7474 (no auth: the container only
-listens on loopback). Example queries are in
+listens on loopback; APOC is installed for the MCP server). Example queries are in
 [`harness/viewer/queries.cypher`](../harness/viewer/queries.cypher).
 `harness/graph.py export` prints the structure as Cypher for any other Neo4j.
 
@@ -65,6 +65,64 @@ RETURN stuck.label, stuck.error, fix.label, fix.seconds;
 MATCH (c:Call)-[:ON]->(m:Model)
 RETURN m.label, count(c) AS calls, sum(c.seconds) AS seconds ORDER BY seconds DESC;
 ```
+
+## Ask it in plain language (Neo4j MCP)
+
+`.mcp.json` registers Neo4j's official MCP server
+([`mcp-neo4j-cypher`](https://github.com/neo4j-contrib/mcp-neo4j) 0.6.0, the
+Docker MCP catalog image pinned by digest) in **read-only** mode: it exposes
+`get_neo4j_schema` and `read_neo4j_cypher`, and refuses anything that isn't a
+read. Open Claude Code in the repo, approve the `neo4j` server, and ask about
+the agents. The model reads the schema, writes the Cypher and answers from
+the data.
+
+Three real questions, asked headless with Sonnet through Claude Code
+(`claude -p … --mcp-config .mcp.json`, graph tools only). Each took 10–15 s and
+one or two queries:
+
+> **In the most recent run, which agent call got stuck, on which model, and
+> what rescued it? How long did each take?**
+
+```cypher
+MATCH (r:Run) WITH r ORDER BY r.t DESC LIMIT 1
+MATCH (r)-[:HAS]->(c:Call) OPTIONAL MATCH (c)-[:ON]->(m:Model)
+RETURN r.id, r.status, r.escalations, c.seq, c.agent, c.status, c.verdict, c.error,
+       c.escalated, c.local, c.route, c.model, m.name, c.seconds, c.turns, c.t, c.end
+ORDER BY c.seq
+```
+
+> The **implementer** call got stuck: it ran on the local
+> `qwen3-14b-agent` and timed out after 45 minutes with 0 turns. Escalation to
+> Claude **Haiku** rescued it in 30 s (6 turns). The fix followed the
+> reviewer's first `fail` verdict; the reviewer (Sonnet) then passed the
+> escalated fix in 11 s. The local implementer's first attempt had taken
+> 237 s over 4 turns.
+
+> **Which agents in the hybrid backend run on a model that scored below 100%
+> in the evals, and which of them have an escalation route?**
+
+```cypher
+MATCH (a:Agent)-[r:ROUTED_TO {backend:'hybrid'}]->(m:Model)
+OPTIONAL MATCH (a)-[s:SCORED]->(m)
+OPTIONAL MATCH (a)-[e:ESCALATES_TO {backend:'hybrid'}]->(em:Model)
+RETURN a.name, m.name, s.pass_rate, s.runs, em.name AS escalates_to
+```
+
+> Two: `implementer` (qwen3-14b, 66.7%, escalates to Haiku) and `visual-qa`
+> (gemma4, 66.7%, no escalation). Planner, reviewer and test-writer score 100%
+> on their models.
+
+> **If I ran everything on local models, which agent would be the weakest
+> link, and what would the hybrid use instead?**
+
+> **test-writer**: 0% on qwen3 (0/2), and no local model above 50%; the hybrid
+> routes it to Claude Haiku (2/2). Next, the reviewer: 50% on qwen3 locally,
+> Sonnet in the hybrid.
+
+These match [benchmarks.md](./benchmarks.md) (findings 3 and 5), and the
+answer to the second question points at a real gap: visual-qa is the only
+sub-100% route with no escalation, backed by OCR rather than a stronger
+model.
 
 ## Design
 
