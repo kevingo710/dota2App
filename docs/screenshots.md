@@ -1,7 +1,7 @@
 # Regenerating screenshots
 
 `scripts/screenshots.sh` recaptures every screen of the app on the booted iOS
-simulator and writes them to `screenshots/` (home, explore, spotlight, detail,
+simulator and writes them to `screenshots/` (home, explore, superstar, detail,
 settings). Run it whenever the UI changes so the README stays accurate.
 
 ## Prerequisites
@@ -49,12 +49,12 @@ should ever end up in a commit.
 Same steps, without the automation:
 
 ```sh
-# seed a screen (home | explore | spotlight | settings | detail)
-python3 scripts/patch_app_for_screenshots.py spotlight
+# seed a screen (home | explore | superstar | settings | detail)
+python3 scripts/patch_app_for_screenshots.py superstar
 sleep 20
-xcrun simctl io booted screenshot spotlight.png
-swiftc -O -o verify scripts/verify_screen.swift && ./verify spotlight.png Spotlight
-sips -Z 1200 spotlight.png --out screenshots/spotlight.png
+xcrun simctl io booted screenshot superstar.png
+swiftc -O -o verify scripts/verify_screen.swift && ./verify superstar.png Superstar
+sips -Z 1200 superstar.png --out screenshots/superstar.png
 git checkout -- App.tsx
 ```
 
