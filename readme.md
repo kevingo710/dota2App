@@ -70,6 +70,12 @@ Haiku** and the run passes ([docs/graph.md](./docs/graph.md)).
 
 ![Live agent graph: pipeline, model routes and a run with an escalation](./docs/media/agent-graph.gif)
 
+The same run in Neo4j Browser: each call linked to the next (`THEN`) and to
+the model it ran on (`ON`); the implementer's route to qwen3-14b and its
+escalation to Claude Haiku:
+
+![The demo run in Neo4j Browser](./docs/media/neo4j-browser.png)
+
 And you can ask it in plain language: `.mcp.json` plugs Neo4j's official MCP
 server (read-only) into Claude Code, which writes the Cypher itself:
 

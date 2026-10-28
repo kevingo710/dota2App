@@ -239,7 +239,7 @@ class Tracker:
                             {"run": self.run}))
             self.escalate = False
             self.calls += 1
-            props["n"] = self.calls
+            props |= {"n": self.calls, "name": f"#{self.calls} {name}"}
             out += self._step("Call", props)
             self.open = self.last_call = self.prev
             out += [("MATCH (c:Call {id: $id}), (a:Agent {name: $agent}) CREATE (c)-[:OF]->(a)",
@@ -257,15 +257,18 @@ class Tracker:
                              "error": ev.get("error"), "cost": ev.get("cost"), "t": t}))
                 self.open = None
         elif stage in ("gate", "ocr"):
-            out += self._step("Check", props | {"kind": stage, "ok": bool(ev.get("ok")),
-                                                "screen": ev.get("screen")})
+            ok = bool(ev.get("ok"))
+            out += self._step("Check", props | {"kind": stage, "ok": ok, "screen": ev.get("screen"),
+                                                "name": f"{ev.get('screen') or stage} {'✓' if ok else '✗'}"})
         elif stage == "verdict" and self.last_call:
             out.append(("MATCH (c:Call {id: $id}) SET c.verdict = $verdict",
                         {"id": self.last_call, "verdict": ev.get("verdict")}))
         elif stage == "escalate":
             self.escalate = True
         elif stage == "commit":
-            out += self._step("Check", props | {"kind": "commit", "ok": ev.get("status") == "pass"})
+            ok = ev.get("status") == "pass"
+            out += self._step("Check", props | {"kind": "commit", "ok": ok,
+                                                "name": f"commit {'✓' if ok else '✗'}"})
             out.append(("MATCH (r:Run {id: $run}) SET r.status = $status",
                         {"run": self.run, "status": ev.get("status")}))
         elif stage in ("failed", "end"):
