@@ -23,7 +23,7 @@ type Navigation = NativeStackNavigationProp<RootStackParamList>;
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
-const SpotlightScreen = () => {
+const SuperstarScreen = () => {
   const navigation = useNavigation<Navigation>();
   const {heroes, isLoading, error, refetch} = useHeroes();
 
@@ -49,7 +49,7 @@ const SpotlightScreen = () => {
     return (
       <SafeAreaView edges={['top']} style={styles.container}>
         <StateView
-          title="Could not load the spotlight"
+          title="Could not load the superstar"
           message="Check your connection and try again."
           actionLabel="Retry"
           onAction={refetch}
@@ -64,7 +64,7 @@ const SpotlightScreen = () => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.content}>
         <Text style={styles.eyebrow}>HERO OF THE DAY</Text>
-        <Text style={styles.title}>Spotlight</Text>
+        <Text style={styles.title}>Superstar</Text>
         <Text style={styles.subtitle}>
           A new hero takes the stage every day.
         </Text>
@@ -289,4 +289,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SpotlightScreen;
+export default SuperstarScreen;

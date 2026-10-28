@@ -36,7 +36,7 @@ expected_text() {
   case "$1" in
     home) echo "Dota 2 Heroes" ;;
     explore) echo "Filter the roster" ;;
-    spotlight) echo "Spotlight" ;;
+    superstar) echo "Superstar" ;;
     detail) echo "Juggernaut" ;;
     settings) echo "Clear cached data" ;;
     *) die "no expected text for screen '$1'" ;;
@@ -66,7 +66,7 @@ fi
 TMP="$(mktemp -d)"
 APP_BACKUP="$TMP/App.tsx.bak"
 OCR_BIN="$TMP/verify_screen"
-SCREENS=(home explore spotlight detail settings)
+SCREENS=(home explore superstar detail settings)
 
 restore() {
   cp "$APP_BACKUP" "$ROOT/App.tsx"

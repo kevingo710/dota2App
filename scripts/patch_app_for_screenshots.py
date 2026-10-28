@@ -4,7 +4,7 @@
 Injected code is marked with a comment so the patch is idempotent; the shell
 script restores the original file from a backup when it exits.
 
-Usage: patch_app_for_screenshots.py <home|explore|spotlight|settings|detail>
+Usage: patch_app_for_screenshots.py <home|explore|superstar|settings|detail>
 """
 
 import re
@@ -12,12 +12,12 @@ import sys
 from pathlib import Path
 
 MARKER = "// screenshots-driver (injected by scripts/screenshots.sh, never commit)"
-VALID_ROUTES = {"home", "explore", "spotlight", "settings", "detail"}
+VALID_ROUTES = {"home", "explore", "superstar", "settings", "detail"}
 
 DRIVER_TEMPLATE = """
 {marker}
 const SHOT_ROUTE = '{route}';
-const SHOT_TABS = ['Home', 'Explore', 'Spotlight', 'Settings'];
+const SHOT_TABS = ['Home', 'Explore', 'Superstar', 'Settings'];
 
 const shotState = () => {{
   if (SHOT_ROUTE === 'detail') {{

@@ -6,7 +6,7 @@ import {Ionicons as Icon} from '@react-native-vector-icons/ionicons/static';
 import HomeScreen from '../screens/HomeScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import ExploreScreen from '../screens/ExploreScreen';
-import SpotlightScreen from '../screens/SpotlightScreen';
+import SuperstarScreen from '../screens/SuperstarScreen';
 import HeroDetailScreen from '../screens/HeroDetailScreen';
 import type {RootStackParamList, TabParamList} from './types';
 import colors from '../theme/colors';
@@ -27,7 +27,7 @@ const ExploreIcon = ({color, size}: TabIconProps) => (
   <Icon name="compass-outline" color={color} size={size} />
 );
 
-const SpotlightIcon = ({color, size}: TabIconProps) => (
+const SuperstarIcon = ({color, size}: TabIconProps) => (
   <Icon name="star-outline" color={color} size={size} />
 );
 
@@ -74,11 +74,11 @@ const Tabs = () => {
         }}
       />
       <Tab.Screen
-        name="Spotlight"
-        component={SpotlightScreen}
+        name="Superstar"
+        component={SuperstarScreen}
         options={{
-          tabBarLabel: 'Spotlight',
-          tabBarIcon: SpotlightIcon,
+          tabBarLabel: 'Superstar',
+          tabBarIcon: SuperstarIcon,
           tabBarLabelPosition: 'beside-icon',
         }}
       />

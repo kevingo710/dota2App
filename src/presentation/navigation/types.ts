@@ -6,6 +6,6 @@ export type RootStackParamList = {
 export type TabParamList = {
   Home: undefined;
   Explore: undefined;
-  Spotlight: undefined;
+  Superstar: undefined;
   Settings: undefined;
 };
