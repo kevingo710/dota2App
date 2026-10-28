@@ -1,12 +1,14 @@
 # Dota 2 App
 
+[![CI](https://github.com/kevingo710/dota2App/actions/workflows/ci.yml/badge.svg)](https://github.com/kevingo710/dota2App/actions/workflows/ci.yml)
+
 React Native app that lists the 127 Dota 2 heroes from the [OpenDota API](https://docs.opendota.com/) and shows a full hero profile (stats, attributes and abilities) from Valve's Dota 2 data.
 
 ## Screens
 
 - **Home** — searchable roster in a two-column grid
 - **Explore** — same roster filtered by primary attribute and role
-- **Spotlight** — hero of the day with stats, hype quote and lore
+- **Superstar** — hero of the day with stats, hype quote and lore
 - **Hero detail** — attributes, combat stats and abilities with icons
 - **Settings** — data sources, cache controls and app info
 
@@ -19,12 +21,91 @@ documented in [docs/screenshots.md](./docs/screenshots.md).
 <p>
   <img src="./screenshots/home.png" width="24%" alt="Home: searchable heroes grid" />
   <img src="./screenshots/explore.png" width="24%" alt="Explore: attribute and role filters" />
-  <img src="./screenshots/spotlight.png" width="24%" alt="Spotlight: hero of the day" />
+  <img src="./screenshots/superstar.png" width="24%" alt="Superstar: hero of the day" />
 </p>
 <p>
   <img src="./screenshots/detail.png" width="24%" alt="Hero detail: attributes, stats and abilities" />
   <img src="./screenshots/settings.png" width="24%" alt="Settings: data sources and cache" />
 </p>
+
+## Built by an agent team
+
+Changes to this app are made by a team of AI agents and **validated by
+deterministic checks before a human sees them**. A message to a Telegram bot
+("make the hero name gold") comes back as verified screenshots of the running
+app on an isolated branch, ready for `/pr`.
+
+```mermaid
+flowchart LR
+  A[Telegram / CLI] --> B[harness/run.py]
+  B --> C[planner] --> D[implementer] --> E[test-writer]
+  E --> F{gate: tsc · eslint · jest<br/>architecture · secrets}
+  F --> G[reviewer] --> H[visual-qa<br/>simulator + OCR + vision]
+  F -. fail .-> D
+  G -. blocking .-> D
+  H -. fail .-> D
+  H --> I{harness re-verifies<br/>independently}
+  I --> J[branch + Telegram report] --> K[PR → CI + Claude review]
+```
+
+### Results
+
+Measured with the repo's own evals ([docs/benchmarks.md](./docs/benchmarks.md)):
+
+| | pass | cost | time |
+| --- | --- | --- | --- |
+| Agents on Claude Opus/Sonnet | 16/16 | $1.72 | 42 s/case |
+| Agents on Claude Sonnet/Haiku | 16/16 | **$0.43** | 35 s/case |
+| Agents fully local (qwen3 8B + gemma4, M4 Pro) | 9/16 | $0 | 164 s/case |
+| End to end, Claude | 4/4 tasks | $3.71 | 2.4 min/task |
+| End to end, **hybrid** (Claude judges, local builds, escalation) | 4/4 tasks | **$0.49** | 23 min/task |
+
+### How it works
+
+- **5 single-purpose agents** (`.claude/agents/`): judges are read-only and
+  builders can't edit the harness that judges them. The gate enforces both.
+- **Code decides "done", not the model.** `harness/gate.sh` (types, lint,
+  tests, Clean Architecture layers, secret scan) plus OCR on real simulator
+  captures, re-run by the harness after the agent says it's finished.
+- **Plans as contracts.** The planner declares the screens, the exact
+  on-screen text and how much to verify. The harness checks all three.
+- **Self-correcting loop.** The raw failure goes back to the agent, with capped
+  retries and **escalation** to a stronger model when a cheap one gets stuck.
+- **Measured per agent and as a system.** Deterministic graders including
+  **mutation testing**, a roster fingerprint on every result, and `compare`
+  showing what an added or changed agent bought and cost
+  ([docs/evals.md](./docs/evals.md)).
+- **Three backends, one definition.** Claude Code, fully local (opencode +
+  Ollama) or **hybrid**, with a route per agent picked by
+  `harness/eval.py matrix` ([docs/hybrid.md](./docs/hybrid.md),
+  [docs/local-backend.md](./docs/local-backend.md)).
+
+### Guardrails
+
+- Credentials never enter the repo or an agent's context: they're loaded by
+  `scripts/telegram.sh` from outside the repo, and `.claude/hooks/guard.py`
+  blocks any tool call that reads them or calls the Telegram API by hand.
+- No destructive git, no skipping git hooks, and no git at all in unattended
+  runs: the harness commits on an isolated `agent/<run-id>` branch.
+- Per-agent least privilege, rendered for both backends and tested
+  (`harness/local/guardrails_test.py`).
+- The bot only answers its owner's private chat, drops the backlog on start-up
+  and shell-quotes anything an agent wrote. Captions are sent with
+  `--form-string`, so agent text can't make curl read a local file.
+- CI runs the same gate with a read-only token; the Claude PR review skips
+  forks, so a fork's PR never reaches the API key.
+
+### Docs
+
+| | |
+| --- | --- |
+| [agentic-harness.md](./docs/agentic-harness.md) | Architecture, principles, components, failure modes caught |
+| [agent-design.md](./docs/agent-design.md) | DRY, KISS, SoC/SRP, YAGNI and SOLID applied to agents, and which ones the gate enforces |
+| [evals.md](./docs/evals.md) | How agents and the system are measured, roster tracking, `compare` |
+| [hybrid.md](./docs/hybrid.md) | Per-agent routes, tolerance, escalation, local model candidates |
+| [benchmarks.md](./docs/benchmarks.md) | All the numbers, the findings and the harness bugs the evals found |
+| [local-backend.md](./docs/local-backend.md) | opencode + Ollama, shared guardrails |
+| [openclaw-telegram-flow.blog.md](./docs/openclaw-telegram-flow.blog.md) | The first version of the loop, on OpenClaw, and what broke |
 
 ## Tech stack
 
@@ -43,6 +124,7 @@ Requirements: Node >= 22.11, Yarn 1, JDK 17 + Android SDK (Android), Xcode + Coc
 
 ```sh
 yarn install
+cp .env.example .env   # placeholders only; no secrets live in the repo
 
 # iOS
 cd ios && bundle install && bundle exec pod install && cd ..
@@ -64,6 +146,15 @@ yarn android
 | `yarn lint` | Run ESLint |
 | `npx tsc --noEmit` | Type-check |
 | `scripts/screenshots.sh` | Recapture the README screenshots on the iOS simulator |
+| `scripts/telegram.sh` | Capture a screen and send it to Telegram (see [docs/telegram.md](./docs/telegram.md)) |
+| `harness/gate.sh` | Quality gate: types, lint, tests, architecture, agents, secrets (`--changed` while iterating) |
+| `harness/run.py "<request>"` | Unattended agent run → verified screenshots on Telegram |
+| `harness/bot.py` | Telegram bot that drives `harness/run.py` from the phone |
+| `harness/eval.py agents\|system\|compare` | Evaluate each agent / the whole system, compare against the baseline |
+| `harness/run.py --backend opencode` | Same pipeline on local models (opencode + Ollama) |
+| `harness/run.py --backend hybrid` | A route per agent: Claude where it decides the result, local where a check backs it up |
+| `harness/eval.py matrix` | Pass rate and cost per agent × model, and the suggested hybrid routes |
+| `harness/retro.py` | Repeated ad-hoc commands that should become a script |
 
 ## Architecture
 
@@ -76,7 +167,7 @@ src/
   infrastructure/  HttpClient (axios)
   core/di/         TYPES tokens, ContainerModules, container, DIProvider/useInjection
   core/query/      TanStack Query client (refetch when the app returns to foreground)
-  presentation/    screens (Home, Explore, Spotlight, Settings, HeroDetail), navigation, components, hooks, theme
+  presentation/    screens (Home, Explore, Superstar, Settings, HeroDetail), navigation, components, hooks, theme
 ```
 
 Dependencies point inwards: `presentation -> domain <- data -> infrastructure`.
