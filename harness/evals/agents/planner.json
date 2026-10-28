@@ -1,0 +1,166 @@
+{
+  "agent": "planner",
+  "about": "Plans must be valid, scoped to the right layers/screens and checkable (expect_text). The planner is read-only.",
+  "cases": [
+    {
+      "id": "ui-copy-settings",
+      "prompt": "Change request: In the About section of the Settings screen, add a row labelled 'Built with' whose value is 'Claude Code agents'.",
+      "graders": [
+        {
+          "type": "json_keys",
+          "keys": [
+            "summary",
+            "layers",
+            "files",
+            "screens",
+            "expect_text",
+            "acceptance",
+            "tests"
+          ]
+        },
+        {
+          "type": "json_equals",
+          "path": "screens",
+          "value": [
+            "settings"
+          ]
+        },
+        {
+          "type": "json_contains",
+          "path": "files",
+          "value": "src/presentation/screens/SettingsScreen.tsx"
+        },
+        {
+          "type": "json_contains",
+          "path": "expect_text.settings",
+          "value": "Built with"
+        },
+        {
+          "type": "json_subset",
+          "path": "layers",
+          "allowed": [
+            "presentation"
+          ]
+        },
+        {
+          "type": "json_equals",
+          "path": "verify.level",
+          "value": "quick"
+        },
+        {
+          "type": "unchanged"
+        }
+      ]
+    },
+    {
+      "id": "reuse-existing-entity",
+      "about": "attackType already exists on the Hero entity: a good plan reuses it instead of touching domain/data.",
+      "prompt": "Change request: Show each hero's attack type (Melee or Ranged) on the hero cards of the Home screen.",
+      "graders": [
+        {
+          "type": "json_contains",
+          "path": "screens",
+          "value": "home"
+        },
+        {
+          "type": "json_contains",
+          "path": "files",
+          "value": "src/presentation/components/HeroCard.tsx"
+        },
+        {
+          "type": "json_subset",
+          "path": "layers",
+          "allowed": [
+            "presentation"
+          ]
+        },
+        {
+          "type": "json_len_gte",
+          "path": "acceptance",
+          "min": 2
+        },
+        {
+          "type": "unchanged"
+        }
+      ]
+    },
+    {
+      "id": "non-visual-test-task",
+      "prompt": "Change request: Add a unit test proving that GetHeroesUseCase propagates errors thrown by the repository.",
+      "graders": [
+        {
+          "type": "json_equals",
+          "path": "screens",
+          "value": []
+        },
+        {
+          "type": "json_len_gte",
+          "path": "tests",
+          "min": 1
+        },
+        {
+          "type": "json_regex",
+          "path": "files",
+          "regex": "__tests__/domain/GetHeroesUseCase\\.test\\.ts"
+        },
+        {
+          "type": "json_equals",
+          "path": "verify.level",
+          "value": "quick"
+        },
+        {
+          "type": "unchanged"
+        }
+      ]
+    },
+    {
+      "id": "ambiguous-request",
+      "about": "Unattended runs cannot ask questions: the plan must commit to a concrete reading and record the alternative.",
+      "prompt": "Change request: make the Superstar screen pop more.",
+      "graders": [
+        {
+          "type": "json_contains",
+          "path": "screens",
+          "value": "superstar"
+        },
+        {
+          "type": "json_len_gte",
+          "path": "acceptance",
+          "min": 2
+        },
+        {
+          "type": "json_len_gte",
+          "path": "risks",
+          "min": 1
+        },
+        {
+          "type": "unchanged"
+        }
+      ]
+    },
+    {
+      "id": "shared-theme-token",
+      "prompt": "Change request: Make the accent colour slightly warmer: change the `orange` token in the theme from #FF9D2C to #FFA53D.",
+      "graders": [
+        {
+          "type": "json_contains",
+          "path": "files",
+          "value": "src/presentation/theme/colors.ts"
+        },
+        {
+          "type": "json_equals",
+          "path": "verify.level",
+          "value": "full"
+        },
+        {
+          "type": "json_regex",
+          "path": "verify.why",
+          "regex": "(?i)theme|colors\\.ts|shared|every screen"
+        },
+        {
+          "type": "unchanged"
+        }
+      ]
+    }
+  ]
+}

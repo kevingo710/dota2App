@@ -1,0 +1,140 @@
+{
+  "kind": "agents",
+  "backend": "opencode",
+  "timestamp": "20261027-233801",
+  "git": {
+    "commit": "23427c7",
+    "dirty": true
+  },
+  "roster": {
+    "fingerprint": "fd29d1ef6515",
+    "backend": "opencode",
+    "agents": {
+      "implementer": {
+        "hash": "b26635c25b32",
+        "model": "ollama/qwen3-agent:latest",
+        "tools": [
+          "Read",
+          "Edit",
+          "Write",
+          "Grep",
+          "Glob",
+          "Bash"
+        ],
+        "eval_cases": 3
+      },
+      "planner": {
+        "hash": "9271cf5b3525",
+        "model": "ollama/qwen3-agent:latest",
+        "tools": [
+          "Read",
+          "Grep",
+          "Glob"
+        ],
+        "eval_cases": 4
+      },
+      "reviewer": {
+        "hash": "3a5499452bbb",
+        "model": "ollama/qwen3-agent:latest",
+        "tools": [
+          "Read",
+          "Grep",
+          "Glob",
+          "Bash"
+        ],
+        "eval_cases": 4
+      },
+      "test-writer": {
+        "hash": "ecbc2f88e14a",
+        "model": "ollama/qwen3-agent:latest",
+        "tools": [
+          "Read",
+          "Edit",
+          "Write",
+          "Grep",
+          "Glob",
+          "Bash"
+        ],
+        "eval_cases": 2
+      },
+      "visual-qa": {
+        "hash": "fcd4919e2a93",
+        "model": "ollama/gemma4-agent:latest",
+        "tools": [
+          "Bash",
+          "Read"
+        ],
+        "eval_cases": 3
+      }
+    },
+    "skill": "3bd15cfe6c63",
+    "hooks": "a9549c71f05c",
+    "pipeline": "280ee3b334bc"
+  },
+  "summary": {
+    "planner": {
+      "runs": 1,
+      "pass_rate": 1.0,
+      "score": 1.0,
+      "seconds": 116.3,
+      "tokens": 15376,
+      "cost_usd": 0.0
+    },
+    "ALL": {
+      "runs": 1,
+      "pass_rate": 1.0,
+      "score": 1.0,
+      "seconds": 116.3,
+      "tokens": 15376,
+      "cost_usd": 0.0
+    }
+  },
+  "cases": [
+    {
+      "agent": "planner",
+      "case": "ui-copy-settings",
+      "attempt": 1,
+      "pass": true,
+      "score": 1.0,
+      "graders": [
+        {
+          "type": "json_keys",
+          "pass": true,
+          "detail": ""
+        },
+        {
+          "type": "json_equals",
+          "pass": true,
+          "detail": "screens = [\"settings\"]"
+        },
+        {
+          "type": "json_contains",
+          "pass": true,
+          "detail": "files = [\"src/presentation/screens/SettingsScreen.tsx\"]"
+        },
+        {
+          "type": "json_contains",
+          "pass": true,
+          "detail": "expect_text.settings = [\"Built with\", \"Claude Code agents\"]"
+        },
+        {
+          "type": "json_subset",
+          "pass": true,
+          "detail": ""
+        },
+        {
+          "type": "unchanged",
+          "pass": true,
+          "detail": ""
+        }
+      ],
+      "error": "",
+      "seconds": 116.3,
+      "turns": 2,
+      "tokens": 15376,
+      "cost_usd": 0.0,
+      "changed": [],
+      "answer": "```json\n{\n  \"summary\": \"Add 'Built with' row to Settings About section\",\n  \"layers\": [\"presentation\"],\n  \"files\": [\"src/presentation/screens/SettingsScreen.tsx\"],\n  \"screens\": [\"settings\"],\n  \"expect_text\": {\n    \"settings\": [\"Built with\", \"Claude Code agents\"]\n  },\n  \"acceptance\": [\n    \"The 'Built with' label appears in the About section of Settings\",\n    \"The value 'Claude Code agents' is displayed next to the label\",\n    \"The new row is styled consistently with existing About section items\"\n  ],\n  \"tests\": [\"__tests__/presentation/screens/SettingsScreen.test.tsx: renders 'Built with' row\"],\n  \"risks\": [\n    \"Layout shift may occur if new row breaks existing UI alignment\",\n    \"Text may not inherit correct color from theme tokens\",\n    \"May conflict with existing state management in Settings screen\"\n  ]\n}\n```"
+    }
+  ]
+}

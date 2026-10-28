@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(npx tsc:*)",
+      "Bash(npx eslint:*)",
+      "Bash(npx jest:*)",
+      "Bash(npx prettier:*)",
+      "Bash(harness/gate.sh:*)",
+      "Bash(harness/preflight.sh:*)",
+      "Bash(python3 harness/check_architecture.py:*)",
+      "Bash(scripts/telegram.sh:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git show:*)",
+      "Bash(mkdir -p .harness/:*)",
+      "Bash(date:*)",
+      "Bash(ls:*)"
+    ],
+    "deny": [
+      "Read(~/.config/dota2app/**)",
+      "Read(./.env.local)",
+      "Read(./telegram.md)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Read|Edit|Write|MultiEdit|NotebookEdit",
+        "hooks": [
+          {"type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/guard.py"}
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {"type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/lint_changed.py", "timeout": 60}
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {"type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/stop_gate.py", "timeout": 300}
+        ]
+      }
+    ]
+  }
+}

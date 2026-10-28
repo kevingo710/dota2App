@@ -1,0 +1,686 @@
+{
+  "kind": "agents",
+  "backend": "claude",
+  "timestamp": "20261027-233408",
+  "git": {
+    "commit": "23427c7",
+    "dirty": true
+  },
+  "roster": {
+    "fingerprint": "ffe345090f30",
+    "backend": "claude",
+    "agents": {
+      "implementer": {
+        "hash": "b26635c25b32",
+        "model": "inherit",
+        "tools": [
+          "Read",
+          "Edit",
+          "Write",
+          "Grep",
+          "Glob",
+          "Bash"
+        ],
+        "eval_cases": 3
+      },
+      "planner": {
+        "hash": "9271cf5b3525",
+        "model": "opus",
+        "tools": [
+          "Read",
+          "Grep",
+          "Glob"
+        ],
+        "eval_cases": 4
+      },
+      "reviewer": {
+        "hash": "3a5499452bbb",
+        "model": "opus",
+        "tools": [
+          "Read",
+          "Grep",
+          "Glob",
+          "Bash"
+        ],
+        "eval_cases": 4
+      },
+      "test-writer": {
+        "hash": "ecbc2f88e14a",
+        "model": "sonnet",
+        "tools": [
+          "Read",
+          "Edit",
+          "Write",
+          "Grep",
+          "Glob",
+          "Bash"
+        ],
+        "eval_cases": 2
+      },
+      "visual-qa": {
+        "hash": "fcd4919e2a93",
+        "model": "sonnet",
+        "tools": [
+          "Bash",
+          "Read"
+        ],
+        "eval_cases": 3
+      }
+    },
+    "skill": "3bd15cfe6c63",
+    "hooks": "a9549c71f05c",
+    "pipeline": "280ee3b334bc"
+  },
+  "summary": {
+    "implementer": {
+      "runs": 3,
+      "pass_rate": 1.0,
+      "score": 1.0,
+      "seconds": 22.7,
+      "tokens": 88471,
+      "cost_usd": 0.3619
+    },
+    "planner": {
+      "runs": 4,
+      "pass_rate": 1.0,
+      "score": 1.0,
+      "seconds": 31.8,
+      "tokens": 184085,
+      "cost_usd": 0.6332
+    },
+    "reviewer": {
+      "runs": 4,
+      "pass_rate": 1.0,
+      "score": 1.0,
+      "seconds": 102.4,
+      "tokens": 103871,
+      "cost_usd": 0.5076
+    },
+    "test-writer": {
+      "runs": 2,
+      "pass_rate": 1.0,
+      "score": 1.0,
+      "seconds": 26.6,
+      "tokens": 49097,
+      "cost_usd": 0.1059
+    },
+    "visual-qa": {
+      "runs": 3,
+      "pass_rate": 1.0,
+      "score": 1.0,
+      "seconds": 6.3,
+      "tokens": 25784,
+      "cost_usd": 0.109
+    },
+    "ALL": {
+      "runs": 16,
+      "pass_rate": 1.0,
+      "score": 1.0,
+      "seconds": 42.3,
+      "tokens": 451308,
+      "cost_usd": 1.7176
+    }
+  },
+  "cases": [
+    {
+      "agent": "implementer",
+      "case": "settings-row",
+      "attempt": 1,
+      "pass": true,
+      "score": 1.0,
+      "graders": [
+        {
+          "type": "gate",
+          "pass": true,
+          "detail": ""
+        },
+        {
+          "type": "diff_regex",
+          "pass": true,
+          "detail": "/Built with/ found in added lines of src/presentation/screens/SettingsScreen.tsx"
+        },
+        {
+          "type": "diff_regex",
+          "pass": true,
+          "detail": "/Claude Code agents/ found in added lines of src/presentation/screens/SettingsScreen.tsx"
+        },
+        {
+          "type": "changed_within",
+          "pass": true,
+          "detail": ""
+        }
+      ],
+      "error": "",
+      "seconds": 20.1,
+      "turns": 4,
+      "tokens": 16262,
+      "cost_usd": 0.1191,
+      "changed": [
+        "src/presentation/screens/SettingsScreen.tsx"
+      ]
+    },
+    {
+      "agent": "implementer",
+      "case": "theme-token-not-hex",
+      "attempt": 1,
+      "pass": true,
+      "score": 1.0,
+      "graders": [
+        {
+          "type": "gate",
+          "pass": true,
+          "detail": ""
+        },
+        {
+          "type": "diff_regex",
+          "pass": true,
+          "detail": "/gold/ found in added lines of src/presentation/theme/colors.ts"
+        },
+        {
+          "type": "diff_regex",
+          "pass": true,
+          "detail": "/colors\\.gold/ found in added lines of src/presentation/screens/SuperstarScreen.tsx"
+        },
+        {
+          "type": "diff_regex",
+          "pass": true,
+          "detail": "/#[Ff]{2}[Dd]700/ not found in added lines of src/presentation/screens/SuperstarScreen.tsx"
+        },
+        {
+          "type": "changed_within",
+          "pass": true,
+          "detail": ""
+        }
+      ],
+      "error": "",
+      "seconds": 21.8,
+      "turns": 6,
+      "tokens": 38227,
+      "cost_usd": 0.1226,
+      "changed": [
+        "src/presentation/screens/SuperstarScreen.tsx",
+        "src/presentation/theme/colors.ts"
+      ]
+    },
+    {
+      "agent": "implementer",
+      "case": "logic-in-presentation",
+      "attempt": 1,
+      "pass": true,
+      "score": 1.0,
+      "graders": [
+        {
+          "type": "gate",
+          "pass": true,
+          "detail": ""
+        },
+        {
+          "type": "diff_regex",
+          "pass": true,
+          "detail": "/filteredHeroes\\.length/ found in added lines of src/presentation/screens/HomeScreen.tsx"
+        },
+        {
+          "type": "diff_regex",
+          "pass": true,
+          "detail": "/axios|fetch\\(/ not found in added lines of src/presentation/screens/HomeScreen.tsx"
+        },
+        {
+          "type": "changed_within",
+          "pass": true,
+          "detail": ""
+        }
+      ],
+      "error": "",
+      "seconds": 26.3,
+      "turns": 5,
+      "tokens": 33982,
+      "cost_usd": 0.1202,
+      "changed": [
+        "src/presentation/screens/HomeScreen.tsx"
+      ]
+    },
+    {
+      "agent": "planner",
+      "case": "ui-copy-settings",
+      "attempt": 1,
+      "pass": true,
+      "score": 1.0,
+      "graders": [
+        {
+          "type": "json_keys",
+          "pass": true,
+          "detail": ""
+        },
+        {
+          "type": "json_equals",
+          "pass": true,
+          "detail": "screens = [\"settings\"]"
+        },
+        {
+          "type": "json_contains",
+          "pass": true,
+          "detail": "files = [\"src/presentation/screens/SettingsScreen.tsx\"]"
+        },
+        {
+          "type": "json_contains",
+          "pass": true,
+          "detail": "expect_text.settings = [\"Built with\", \"Claude Code agents\", \"Version\", \"Platform\"]"
+        },
+        {
+          "type": "json_subset",
+          "pass": true,
+          "detail": ""
+        },
+        {
+          "type": "unchanged",
+          "pass": true,
+          "detail": ""
+        }
+      ],
+      "error": "",
+      "seconds": 20.2,
+      "turns": 5,
+      "tokens": 35045,
+      "cost_usd": 0.1128,
+      "changed": []
+    },
+    {
+      "agent": "planner",
+      "case": "reuse-existing-entity",
+      "attempt": 1,
+      "pass": true,
+      "score": 1.0,
+      "graders": [
+        {
+          "type": "json_contains",
+          "pass": true,
+          "detail": "screens = [\"home\", \"explore\"]"
+        },
+        {
+          "type": "json_contains",
+          "pass": true,
+          "detail": "files = [\"src/presentation/components/HeroCard.tsx\", \"__tests__/presentation/HeroCard.test.tsx\"]"
+        },
+        {
+          "type": "json_subset",
+          "pass": true,
+          "detail": ""
+        },
+        {
+          "type": "json_len_gte",
+          "pass": true,
+          "detail": "len(acceptance) = 9"
+        },
+        {
+          "type": "unchanged",
+          "pass": true,
+          "detail": ""
+        }
+      ],
+      "error": "",
+      "seconds": 44.9,
+      "turns": 14,
+      "tokens": 78907,
+      "cost_usd": 0.2305,
+      "changed": []
+    },
+    {
+      "agent": "planner",
+      "case": "non-visual-test-task",
+      "attempt": 1,
+      "pass": true,
+      "score": 1.0,
+      "graders": [
+        {
+          "type": "json_equals",
+          "pass": true,
+          "detail": "screens = []"
+        },
+        {
+          "type": "json_len_gte",
+          "pass": true,
+          "detail": "len(tests) = 1"
+        },
+        {
+          "type": "json_regex",
+          "pass": true,
+          "detail": "files = [\"__tests__/domain/GetHeroesUseCase.test.ts\"]"
+        },
+        {
+          "type": "unchanged",
+          "pass": true,
+          "detail": ""
+        }
+      ],
+      "error": "",
+      "seconds": 23.3,
+      "turns": 6,
+      "tokens": 33442,
+      "cost_usd": 0.1011,
+      "changed": []
+    },
+    {
+      "agent": "planner",
+      "case": "ambiguous-request",
+      "attempt": 1,
+      "pass": true,
+      "score": 1.0,
+      "graders": [
+        {
+          "type": "json_contains",
+          "pass": true,
+          "detail": "screens = [\"superstar\"]"
+        },
+        {
+          "type": "json_len_gte",
+          "pass": true,
+          "detail": "len(acceptance) = 14"
+        },
+        {
+          "type": "json_len_gte",
+          "pass": true,
+          "detail": "len(risks) = 5"
+        },
+        {
+          "type": "unchanged",
+          "pass": true,
+          "detail": ""
+        }
+      ],
+      "error": "",
+      "seconds": 38.9,
+      "turns": 10,
+      "tokens": 36691,
+      "cost_usd": 0.1888,
+      "changed": []
+    },
+    {
+      "agent": "reviewer",
+      "case": "axios-in-screen",
+      "attempt": 1,
+      "pass": true,
+      "score": 1.0,
+      "graders": [
+        {
+          "type": "json_equals",
+          "pass": true,
+          "detail": "verdict = \"fail\""
+        },
+        {
+          "type": "json_regex",
+          "pass": true,
+          "detail": "blocking = [{\"file\": \"src/presentation/screens/HomeScreen.tsx\", \"line\": 34, \"issue\": \"Acceptance criterion not met: the `total` state is never rendered, so nothing new appears under the search box.\", \"fix\": \"Ren"
+        },
+        {
+          "type": "json_regex",
+          "pass": true,
+          "detail": "blocking = [{\"file\": \"src/presentation/screens/HomeScreen.tsx\", \"line\": 34, \"issue\": \"Acceptance criterion not met: the `total` state is never rendered, so nothing new appears under the search box.\", \"fix\": \"Ren"
+        },
+        {
+          "type": "unchanged",
+          "pass": true,
+          "detail": ""
+        }
+      ],
+      "error": "",
+      "seconds": 355.7,
+      "turns": 6,
+      "tokens": 61794,
+      "cost_usd": 0.2724,
+      "changed": [
+        "src/presentation/screens/HomeScreen.tsx"
+      ]
+    },
+    {
+      "agent": "reviewer",
+      "case": "hex-and-console-log",
+      "attempt": 1,
+      "pass": true,
+      "score": 1.0,
+      "graders": [
+        {
+          "type": "json_equals",
+          "pass": true,
+          "detail": "verdict = \"fail\""
+        },
+        {
+          "type": "json_regex",
+          "pass": true,
+          "detail": "blocking = [{\"file\": \"src/presentation/screens/SettingsScreen.tsx\", \"line\": 104, \"issue\": \"A leftover console.log is placed in the JSX (`{console.log('settings rendered') as unknown as null}`). It runs on every "
+        },
+        {
+          "type": "json_regex",
+          "pass": true,
+          "detail": "blocking = [{\"file\": \"src/presentation/screens/SettingsScreen.tsx\", \"line\": 104, \"issue\": \"A leftover console.log is placed in the JSX (`{console.log('settings rendered') as unknown as null}`). It runs on every "
+        },
+        {
+          "type": "unchanged",
+          "pass": true,
+          "detail": ""
+        }
+      ],
+      "error": "",
+      "seconds": 21.8,
+      "turns": 3,
+      "tokens": 16167,
+      "cost_usd": 0.0892,
+      "changed": [
+        "src/presentation/screens/SettingsScreen.tsx"
+      ]
+    },
+    {
+      "agent": "reviewer",
+      "case": "scope-creep",
+      "attempt": 1,
+      "pass": true,
+      "score": 1.0,
+      "graders": [
+        {
+          "type": "json_equals",
+          "pass": true,
+          "detail": "verdict = \"fail\""
+        },
+        {
+          "type": "json_regex",
+          "pass": true,
+          "detail": "blocking = [{\"file\": \"src/presentation/theme/colors.ts\", \"line\": 13, \"issue\": \"Change outside the plan: `danger` theme colour changed from '#FF6B6B' to '#E11D48'. The plan lists only SettingsScreen.tsx, and the "
+        },
+        {
+          "type": "unchanged",
+          "pass": true,
+          "detail": ""
+        }
+      ],
+      "error": "",
+      "seconds": 15.9,
+      "turns": 2,
+      "tokens": 8966,
+      "cost_usd": 0.0697,
+      "changed": [
+        "src/presentation/screens/SettingsScreen.tsx",
+        "src/presentation/theme/colors.ts"
+      ]
+    },
+    {
+      "agent": "reviewer",
+      "case": "clean-change-passes",
+      "attempt": 1,
+      "pass": true,
+      "score": 1.0,
+      "graders": [
+        {
+          "type": "json_equals",
+          "pass": true,
+          "detail": "verdict = \"pass\""
+        },
+        {
+          "type": "json_len_lte",
+          "pass": true,
+          "detail": "len(blocking) = 0"
+        },
+        {
+          "type": "unchanged",
+          "pass": true,
+          "detail": ""
+        }
+      ],
+      "error": "",
+      "seconds": 16.1,
+      "turns": 3,
+      "tokens": 16944,
+      "cost_usd": 0.0763,
+      "changed": [
+        "src/presentation/screens/SettingsScreen.tsx"
+      ]
+    },
+    {
+      "agent": "test-writer",
+      "case": "mapper-prefix",
+      "attempt": 1,
+      "pass": true,
+      "score": 1.0,
+      "graders": [
+        {
+          "type": "changed_include",
+          "pass": true,
+          "detail": ""
+        },
+        {
+          "type": "changed_within",
+          "pass": true,
+          "detail": ""
+        },
+        {
+          "type": "tests_pass",
+          "pass": true,
+          "detail": ""
+        },
+        {
+          "type": "mutation_killed",
+          "pass": true,
+          "detail": "mutant killed"
+        }
+      ],
+      "error": "",
+      "seconds": 29.0,
+      "turns": 7,
+      "tokens": 30444,
+      "cost_usd": 0.0687,
+      "changed": [
+        "__tests__/data/HeroMapper.test.ts"
+      ]
+    },
+    {
+      "agent": "test-writer",
+      "case": "usecase-propagates-errors",
+      "attempt": 1,
+      "pass": true,
+      "score": 1.0,
+      "graders": [
+        {
+          "type": "changed_include",
+          "pass": true,
+          "detail": ""
+        },
+        {
+          "type": "changed_within",
+          "pass": true,
+          "detail": ""
+        },
+        {
+          "type": "tests_pass",
+          "pass": true,
+          "detail": ""
+        },
+        {
+          "type": "mutation_killed",
+          "pass": true,
+          "detail": "mutant killed"
+        }
+      ],
+      "error": "",
+      "seconds": 24.2,
+      "turns": 4,
+      "tokens": 18653,
+      "cost_usd": 0.0372,
+      "changed": [
+        "__tests__/domain/GetHeroesUseCase.test.ts"
+      ]
+    },
+    {
+      "agent": "visual-qa",
+      "case": "superstar-matches",
+      "attempt": 1,
+      "pass": true,
+      "score": 1.0,
+      "graders": [
+        {
+          "type": "json_equals",
+          "pass": true,
+          "detail": "verdict = \"pass\""
+        },
+        {
+          "type": "unchanged",
+          "pass": true,
+          "detail": ""
+        }
+      ],
+      "error": "",
+      "seconds": 4.6,
+      "turns": 2,
+      "tokens": 5569,
+      "cost_usd": 0.0412,
+      "changed": []
+    },
+    {
+      "agent": "visual-qa",
+      "case": "missing-row",
+      "attempt": 1,
+      "pass": true,
+      "score": 1.0,
+      "graders": [
+        {
+          "type": "json_equals",
+          "pass": true,
+          "detail": "verdict = \"fail\""
+        },
+        {
+          "type": "unchanged",
+          "pass": true,
+          "detail": ""
+        }
+      ],
+      "error": "",
+      "seconds": 6.2,
+      "turns": 2,
+      "tokens": 8597,
+      "cost_usd": 0.0322,
+      "changed": []
+    },
+    {
+      "agent": "visual-qa",
+      "case": "wrong-screen",
+      "attempt": 1,
+      "pass": true,
+      "score": 1.0,
+      "graders": [
+        {
+          "type": "json_equals",
+          "pass": true,
+          "detail": "verdict = \"fail\""
+        },
+        {
+          "type": "unchanged",
+          "pass": true,
+          "detail": ""
+        }
+      ],
+      "error": "",
+      "seconds": 8.0,
+      "turns": 2,
+      "tokens": 11618,
+      "cost_usd": 0.0356,
+      "changed": []
+    }
+  ]
+}

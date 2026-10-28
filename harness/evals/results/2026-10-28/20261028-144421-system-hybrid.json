@@ -1,0 +1,236 @@
+{
+  "kind": "system",
+  "backend": "hybrid",
+  "timestamp": "20261028-144421",
+  "git": {
+    "commit": "23427c7",
+    "dirty": true
+  },
+  "roster": {
+    "fingerprint": "f66af5947317",
+    "backend": "hybrid",
+    "agents": {
+      "implementer": {
+        "hash": "751b10b17d2b",
+        "model": "ollama/qwen3-14b-agent:latest",
+        "route": "ollama/qwen3-14b-agent:latest",
+        "tools": [
+          "Read",
+          "Edit",
+          "Write",
+          "Grep",
+          "Glob",
+          "Bash"
+        ],
+        "eval_cases": 3,
+        "escalation": "claude:haiku"
+      },
+      "planner": {
+        "hash": "9271cf5b3525",
+        "model": "sonnet",
+        "route": "claude:sonnet",
+        "tools": [
+          "Read",
+          "Grep",
+          "Glob"
+        ],
+        "eval_cases": 4
+      },
+      "reviewer": {
+        "hash": "3a5499452bbb",
+        "model": "sonnet",
+        "route": "claude:sonnet",
+        "tools": [
+          "Read",
+          "Grep",
+          "Glob",
+          "Bash"
+        ],
+        "eval_cases": 4
+      },
+      "test-writer": {
+        "hash": "ecbc2f88e14a",
+        "model": "haiku",
+        "route": "claude:haiku",
+        "tools": [
+          "Read",
+          "Edit",
+          "Write",
+          "Grep",
+          "Glob",
+          "Bash"
+        ],
+        "eval_cases": 2
+      },
+      "visual-qa": {
+        "hash": "db85dd32f464",
+        "model": "ollama/gemma4-agent:latest",
+        "route": "opencode",
+        "tools": [
+          "Bash",
+          "Read"
+        ],
+        "eval_cases": 3
+      }
+    },
+    "skill": "3bd15cfe6c63",
+    "hooks": "a9549c71f05c",
+    "pipeline": "280ee3b334bc"
+  },
+  "routes": {
+    "implementer": "ollama/qwen3-14b-agent:latest",
+    "planner": "claude:sonnet",
+    "reviewer": "claude:sonnet",
+    "test-writer": "claude:haiku"
+  },
+  "summary": {
+    "system": {
+      "runs": 4,
+      "pass_rate": 1.0,
+      "score": 1.0,
+      "seconds": 1375.7,
+      "tokens": 1296005,
+      "cost_usd": 0.4929,
+      "infra_failures": 0
+    },
+    "ALL": {
+      "runs": 4,
+      "pass_rate": 1.0,
+      "score": 1.0,
+      "seconds": 1375.7,
+      "tokens": 1296005,
+      "cost_usd": 0.4929,
+      "infra_failures": 0
+    }
+  },
+  "cases": [
+    {
+      "agent": "system",
+      "case": "settings-row",
+      "attempt": 1,
+      "pass": true,
+      "score": 1.0,
+      "graders": [
+        {
+          "type": "run_passed",
+          "pass": true,
+          "detail": ": "
+        },
+        {
+          "type": "diff_regex",
+          "pass": true,
+          "detail": "/Built with/ found in added lines of src/presentation/screens/SettingsScreen.tsx"
+        }
+      ],
+      "error": "",
+      "seconds": 745.1,
+      "turns": 38,
+      "tokens": 382878,
+      "cost_usd": 0.1624,
+      "fix_iterations": 0,
+      "diff": " __tests__/presentation/SettingsScreen.test.tsx | 65 ++++++++++++++++++++++++++\n src/presentation/screens/SettingsScreen.tsx    |  2 +\n 2 files changed, 67 insertions(+)\n",
+      "artifacts": ".harness/evals/runs/hybrid-20261028-131237-in-the-about-section-of-the-settings-scr"
+    },
+    {
+      "agent": "system",
+      "case": "home-count",
+      "attempt": 1,
+      "pass": true,
+      "score": 1.0,
+      "graders": [
+        {
+          "type": "run_passed",
+          "pass": true,
+          "detail": ": "
+        },
+        {
+          "type": "changed_include",
+          "pass": true,
+          "detail": ""
+        },
+        {
+          "type": "diff_regex",
+          "pass": true,
+          "detail": "/(?i)count|\\.length/ found in added lines of src/presentation/screens/HomeScreen.tsx"
+        },
+        {
+          "type": "gate",
+          "pass": true,
+          "detail": ""
+        }
+      ],
+      "error": "",
+      "seconds": 3054.1,
+      "turns": 27,
+      "tokens": 225293,
+      "cost_usd": 0.1278,
+      "fix_iterations": 0,
+      "diff": " __tests__/presentation/formatHeroCount.test.ts | 15 +++++++++++++++\n src/presentation/screens/HomeScreen.tsx        | 14 ++++++++------\n src/presentation/utils/formatHeroCount.ts      |  3 +++\n 3 files changed, 26 insertions(+), 6 deletions(-)\n",
+      "artifacts": ".harness/evals/runs/hybrid-20261028-132502-on-home-under-the-search-box-show-how-ma"
+    },
+    {
+      "agent": "system",
+      "case": "mapper-test",
+      "attempt": 1,
+      "pass": true,
+      "score": 1.0,
+      "graders": [
+        {
+          "type": "run_passed",
+          "pass": true,
+          "detail": ": "
+        },
+        {
+          "type": "changed_include",
+          "pass": true,
+          "detail": ""
+        },
+        {
+          "type": "mutation_killed",
+          "pass": true,
+          "detail": "mutant killed"
+        }
+      ],
+      "error": "",
+      "seconds": 1450.1,
+      "turns": 39,
+      "tokens": 491455,
+      "cost_usd": 0.0923,
+      "fix_iterations": 0,
+      "diff": " __tests__/data/HeroMapper.test.ts | 12 +++++++++++-\n 1 file changed, 11 insertions(+), 1 deletion(-)\n",
+      "artifacts": ".harness/evals/runs/hybrid-20261028-141557-add-a-unit-test-proving-that-tohero-maps"
+    },
+    {
+      "agent": "system",
+      "case": "guardrail-layers",
+      "attempt": 1,
+      "pass": true,
+      "score": 1.0,
+      "graders": [
+        {
+          "type": "run_passed",
+          "pass": true,
+          "detail": "verify: the run made no changes to the repository"
+        },
+        {
+          "type": "diff_regex",
+          "pass": true,
+          "detail": "/axios/ not found in added lines of src/presentation/screens/HomeScreen.tsx"
+        },
+        {
+          "type": "diff_regex",
+          "pass": true,
+          "detail": "/api\\.opendota\\.com/ not found in added lines of src/presentation/screens/HomeScreen.tsx"
+        }
+      ],
+      "error": "",
+      "seconds": 253.6,
+      "turns": 32,
+      "tokens": 196379,
+      "cost_usd": 0.1104,
+      "fix_iterations": 2,
+      "diff": "",
+      "artifacts": ".harness/evals/runs/hybrid-20261028-144007-make-homescreen-fetch-the-heroes-itself-"
+    }
+  ]
+}

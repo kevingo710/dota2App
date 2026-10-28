@@ -1,0 +1,444 @@
+{
+  "kind": "agents",
+  "backend": "claude",
+  "timestamp": "20261028-163753",
+  "git": {
+    "commit": "23427c7",
+    "dirty": true
+  },
+  "roster": {
+    "fingerprint": "b4bc28ecb437",
+    "backend": "claude",
+    "agents": {
+      "implementer": {
+        "hash": "8b7ce4f31335",
+        "model": "inherit",
+        "route": "claude",
+        "tools": [
+          "Read",
+          "Edit",
+          "Write",
+          "Grep",
+          "Glob",
+          "Bash"
+        ],
+        "eval_cases": 3
+      },
+      "planner": {
+        "hash": "cf9db4123c54",
+        "model": "opus",
+        "route": "claude",
+        "tools": [
+          "Read",
+          "Grep",
+          "Glob"
+        ],
+        "eval_cases": 5
+      },
+      "reviewer": {
+        "hash": "3a5499452bbb",
+        "model": "opus",
+        "route": "claude",
+        "tools": [
+          "Read",
+          "Grep",
+          "Glob",
+          "Bash"
+        ],
+        "eval_cases": 4
+      },
+      "test-writer": {
+        "hash": "ecbc2f88e14a",
+        "model": "sonnet",
+        "route": "claude",
+        "tools": [
+          "Read",
+          "Edit",
+          "Write",
+          "Grep",
+          "Glob",
+          "Bash"
+        ],
+        "eval_cases": 2
+      },
+      "visual-qa": {
+        "hash": "fcd4919e2a93",
+        "model": "sonnet",
+        "route": "claude",
+        "tools": [
+          "Bash",
+          "Read"
+        ],
+        "eval_cases": 3
+      }
+    },
+    "skill": "3bd15cfe6c63",
+    "hooks": "952292cdceef",
+    "pipeline": "280ee3b334bc"
+  },
+  "routes": {},
+  "summary": {
+    "implementer": {
+      "runs": 3,
+      "pass_rate": 1.0,
+      "score": 1.0,
+      "seconds": 28.5,
+      "tokens": 125636,
+      "cost_usd": 0.3953,
+      "infra_failures": 0
+    },
+    "planner": {
+      "runs": 5,
+      "pass_rate": 1.0,
+      "score": 1.0,
+      "seconds": 27.4,
+      "tokens": 171103,
+      "cost_usd": 0.7637,
+      "infra_failures": 0
+    },
+    "ALL": {
+      "runs": 8,
+      "pass_rate": 1.0,
+      "score": 1.0,
+      "seconds": 27.8,
+      "tokens": 296739,
+      "cost_usd": 1.159,
+      "infra_failures": 0
+    }
+  },
+  "cases": [
+    {
+      "agent": "planner",
+      "case": "ui-copy-settings",
+      "attempt": 1,
+      "pass": true,
+      "failure": null,
+      "score": 1.0,
+      "graders": [
+        {
+          "type": "json_keys",
+          "pass": true,
+          "detail": ""
+        },
+        {
+          "type": "json_equals",
+          "pass": true,
+          "detail": "screens = [\"settings\"]"
+        },
+        {
+          "type": "json_contains",
+          "pass": true,
+          "detail": "files = [\"src/presentation/screens/SettingsScreen.tsx\"]"
+        },
+        {
+          "type": "json_contains",
+          "pass": true,
+          "detail": "expect_text.settings = [\"Built with\", \"Claude Code agents\", \"Version\", \"Platform\"]"
+        },
+        {
+          "type": "json_subset",
+          "pass": true,
+          "detail": ""
+        },
+        {
+          "type": "json_equals",
+          "pass": true,
+          "detail": "verify.level = \"quick\""
+        },
+        {
+          "type": "unchanged",
+          "pass": true,
+          "detail": ""
+        }
+      ],
+      "error": "",
+      "seconds": 21.7,
+      "turns": 6,
+      "tokens": 31420,
+      "cost_usd": 0.1466,
+      "changed": [],
+      "answer": "efault `rowLabel` / `rowValue` styles (`colors.text` / `colors.textMuted`).\",\n    \"The existing About rows `Version` (value from package.json) and `Platform` (value `Platform.OS`) stay unchanged and in the same order.\",\n    \"No new styles, theme tokens, hooks or files are added; the Data and Storage sections and the footnote are unchanged.\",\n    \"On the settings screenshot, 'Built with' and 'Claude Code agents' appear on the same row inside the About card, below 'Platform'.\"\n  ],\n  \"tests\": [],\n  \"verify\": {\"level\": \"quick\", \"why\": \"only src/presentation/screens/SettingsScreen.tsx changes; no file matches a shared prefix in harness/scope.json\"},\n  \"risks\": [\n    \"Alternative reading: put the row first in About or right after Version; I picked the end of the section (after Platform) as the most natural spot for an attribution row.\",\n    \"On narrow screens 'Claude Code agents' could wrap or crowd the label, because rowValue has no numberOfLines/flexShrink. Check the screenshot that the value stays on one line next to the label.\",\n    \"The About section sits below the fold on small simulators. If the capture doesn't scroll, OCR may miss 'Built with' or 'Claude Code agents'.\"\n  ]\n}\n```"
+    },
+    {
+      "agent": "planner",
+      "case": "reuse-existing-entity",
+      "attempt": 1,
+      "pass": true,
+      "failure": null,
+      "score": 1.0,
+      "graders": [
+        {
+          "type": "json_contains",
+          "pass": true,
+          "detail": "screens = [\"home\", \"explore\"]"
+        },
+        {
+          "type": "json_contains",
+          "pass": true,
+          "detail": "files = [\"src/presentation/components/HeroCard.tsx\", \"__tests__/presentation/HeroCard.test.tsx\"]"
+        },
+        {
+          "type": "json_subset",
+          "pass": true,
+          "detail": ""
+        },
+        {
+          "type": "json_len_gte",
+          "pass": true,
+          "detail": "len(acceptance) = 8"
+        },
+        {
+          "type": "unchanged",
+          "pass": true,
+          "detail": ""
+        }
+      ],
+      "error": "",
+      "seconds": 36.4,
+      "turns": 13,
+      "tokens": 58781,
+      "cost_usd": 0.2117,
+      "changed": [],
+      "answer": "ders a Melee hero and a Ranged hero with HeroCard and asserts getByText('Melee') / getByText('Ranged'); asserts the accessibilityLabel contains the attack type; asserts onPress fires on press\"\n  ],\n  \"verify\": {\n    \"level\": \"full\",\n    \"why\": \"src/presentation/components/HeroCard.tsx matches shared prefix src/presentation/components/ (components shared by several screens: Home and Explore both render HeroCard)\"\n  },\n  \"risks\": [\n    \"Ambiguity: the request says Home only, but HeroCard is also used by Explore, so Explore cards gain the label too. Alternative: add an optional `showAttackType?: boolean` prop (default false) to HeroCard and pass it only from HomeScreen.tsx, which leaves Explore unchanged\",\n    \"The meta row is narrow on small devices (two columns). Adding a third item can squeeze the roles text, which already truncates with numberOfLines={1}; check that the attack type label itself stays readable\",\n    \"OCR at fontSize 10 on a dark background may miss the label; use at least 10 with a high-contrast token if the visual-qa OCR fails\",\n    \"No HeroCard test exists yet; the new test may need the react-native Image/Pressable mocks already set up in jest.setup.js\"\n  ]\n}\n```"
+    },
+    {
+      "agent": "planner",
+      "case": "non-visual-test-task",
+      "attempt": 1,
+      "pass": true,
+      "failure": null,
+      "score": 1.0,
+      "graders": [
+        {
+          "type": "json_equals",
+          "pass": true,
+          "detail": "screens = []"
+        },
+        {
+          "type": "json_len_gte",
+          "pass": true,
+          "detail": "len(tests) = 1"
+        },
+        {
+          "type": "json_regex",
+          "pass": true,
+          "detail": "files = [\"__tests__/domain/GetHeroesUseCase.test.ts\"]"
+        },
+        {
+          "type": "json_equals",
+          "pass": true,
+          "detail": "verify.level = \"quick\""
+        },
+        {
+          "type": "unchanged",
+          "pass": true,
+          "detail": ""
+        }
+      ],
+      "error": "",
+      "seconds": 24.7,
+      "turns": 6,
+      "tokens": 33311,
+      "cost_usd": 0.1081,
+      "changed": [],
+      "answer": "No new imports beyond what the file already uses (reflect-metadata, GetHeroesUseCase, HeroRepository type)\",\n    \"`npx jest __tests__/domain/GetHeroesUseCase.test.ts` passes with 2 tests\"\n  ],\n  \"tests\": [\n    \"__tests__/domain/GetHeroesUseCase.test.ts : new case 'propagates errors thrown by the repository' asserts execute() rejects with the same Error instance the repository rejected with, and getHeroes was called once\"\n  ],\n  \"verify\": {\"level\": \"quick\", \"why\": \"only __tests__/domain/GetHeroesUseCase.test.ts changes; it matches no shared prefix in harness/scope.json (src/domain/ covers source, not __tests__/)\"},\n  \"risks\": [\n    \"'Thrown' could mean a synchronous throw from getHeroes rather than a rejected promise; since execute() returns the repository promise directly, a sync throw would also reach the caller. The plan uses mockRejectedValue because the contract is Promise<Hero[]>. Testing the sync throw with mockImplementation(() => { throw error }) as well is optional\",\n    \"Asserting with rejects.toThrow('message') instead of rejects.toBe(error) would let a use case that wraps the error in a new Error with the same message pass; the same-instance check avoids that\"\n  ]\n}\n```"
+    },
+    {
+      "agent": "planner",
+      "case": "ambiguous-request",
+      "attempt": 1,
+      "pass": true,
+      "failure": null,
+      "score": 1.0,
+      "graders": [
+        {
+          "type": "json_contains",
+          "pass": true,
+          "detail": "screens = [\"superstar\"]"
+        },
+        {
+          "type": "json_len_gte",
+          "pass": true,
+          "detail": "len(acceptance) = 14"
+        },
+        {
+          "type": "json_len_gte",
+          "pass": true,
+          "detail": "len(risks) = 5"
+        },
+        {
+          "type": "unchanged",
+          "pass": true,
+          "detail": ""
+        }
+      ],
+      "error": "",
+      "seconds": 30.9,
+      "turns": 7,
+      "tokens": 24010,
+      "cost_usd": 0.1658,
+      "changed": [],
+      "answer": "arScreen.tsx changes, which matches no shared prefix in harness/scope.json\"},\n  \"risks\": [\n    \"The request is vague. Other readings, not chosen here: (a) add an animated entrance or pulse to the hero card (needs Animated or Reanimated, more risk); (b) add a full-bleed hero image with a gradient overlay (may need a new dependency such as react-native-linear-gradient); (c) add a new theme token such as `colors.gold` (touches src/presentation/theme/, shared, so verify becomes full).\",\n    \"Attribute colours from heroMeta (e.g. Intelligence #39A7E0) may clash with the orange accents; if the reviewer finds it noisy, fall back to `colors.orange` for the card border and glow.\",\n    \"iOS shadows are clipped by `overflow: 'hidden'` on `styles.card`; the implementer may need an outer wrapper View that carries the shadow while the inner view keeps overflow hidden for the image's rounded corners.\",\n    \"The larger fonts push the stats, lore and button further down; expect_text deliberately lists only above-the-fold strings so the capture stays stable.\",\n    \"OCR is case-sensitive: the section titles render in capitals because of textTransform, so they are not listed in expect_text.\"\n  ]\n}\n```"
+    },
+    {
+      "agent": "planner",
+      "case": "shared-theme-token",
+      "attempt": 1,
+      "pass": true,
+      "failure": null,
+      "score": 1.0,
+      "graders": [
+        {
+          "type": "json_contains",
+          "pass": true,
+          "detail": "files = [\"src/presentation/theme/colors.ts\"]"
+        },
+        {
+          "type": "json_equals",
+          "pass": true,
+          "detail": "verify.level = \"full\""
+        },
+        {
+          "type": "json_regex",
+          "pass": true,
+          "detail": "verify.why = \"src/presentation/theme/colors.ts matches shared prefix src/presentation/theme/: colour and spacing tokens used by every screen\""
+        },
+        {
+          "type": "unchanged",
+          "pass": true,
+          "detail": ""
+        }
+      ],
+      "error": "",
+      "seconds": 23.2,
+      "turns": 6,
+      "tokens": 23581,
+      "cost_usd": 0.1315,
+      "changed": [],
+      "answer": "oDetail screens, App.tsx theme primary/notification) still reads `colors.orange` and none is replaced with a hard-coded hex\",\n    \"`#FF9D2C` (any case) no longer appears under src/ or in App.tsx\",\n    \"In the Explore, Superstar and Settings screenshots the active tab icon and label in the bottom bar use the new warmer orange #FFA53D\",\n    \"Tab labels 'Explore', 'Superstar' and 'Settings' stay visible and readable against colors.darkBlue\"\n  ],\n  \"tests\": [],\n  \"verify\": {\n    \"level\": \"full\",\n    \"why\": \"src/presentation/theme/colors.ts matches shared prefix src/presentation/theme/: colour and spacing tokens used by every screen\"\n  },\n  \"risks\": [\n    \"This is a global token change: the shared StateView component, React Navigation's primary and notification colours in App.tsx and HeroDetailScreen (which is not in the screens list) all change too; this is intended, not a regression\",\n    \"The difference between #FF9D2C and #FFA53D is small, so it may be hard to see by eye in screenshots; the diff of colors.ts is the main proof\",\n    \"Other reading: add a new token and keep the old one for some uses. Not chosen, because the request asks to change the existing `orange` token\"\n  ]\n}\n```"
+    },
+    {
+      "agent": "implementer",
+      "case": "settings-row",
+      "attempt": 1,
+      "pass": true,
+      "failure": null,
+      "score": 1.0,
+      "graders": [
+        {
+          "type": "gate",
+          "pass": true,
+          "detail": ""
+        },
+        {
+          "type": "diff_regex",
+          "pass": true,
+          "detail": "/Built with/ found in added lines of src/presentation/screens/SettingsScreen.tsx"
+        },
+        {
+          "type": "diff_regex",
+          "pass": true,
+          "detail": "/Claude Code agents/ found in added lines of src/presentation/screens/SettingsScreen.tsx"
+        },
+        {
+          "type": "changed_within",
+          "pass": true,
+          "detail": ""
+        }
+      ],
+      "error": "",
+      "seconds": 22.9,
+      "turns": 5,
+      "tokens": 32560,
+      "cost_usd": 0.1359,
+      "changed": [
+        "src/presentation/screens/SettingsScreen.tsx"
+      ],
+      "answer": "The About section in Settings now has a \"Built with\" row showing \"Claude Code agents\", and the full gate passes. I didn't capture the screen or send anything to Telegram, so I haven't seen the row on screen.\n\n**Changed files**\n- `src/presentation/screens/SettingsScreen.tsx`\n\n**Acceptance**\n- **\"Built with\" row in About:** it sits after the Platform row and uses the existing `Row` component with `label=\"Built with\"` and `value=\"Claude Code agents\"`. A divider (`<View style={styles.divider} />`) separates it from Platform, the same way the other rows are separated."
+    },
+    {
+      "agent": "implementer",
+      "case": "theme-token-not-hex",
+      "attempt": 1,
+      "pass": true,
+      "failure": null,
+      "score": 1.0,
+      "graders": [
+        {
+          "type": "gate",
+          "pass": true,
+          "detail": ""
+        },
+        {
+          "type": "diff_regex",
+          "pass": true,
+          "detail": "/gold/ found in added lines of src/presentation/theme/colors.ts"
+        },
+        {
+          "type": "diff_regex",
+          "pass": true,
+          "detail": "/colors\\.gold/ found in added lines of src/presentation/screens/SuperstarScreen.tsx"
+        },
+        {
+          "type": "diff_regex",
+          "pass": true,
+          "detail": "/#[Ff]{2}[Dd]700/ not found in added lines of src/presentation/screens/SuperstarScreen.tsx"
+        },
+        {
+          "type": "changed_within",
+          "pass": true,
+          "detail": ""
+        }
+      ],
+      "error": "",
+      "seconds": 30.3,
+      "turns": 7,
+      "tokens": 55568,
+      "cost_usd": 0.1348,
+      "changed": [
+        "src/presentation/screens/SuperstarScreen.tsx",
+        "src/presentation/theme/colors.ts"
+      ],
+      "answer": "The hero name on the Superstar screen is now gold, using a new `gold` colour token in the theme rather than a hard-coded hex value. The full gate passes. I ran the full gate, not the quick one, because `colors.ts` is shared by every screen.\n\n**Changed files**\n- `src/presentation/theme/colors.ts`\n- `src/presentation/screens/SuperstarScreen.tsx`\n\n**Acceptance criteria**\n- **`gold` token with value #FFD700:** `colors.ts` now has `gold: '#FFD700'`, placed right after `orange`.\n- **Hero name uses `colors.gold`:** the hero name's style on Superstar (`heroName`) changed from `colors.text` to `colors.gold`.\n\nI didn't capture a screenshot or send one to Telegram. In this setup the visual-qa step that follows me does that."
+    },
+    {
+      "agent": "implementer",
+      "case": "logic-in-presentation",
+      "attempt": 1,
+      "pass": true,
+      "failure": null,
+      "score": 1.0,
+      "graders": [
+        {
+          "type": "gate",
+          "pass": true,
+          "detail": ""
+        },
+        {
+          "type": "diff_regex",
+          "pass": true,
+          "detail": "/filteredHeroes\\.length/ found in added lines of src/presentation/screens/HomeScreen.tsx"
+        },
+        {
+          "type": "diff_regex",
+          "pass": true,
+          "detail": "/axios|fetch\\(/ not found in added lines of src/presentation/screens/HomeScreen.tsx"
+        },
+        {
+          "type": "changed_within",
+          "pass": true,
+          "detail": ""
+        }
+      ],
+      "error": "",
+      "seconds": 32.2,
+      "turns": 5,
+      "tokens": 37508,
+      "cost_usd": 0.1246,
+      "changed": [
+        "src/presentation/screens/HomeScreen.tsx"
+      ],
+      "answer": "I added the hero count under the search box on Home, and the quick gate (`harness/gate.sh --changed`) passes. I haven't run the full gate or looked at the new line in the simulator; both are the pipeline's next steps.\n\n**Changed files**\n- `src/presentation/screens/HomeScreen.tsx`: a new `Text` under the search box, hidden while the list is loading, plus a `resultCount` style that uses the existing `colors.textMuted`.\n\n**Acceptance criteria**\n- **\"&lt;n&gt; heroes\", or \"1 hero\" for a single result:** the new line shows `1 hero` when `filteredHeroes.length === 1` and `` `${filteredHeroes.length} heroes` `` otherwise, so the full list reads \"127 heroes\".\n- **Uses the existing `filteredHeroes`, no new fetching:** the count is read straight from the `filteredHeroes` memo that's already there. I didn't add any hooks, queries or use cases.\n\n**Decision for you:** the subtitle under the title already shows `${filteredHeroes.length} heroes`, so Home now shows the count twice. The subtitle also never switches to \"1 hero\". I left it alone because it isn't in the plan. Removing it, or making it say only \"Loading roster\u2026\", would be a one-line follow-up if you want a single count."
+    }
+  ]
+}

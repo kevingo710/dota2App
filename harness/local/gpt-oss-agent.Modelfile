@@ -1,0 +1,7 @@
+# Candidate for the judgment roles (reviewer, planner) on the local backend.
+# gpt-oss 20B is a mixture of experts (~3.6B active): close to 8B speed with
+# better reasoning. 32k context covers opencode's system prompt plus a diff;
+# more would not fit next to the weights in 24 GB of unified memory.
+FROM gpt-oss:20b
+PARAMETER num_ctx 32768
+PARAMETER temperature 1

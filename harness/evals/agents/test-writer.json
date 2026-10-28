@@ -1,0 +1,50 @@
+{
+  "agent": "test-writer",
+  "about": "Tests must pass on the real code and FAIL on a mutant of it (mutation testing): a test that cannot catch the bug it is about is worthless.",
+  "cases": [
+    {
+      "id": "mapper-prefix",
+      "plan": {
+        "summary": "Test that toHero gives an empty picture for npc names without the prefix",
+        "layers": ["data"],
+        "files": ["__tests__/data/HeroMapper.test.ts"],
+        "screens": [],
+        "expect_text": {},
+        "acceptance": ["toHero with name 'antimage' (no 'npc_dota_hero_' prefix) returns picture === ''"],
+        "tests": ["__tests__/data/HeroMapper.test.ts : toHero maps an unprefixed npc name to an empty picture"]
+      },
+      "prompt": "Write the tests this plan lists:\n{plan}",
+      "graders": [
+        {"type": "changed_include", "files": ["__tests__/data/HeroMapper.test.ts"]},
+        {"type": "changed_within", "files": ["__tests__/"]},
+        {"type": "tests_pass"},
+        {"type": "mutation_killed", "edits": [
+          {"file": "src/data/mappers/HeroMapper.ts", "old": "npcName.startsWith(NPC_PREFIX)", "new": "true"}
+        ]}
+      ]
+    },
+    {
+      "id": "usecase-propagates-errors",
+      "plan": {
+        "summary": "Test that GetHeroesUseCase propagates repository errors",
+        "layers": ["domain"],
+        "files": ["__tests__/domain/GetHeroesUseCase.test.ts"],
+        "screens": [],
+        "expect_text": {},
+        "acceptance": ["When the repository rejects, execute() rejects with the same error"],
+        "tests": ["__tests__/domain/GetHeroesUseCase.test.ts : rejects when the repository rejects"]
+      },
+      "prompt": "Write the tests this plan lists:\n{plan}",
+      "graders": [
+        {"type": "changed_include", "files": ["__tests__/domain/GetHeroesUseCase.test.ts"]},
+        {"type": "changed_within", "files": ["__tests__/"]},
+        {"type": "tests_pass"},
+        {"type": "mutation_killed", "edits": [
+          {"file": "src/domain/usecases/GetHeroesUseCase.ts",
+           "old": "return this.heroRepository.getHeroes();",
+           "new": "return this.heroRepository.getHeroes().catch(() => []);"}
+        ]}
+      ]
+    }
+  ]
+}

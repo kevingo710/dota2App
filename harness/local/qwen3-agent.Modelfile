@@ -1,0 +1,9 @@
+# Text agents (planner, implementer, test-writer, reviewer) on the local backend.
+# Qwen3 8B with a context large enough for opencode's ~11k-token system prompt
+# plus file contents; the stock 4k default silently truncates and the model
+# then "forgets" its tools.
+FROM qwen3:8b
+PARAMETER num_ctx 65536
+PARAMETER temperature 0.6
+PARAMETER top_p 0.95
+PARAMETER top_k 20

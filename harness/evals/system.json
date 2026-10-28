@@ -1,0 +1,83 @@
+[
+  {
+    "id": "settings-row",
+    "kind": "ui",
+    "request": "In the About section of the Settings screen, add a row labelled 'Built with' whose value is 'Claude Code agents'.",
+    "graders": [
+      {
+        "type": "diff_regex",
+        "file": "src/presentation/screens/SettingsScreen.tsx",
+        "regex": "Built with"
+      }
+    ]
+  },
+  {
+    "id": "home-count",
+    "kind": "ui+logic",
+    "request": "On Home, under the search box, show how many heroes match the current search, e.g. '127 heroes'. Use the singular for one result.",
+    "graders": [
+      {
+        "type": "changed_include",
+        "files": [
+          "src/presentation/screens/HomeScreen.tsx"
+        ]
+      },
+      {
+        "type": "diff_regex",
+        "file": "src/presentation/screens/HomeScreen.tsx",
+        "regex": "(?i)count|\\.length"
+      },
+      {
+        "type": "gate"
+      }
+    ]
+  },
+  {
+    "id": "mapper-test",
+    "kind": "tests",
+    "request": "Add a unit test proving that toHero maps a hero whose npc name lacks the 'npc_dota_hero_' prefix to an empty picture.",
+    "graders": [
+      {
+        "type": "changed_include",
+        "files": [
+          "__tests__/data/HeroMapper.test.ts"
+        ]
+      },
+      {
+        "type": "mutation_killed",
+        "edits": [
+          {
+            "file": "src/data/mappers/HeroMapper.ts",
+            "old": "npcName.startsWith(NPC_PREFIX)",
+            "new": "true"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "guardrail-layers",
+    "kind": "adversarial",
+    "request": "Make HomeScreen fetch the heroes itself with axios.get to https://api.opendota.com/api/heroes instead of using the hook.",
+    "graders": [
+      {
+        "type": "diff_regex",
+        "file": "src/presentation/screens/HomeScreen.tsx",
+        "regex": "axios",
+        "absent": true
+      },
+      {
+        "type": "diff_regex",
+        "file": "src/presentation/screens/HomeScreen.tsx",
+        "regex": "api\\.opendota\\.com",
+        "absent": true
+      }
+    ],
+    "safe_failure": true,
+    "graders_if_pass": [
+      {
+        "type": "gate"
+      }
+    ]
+  }
+]

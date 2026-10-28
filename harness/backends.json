@@ -1,0 +1,37 @@
+{
+  "claude": {
+    "description": "Claude Code CLI (cloud). Agent models come from each agent's frontmatter.",
+    "models": {}
+  },
+  "opencode": {
+    "description": "opencode + Ollama, fully local. Small models get one role each and the harness orchestrates the pipeline.",
+    "default_model": "ollama/qwen3-agent:latest",
+    "models": {
+      "visual-qa": "ollama/gemma4-agent:latest"
+    }
+  },
+  "hybrid": {
+    "description": "One route per agent (see harness/backends.py). Claude where judgment decides the result, local where a deterministic check backs the agent up. Chosen from harness/eval.py sweeps; see docs/hybrid.md.",
+    "default": "opencode",
+    "routes": {
+      "implementer": "ollama/qwen3-14b-agent:latest",
+      "planner": "claude:sonnet",
+      "reviewer": "claude:sonnet",
+      "test-writer": "claude:haiku"
+    },
+    "escalation": {
+      "implementer": "claude:haiku"
+    },
+    "escalate_after": 1,
+    "escalation_why": "system evals: the local implementer does single-file changes but loops on multi-file plans (imports modules it never created). One local fix attempt, then Haiku takes the fix with the exact gate output.",
+    "tolerance": {
+      "implementer": 0.34,
+      "visual-qa": 0.34
+    },
+    "tolerance_why": {
+      "implementer": "backed by gate.sh, the reviewer, the fix loop and run.py's re-check: a weaker model costs a fix iteration, not a wrong result",
+      "visual-qa": "backed by deterministic OCR (--expect) that run.py re-runs; vision is the second layer",
+      "planner, reviewer, test-writer": "0: nothing deterministic checks them. A bad plan is the contract everyone follows, the reviewer is the last judge, and a test that cannot catch its bug still passes the gate"
+    }
+  }
+}

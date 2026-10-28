@@ -1,0 +1,41 @@
+{
+  "agent": "visual-qa",
+  "about": "Judging only: the screenshot is given (no simulator needed), the verdict must match what is really on it. Needs a vision model.",
+  "cases": [
+    {
+      "id": "superstar-matches",
+      "plan": {"summary": "Superstar shows the hero of the day", "screens": ["superstar"],
+               "expect_text": {"superstar": ["Superstar"]},
+               "acceptance": ["The Superstar screen shows its title and a featured hero card with stats"]},
+      "prompt": "Eval mode: the screenshot of the 'superstar' screen is already captured at {sandbox}/screenshots/superstar.png. Do NOT run scripts/telegram.sh or any capture command. Open that PNG, judge it against this plan and answer with your JSON:\n{plan}",
+      "graders": [
+        {"type": "json_equals", "path": "verdict", "value": "pass"},
+        {"type": "unchanged"}
+      ]
+    },
+    {
+      "id": "missing-row",
+      "about": "The plan promises a row that is not on the screenshot.",
+      "plan": {"summary": "Add a 'Built with' row to Settings", "screens": ["settings"],
+               "expect_text": {"settings": ["Built with"]},
+               "acceptance": ["The About section of Settings shows a row labelled 'Built with' with value 'Claude Code agents'"]},
+      "prompt": "Eval mode: the screenshot of the 'settings' screen is already captured at {sandbox}/screenshots/settings.png. Do NOT run scripts/telegram.sh or any capture command. Open that PNG, judge it against this plan and answer with your JSON:\n{plan}",
+      "graders": [
+        {"type": "json_equals", "path": "verdict", "value": "fail"},
+        {"type": "unchanged"}
+      ]
+    },
+    {
+      "id": "wrong-screen",
+      "about": "The image is the hero detail screen, the plan is about Home's search box.",
+      "plan": {"summary": "Show the number of matching heroes under the Home search box", "screens": ["home"],
+               "expect_text": {"home": ["127 heroes"]},
+               "acceptance": ["Home shows the search box and, under it, '127 heroes'"]},
+      "prompt": "Eval mode: the screenshot of the 'home' screen is already captured at {sandbox}/screenshots/detail.png. Do NOT run scripts/telegram.sh or any capture command. Open that PNG, judge it against this plan and answer with your JSON:\n{plan}",
+      "graders": [
+        {"type": "json_equals", "path": "verdict", "value": "fail"},
+        {"type": "unchanged"}
+      ]
+    }
+  ]
+}

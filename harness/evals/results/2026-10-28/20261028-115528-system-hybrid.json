@@ -1,0 +1,202 @@
+{
+  "kind": "system",
+  "backend": "hybrid",
+  "timestamp": "20261028-115528",
+  "git": {
+    "commit": "23427c7",
+    "dirty": true
+  },
+  "roster": {
+    "fingerprint": "f3f0c1fdb1a9",
+    "backend": "hybrid",
+    "agents": {
+      "implementer": {
+        "hash": "751b10b17d2b",
+        "model": "ollama/qwen3-14b-agent:latest",
+        "route": "ollama/qwen3-14b-agent:latest",
+        "tools": [
+          "Read",
+          "Edit",
+          "Write",
+          "Grep",
+          "Glob",
+          "Bash"
+        ],
+        "eval_cases": 3
+      },
+      "planner": {
+        "hash": "9271cf5b3525",
+        "model": "sonnet",
+        "route": "claude:sonnet",
+        "tools": [
+          "Read",
+          "Grep",
+          "Glob"
+        ],
+        "eval_cases": 4
+      },
+      "reviewer": {
+        "hash": "3a5499452bbb",
+        "model": "sonnet",
+        "route": "claude:sonnet",
+        "tools": [
+          "Read",
+          "Grep",
+          "Glob",
+          "Bash"
+        ],
+        "eval_cases": 4
+      },
+      "test-writer": {
+        "hash": "ecbc2f88e14a",
+        "model": "haiku",
+        "route": "claude:haiku",
+        "tools": [
+          "Read",
+          "Edit",
+          "Write",
+          "Grep",
+          "Glob",
+          "Bash"
+        ],
+        "eval_cases": 2
+      },
+      "visual-qa": {
+        "hash": "db85dd32f464",
+        "model": "ollama/gemma4-agent:latest",
+        "route": "opencode",
+        "tools": [
+          "Bash",
+          "Read"
+        ],
+        "eval_cases": 3
+      }
+    },
+    "skill": "3bd15cfe6c63",
+    "hooks": "a9549c71f05c",
+    "pipeline": "280ee3b334bc"
+  },
+  "routes": {
+    "implementer": "ollama/qwen3-14b-agent:latest",
+    "planner": "claude:sonnet",
+    "reviewer": "claude:sonnet",
+    "test-writer": "claude:haiku"
+  },
+  "summary": {
+    "system": {
+      "runs": 4,
+      "pass_rate": 0.5,
+      "score": 0.5,
+      "seconds": 1847.7,
+      "tokens": 829075,
+      "cost_usd": 0.2096,
+      "infra_failures": 0
+    },
+    "ALL": {
+      "runs": 4,
+      "pass_rate": 0.5,
+      "score": 0.5,
+      "seconds": 1847.7,
+      "tokens": 829075,
+      "cost_usd": 0.2096,
+      "infra_failures": 0
+    }
+  },
+  "cases": [
+    {
+      "agent": "system",
+      "case": "settings-row",
+      "attempt": 1,
+      "pass": true,
+      "score": 1.0,
+      "graders": [
+        {
+          "type": "run_passed",
+          "pass": true,
+          "detail": ""
+        },
+        {
+          "type": "diff_regex",
+          "pass": true,
+          "detail": "/Built with/ found in added lines of src/presentation/screens/SettingsScreen.tsx"
+        }
+      ],
+      "error": "",
+      "seconds": 435.4,
+      "turns": 28,
+      "tokens": 271890,
+      "cost_usd": 0.1112,
+      "fix_iterations": 0
+    },
+    {
+      "agent": "system",
+      "case": "home-count",
+      "attempt": 1,
+      "pass": false,
+      "score": 0.0,
+      "graders": [
+        {
+          "type": "run_passed",
+          "pass": false,
+          "detail": "-home-count-1/harness/run.py\", line 293, in execute\n    self.event(\"failed\", stage=exc.stage)\n    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: Run.event() got multiple values for argument 'stage'\n"
+        }
+      ],
+      "error": "",
+      "seconds": 1715.0,
+      "turns": 0,
+      "tokens": 0,
+      "cost_usd": 0.0,
+      "fix_iterations": null
+    },
+    {
+      "agent": "system",
+      "case": "mapper-test",
+      "attempt": 1,
+      "pass": true,
+      "score": 1.0,
+      "graders": [
+        {
+          "type": "run_passed",
+          "pass": true,
+          "detail": ""
+        },
+        {
+          "type": "changed_include",
+          "pass": true,
+          "detail": ""
+        },
+        {
+          "type": "mutation_killed",
+          "pass": true,
+          "detail": "mutant killed"
+        }
+      ],
+      "error": "",
+      "seconds": 1433.2,
+      "turns": 41,
+      "tokens": 557185,
+      "cost_usd": 0.0984,
+      "fix_iterations": 0
+    },
+    {
+      "agent": "system",
+      "case": "guardrail-layers",
+      "attempt": 1,
+      "pass": false,
+      "score": 0.0,
+      "graders": [
+        {
+          "type": "run_passed",
+          "pass": false,
+          "detail": "rail-layers-1/harness/run.py\", line 293, in execute\n    self.event(\"failed\", stage=exc.stage)\n    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: Run.event() got multiple values for argument 'stage'\n"
+        }
+      ],
+      "error": "",
+      "seconds": 3807.1,
+      "turns": 0,
+      "tokens": 0,
+      "cost_usd": 0.0,
+      "fix_iterations": null
+    }
+  ]
+}
