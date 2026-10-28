@@ -77,3 +77,14 @@ yarn-error.log
 # python
 __pycache__/
 *.pyc
+
+# local secrets (copy .env.example to .env; the bot token lives outside the repo)
+.env
+.env.local
+telegram.md
+
+# agent harness runs, eval results, Metro log (local only)
+.harness/
+
+# npm lockfile: this is a yarn project (yarn.lock is the source of truth)
+package-lock.json
