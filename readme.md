@@ -70,6 +70,17 @@ Haiku** and the run passes ([docs/graph.md](./docs/graph.md)).
 
 ![Live agent graph: pipeline, model routes and a run with an escalation](./docs/media/agent-graph.gif)
 
+And you can ask it in plain language: `.mcp.json` plugs Neo4j's official MCP
+server (read-only) into Claude Code, which writes the Cypher itself:
+
+> **Which agents in the hybrid backend run on a model that scored below 100%
+> in the evals, and which of them have an escalation route?**
+>
+> Two: `implementer` (qwen3-14b, 66.7%, escalates to Haiku) and `visual-qa`
+> (gemma4, 66.7%, no escalation). Planner, reviewer and test-writer score 100%.
+>
+> <sub>`MATCH (a:Agent)-[r:ROUTED_TO {backend:'hybrid'}]->(m:Model) OPTIONAL MATCH (a)-[s:SCORED]->(m) OPTIONAL MATCH (a)-[e:ESCALATES_TO {backend:'hybrid'}]->(em:Model) RETURN …` · Sonnet, 12 s</sub>
+
 ### How it works
 
 - **5 single-purpose agents** (`.claude/agents/`): judges are read-only and
@@ -116,7 +127,7 @@ Haiku** and the run passes ([docs/graph.md](./docs/graph.md)).
 | [hybrid.md](./docs/hybrid.md) | Per-agent routes, tolerance, escalation, local model candidates |
 | [benchmarks.md](./docs/benchmarks.md) | All the numbers, the findings and the harness bugs the evals found |
 | [local-backend.md](./docs/local-backend.md) | opencode + Ollama, shared guardrails |
-| [graph.md](./docs/graph.md) | The agent system in Neo4j: live viewer, graph model, Cypher queries |
+| [graph.md](./docs/graph.md) | The agent system in Neo4j: live viewer, graph model, Cypher queries, MCP demo |
 | [openclaw-telegram-flow.blog.md](./docs/openclaw-telegram-flow.blog.md) | The first version of the loop, on OpenClaw, and what broke |
 
 ## Tech stack

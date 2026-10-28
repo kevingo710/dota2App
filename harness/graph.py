@@ -84,7 +84,9 @@ def up() -> int:
         # ports only listen on loopback.
         subprocess.run(["docker", "run", "-d", "--name", CONTAINER,
                         "-p", "127.0.0.1:7474:7474", "-p", "127.0.0.1:7687:7687",
-                        "-e", "NEO4J_AUTH=none", NEO4J_IMAGE], check=True, capture_output=True)
+                        "-e", "NEO4J_AUTH=none",
+                        # APOC: the Neo4j MCP server reads the schema with apoc.meta.schema.
+                        "-e", 'NEO4J_PLUGINS=["apoc"]', NEO4J_IMAGE], check=True, capture_output=True)
     for _ in range(60):
         try:
             urllib.request.urlopen(NEO4J_URL, timeout=2)
