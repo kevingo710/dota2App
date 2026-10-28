@@ -28,7 +28,7 @@ flowchart LR
   VERIFY -->|fail: resume session<br/>with exact output| SHIP
   VERIFY -->|pass| C[commit on branch]
   C --> OUT[Telegram: screenshots<br/>+ report]
-  OUT -->|/pr| PR[GitHub PR] --> CI[CI gate +<br/>Claude review]
+  OUT -->|/pr| PR[GitHub PR] --> CI[CI gate]
 ```
 
 ## Design principles
@@ -88,7 +88,6 @@ flowchart LR
 | `.opencode/` | generated agents + plugin that runs the same hooks under opencode |
 | `scripts/telegram.sh` | capture + OCR (`--expect`) + send; `--text` for reports |
 | `.github/workflows/ci.yml` | the same gate on every push/PR |
-| `.github/workflows/claude-review.yml` | the `reviewer` agent on every PR |
 
 ## Usage
 

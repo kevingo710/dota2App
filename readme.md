@@ -45,7 +45,7 @@ flowchart LR
   G -. blocking .-> D
   H -. fail .-> D
   H --> I{harness re-verifies<br/>independently}
-  I --> J[branch + Telegram report] --> K[PR → CI + Claude review]
+  I --> J[branch + Telegram report] --> K[PR → CI gate]
 ```
 
 ### Results
@@ -92,8 +92,9 @@ Measured with the repo's own evals ([docs/benchmarks.md](./docs/benchmarks.md)):
 - The bot only answers its owner's private chat, drops the backlog on start-up
   and shell-quotes anything an agent wrote. Captions are sent with
   `--form-string`, so agent text can't make curl read a local file.
-- CI runs the same gate with a read-only token; the Claude PR review skips
-  forks, so a fork's PR never reaches the API key.
+- CI runs the same gate with a read-only token and no AI in the loop: no
+  repository secrets, no paid API. Agents run on Claude Code or on local
+  models, never through a pay-per-call API key.
 
 ### Docs
 
