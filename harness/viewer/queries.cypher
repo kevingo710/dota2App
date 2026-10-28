@@ -29,16 +29,23 @@ WHERE NOT (last)-[:THEN]->()
 MATCH calls = (:Call {run: r.id})-[:OF|ON]->()
 RETURN start, chain, calls;
 
-// 6. Where runs fail: checks that went red, per kind.
+// 6. The escalation story of the demo run (the image in docs/graph.md).
+MATCH (:Run {id: 'demo'})-[:HAS]->(s)
+OPTIONAL MATCH chain = (s)-[:THEN]->()
+OPTIONAL MATCH ran_on = (s:Call)-[:ON]->(:Model)
+OPTIONAL MATCH routes = (:Agent {name: 'implementer'})-[:ROUTED_TO|ESCALATES_TO {backend: 'hybrid'}]->(:Model)
+RETURN s, chain, ran_on, routes;
+
+// 7. Where runs fail: checks that went red, per kind.
 MATCH (:Run)-[:HAS]->(c:Check {ok: false})
 RETURN c.kind AS check, count(*) AS failures ORDER BY failures DESC;
 
-// 7. Escalations: which local call got stuck and what took over.
+// 8. Escalations: which local call got stuck and what took over.
 MATCH (stuck:Call)-[:THEN*1..2]->(fix:Call {escalated: true})
 RETURN stuck.run AS run, stuck.label AS stuck_on, stuck.error AS error,
        fix.label AS escalated_to, fix.seconds AS fixed_in_s;
 
-// 8. Seconds spent per model across every run.
+// 9. Seconds spent per model across every run.
 MATCH (c:Call)-[:ON]->(m:Model)
 RETURN m.label AS model, m.local AS local, count(c) AS calls, sum(c.seconds) AS seconds
 ORDER BY seconds DESC;

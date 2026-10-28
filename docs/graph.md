@@ -47,7 +47,24 @@ listens on loopback; APOC is installed for the MCP server). Example queries are 
 `escalated` and the reviewer's `verdict`; `Run` carries `status`, `backend`,
 `request`, `escalations`, `cost` and the last events.
 
-![The same structure in Neo4j Browser](./media/neo4j-browser.png)
+The same run in Neo4j Browser: the chain of calls and checks (`THEN`), the
+model each call ran on (`ON`), and the implementer's hybrid route to qwen3-14b
+with its escalation to Claude Haiku. `#5 implementer` (qwen3-14b) leads to
+`gate ✗`, then `#6 implementer` runs on Haiku and the rest of the chain is green:
+
+![The demo run in Neo4j Browser](./media/neo4j-browser.png)
+
+```cypher
+MATCH (:Run {id: 'demo'})-[:HAS]->(s)
+OPTIONAL MATCH chain = (s)-[:THEN]->()
+OPTIONAL MATCH ran_on = (s:Call)-[:ON]->(:Model)
+OPTIONAL MATCH routes = (:Agent {name: 'implementer'})-[:ROUTED_TO|ESCALATES_TO {backend: 'hybrid'}]->(:Model)
+RETURN s, chain, ran_on, routes
+```
+
+Colours, sizes and captions are set per label from the chips in the
+results panel (Agent blue, Model purple, Call green, Check amber; caption
+`name`, and `label` for Model).
 
 ## Questions it answers
 
