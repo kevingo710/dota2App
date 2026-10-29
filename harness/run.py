@@ -37,7 +37,7 @@ from pathlib import Path
 
 from agents import snapshot
 from backends import BACKENDS, AgentResult, get_backend, parse_routes
-from pipeline import Pipeline, PipelineError, load_spec, native_build
+from pipeline import Pipeline, PipelineError, deps_install, load_spec, native_build
 from retro import analyse, load
 from scope import classify
 
@@ -167,6 +167,8 @@ class Run:
 
     def verify(self, plan: dict) -> str:
         """Independent checks. Returns '' when green, else feedback for the agent."""
+        if failure := deps_install(ROOT, self.env, self.event):
+            return failure
         gate_json = self.dir / "gate.final.json"
         proc = sh("harness/gate.sh", "--json", str(gate_json), "--quiet", check=False)
         self.gate = read_json(gate_json)

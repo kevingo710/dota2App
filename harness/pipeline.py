@@ -26,6 +26,23 @@ SPEC = ROOT / "harness" / "pipeline.json"
 PLAN_KEYS = {"summary", "screens", "acceptance"}
 
 
+def deps_install(cwd: Path, env: dict | None, event) -> str:
+    """Install dependencies if package.json or yarn.lock changed (agents may not
+    run package managers). '' when node_modules matches, else the failure."""
+    if cwd != ROOT:
+        return ""  # eval sandboxes share the checkout's node_modules
+    check = subprocess.run(["git", "diff", "--quiet", "HEAD", "--", "package.json", "yarn.lock"], cwd=cwd)
+    stamp = ROOT / ".harness" / "deps.stamp"
+    if check.returncode == 0 and stamp.exists():
+        return ""
+    proc = subprocess.run(["scripts/deps_install.sh"], cwd=cwd, env=env, capture_output=True, text=True)
+    if "skipping" not in proc.stdout:
+        event("install", ok=proc.returncode == 0)
+    if proc.returncode == 0:
+        return ""
+    return "scripts/deps_install.sh (yarn install) failed:\n" + (proc.stdout + proc.stderr)[-4000:]
+
+
 def native_build(cwd: Path, env: dict | None, event) -> str:
     """Rebuild the iOS app before captures if the diff touches native code.
     '' when the binary is current, else the build failure for the fixer."""
@@ -82,6 +99,8 @@ class Pipeline:
         return data
 
     def gate(self) -> str:
+        if failure := deps_install(self.cwd, self.env, self.event):
+            return failure
         out = self.dir / "gate.json"
         proc = subprocess.run(["harness/gate.sh", "--json", str(out), "--quiet"],
                               cwd=self.cwd, capture_output=True, text=True)

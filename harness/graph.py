@@ -256,7 +256,7 @@ class Tracker:
                              "seconds": ev.get("seconds"), "turns": ev.get("turns"),
                              "error": ev.get("error"), "cost": ev.get("cost"), "t": t}))
                 self.open = None
-        elif stage in ("gate", "ocr", "build"):
+        elif stage in ("gate", "ocr", "build", "install"):
             ok = bool(ev.get("ok"))
             out += self._step("Check", props | {"kind": stage, "ok": ok, "screen": ev.get("screen"),
                                                 "name": f"{ev.get('screen') or stage} {'✓' if ok else '✗'}"})
