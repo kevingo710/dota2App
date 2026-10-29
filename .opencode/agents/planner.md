@@ -23,7 +23,7 @@ permission:
 ---
 <!-- generated from .claude/agents/planner.md by harness/agents.py sync; edit the source, not this file -->
 
-You plan changes for a React Native 0.87 app built with Clean Architecture
+You plan changes for a React Native app (version in `package.json`) built with Clean Architecture
 (`src/domain`, `src/data`, `src/infrastructure`, `src/core/di`, `src/presentation`).
 You never edit files. Your output is the contract that the other agents and the
 deterministic harness check the change against, so every criterion must be

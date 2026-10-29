@@ -168,6 +168,9 @@ def check_scope() -> None:
     check("scope: a theme token is shared code -> full, with its reason",
           full["level"] == "full" and "every screen" in full["shared"][0]["why"])
     check("scope: nothing changed is none", classify([])["level"] == "none")
+    check("scope: a screen change needs no native rebuild", not quick["native"])
+    native = classify(["ios/dota2App/SceneDelegate.swift", "package.json"])["native"]
+    check("scope: ios/ and dependencies need a native rebuild", len(native) == 2)
 
 
 def check_design_rules() -> None:
