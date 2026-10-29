@@ -14,6 +14,10 @@ touch (from harness/scope.json, each with its reason) and a level:
                                         architecture in full
     full    harness/gate.sh             shared code changed: anything can break
 
+Native files (ios/, android/, dependencies) are listed apart: screenshots of
+such a change need a rebuilt binary, which harness/pipeline.py and
+harness/run.py get from scripts/ios_build.sh before capturing.
+
 This is advice for the agent while it iterates. The judgement at the end is
 always the full gate (Stop hook, harness/run.py), whatever the level says.
 """
@@ -41,7 +45,10 @@ def classify(files: list[str]) -> dict:
               for rule in RULES["shared"] if f.startswith(rule["prefix"])]
     screens = sorted({RULES["screens"][f] for f in files if f in RULES["screens"]})
     level = "none" if not files else "full" if shared else "quick"
-    return {"changed": files, "screens": screens, "shared": shared, "level": level,
+    # Native changes need a new binary before any screenshot (scripts/ios_build.sh).
+    native = [{"file": f, "why": rule["why"]} for f in files
+              for rule in RULES.get("native", []) if f.startswith(rule["prefix"])]
+    return {"changed": files, "screens": screens, "shared": shared, "native": native, "level": level,
             "command": {"none": "", "quick": "harness/gate.sh --changed",
                         "full": "harness/gate.sh"}[level]}
 
@@ -62,6 +69,8 @@ def main() -> int:
         print("screens: " + ", ".join(scope["screens"]))
     for item in scope["shared"]:
         print(f"shared: {item['file']}: {item['why']}")
+    for item in scope["native"]:
+        print(f"native: {item['file']}: {item['why']} (rebuild: scripts/ios_build.sh)")
     return 0
 
 

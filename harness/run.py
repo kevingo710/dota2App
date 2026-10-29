@@ -37,7 +37,7 @@ from pathlib import Path
 
 from agents import snapshot
 from backends import BACKENDS, AgentResult, get_backend, parse_routes
-from pipeline import Pipeline, PipelineError, load_spec
+from pipeline import Pipeline, PipelineError, load_spec, native_build
 from retro import analyse, load
 from scope import classify
 
@@ -194,6 +194,8 @@ class Run:
         self.shots = []
         if self.args.no_visual:
             return ""
+        if failure := native_build(ROOT, self.env, self.event):
+            return failure
         for screen in plan.get("screens", []):
             png = self.dir / f"final-{screen}.png"
             flags = ["--screen", screen, "--dry-run", "--out", str(png), "--wait", str(self.args.wait)]

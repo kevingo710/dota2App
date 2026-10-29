@@ -26,6 +26,20 @@ SPEC = ROOT / "harness" / "pipeline.json"
 PLAN_KEYS = {"summary", "screens", "acceptance"}
 
 
+def native_build(cwd: Path, env: dict | None, event) -> str:
+    """Rebuild the iOS app before captures if the diff touches native code.
+    '' when the binary is current, else the build failure for the fixer."""
+    from scope import changed_files, classify
+    native = classify(changed_files())["native"] if cwd == ROOT else []
+    if not native:
+        return ""
+    proc = subprocess.run(["scripts/ios_build.sh"], cwd=cwd, env=env, capture_output=True, text=True)
+    event("build", ok=proc.returncode == 0, files=len(native))
+    if proc.returncode == 0:
+        return ""
+    return "scripts/ios_build.sh (pod install + iOS build) failed:\n" + (proc.stdout + proc.stderr)[-4000:]
+
+
 def load_spec() -> dict:
     """Stage order, shared by this module, the /ship skill and harness/run.py.
     Adding a check agent is a config change here, not a code change."""
@@ -99,6 +113,10 @@ class Pipeline:
                     break
                 if not self.applies(check, plan):
                     continue
+                if check.get("when") == "visual":
+                    feedback = native_build(self.cwd, self.env, self.event)
+                    if feedback:
+                        break
                 verdict = self.agent_json(
                     check["agent"], f"Run directory: {self.dir}\n{check['prompt']}\n{plan_text}",
                     {"verdict"}, check["artifact"])

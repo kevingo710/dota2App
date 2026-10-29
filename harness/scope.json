@@ -19,6 +19,12 @@
     {"prefix": "harness/", "why": "the harness judges every change"},
     {"prefix": "scripts/", "why": "capture and delivery scripts"}
   ],
+  "native": [
+    {"prefix": "ios/", "why": "Swift, plist, Xcode project, Podfile: compiled into the binary"},
+    {"prefix": "android/", "why": "Kotlin, Gradle, manifest: compiled into the binary"},
+    {"prefix": "package.json", "why": "dependencies can ship native code (React Native itself does)"},
+    {"prefix": "yarn.lock", "why": "dependency versions, native ones included"}
+  ],
   "screens": {
     "src/presentation/screens/HomeScreen.tsx": "home",
     "src/presentation/screens/ExploreScreen.tsx": "explore",
