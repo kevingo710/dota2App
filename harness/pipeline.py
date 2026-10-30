@@ -54,7 +54,13 @@ def native_build(cwd: Path, env: dict | None, event) -> str:
     event("build", ok=proc.returncode == 0, files=len(native))
     if proc.returncode == 0:
         return ""
-    return "scripts/ios_build.sh (pod install + iOS build) failed:\n" + (proc.stdout + proc.stderr)[-4000:]
+    out = proc.stdout + proc.stderr
+    # The tail of an xcodebuild log is compiler invocations; the cause is in
+    # the `error:` and CocoaPods `[!]` lines (the third 0.88 run's fixer only
+    # ever saw a clang command line).
+    errors = [l for l in out.splitlines() if "error:" in l or l.startswith("[!]")]
+    return ("scripts/ios_build.sh (pod install + iOS build) failed:\n"
+            + "\n".join(dict.fromkeys(errors))[:3000] + "\n--- log tail ---\n" + out[-1500:])
 
 
 def load_spec() -> dict:
@@ -109,10 +115,13 @@ class Pipeline:
         proc = subprocess.run(["harness/gate.sh", "--json", str(out), "--quiet"],
                               cwd=self.cwd, capture_output=True, text=True)
         self.event("gate", ok=proc.returncode == 0)
-        if proc.returncode == 0:
-            return ""
-        failing = [c for c in json.loads(out.read_text())["checks"] if c["status"] == "fail"]
-        return "harness/gate.sh failed:\n" + "\n".join(f"## {c['name']}\n{c['output']}" for c in failing)
+        if proc.returncode != 0:
+            failing = [c for c in json.loads(out.read_text())["checks"] if c["status"] == "fail"]
+            return "harness/gate.sh failed:\n" + "\n".join(f"## {c['name']}\n{c['output']}" for c in failing)
+        # Build with the deterministic checks, not just before visual QA: when
+        # it only ran after the reviewer passed, a failed build was never
+        # retried and the reviewer blocked on it for every remaining round.
+        return native_build(self.cwd, self.env, self.event) if self.visual else ""
 
     # --- stages --------------------------------------------------------------
 
@@ -136,10 +145,6 @@ class Pipeline:
                     break
                 if not self.applies(check, plan):
                     continue
-                if check.get("when") == "visual":
-                    feedback = native_build(self.cwd, self.env, self.event)
-                    if feedback:
-                        break
                 verdict = self.agent_json(
                     check["agent"], f"Run directory: {self.dir}\n{check['prompt']}\n{plan_text}",
                     {"verdict"}, check["artifact"])
