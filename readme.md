@@ -134,11 +134,12 @@ server (read-only) into Claude Code, which writes the Cypher itself:
 | [benchmarks.md](./docs/benchmarks.md) | All the numbers, the findings and the harness bugs the evals found |
 | [local-backend.md](./docs/local-backend.md) | opencode + Ollama, shared guardrails |
 | [graph.md](./docs/graph.md) | The agent system in Neo4j: live viewer, graph model, Cypher queries, MCP demo |
+| [migrations/react-native-0.88.md](./docs/migrations/react-native-0.88.md) | The agents' React Native 0.87 → 0.88 upgrade: the run, four failed attempts, what each fixed in the harness, tokens and cost |
 | [openclaw-telegram-flow.blog.md](./docs/openclaw-telegram-flow.blog.md) | The first version of the loop, on OpenClaw, and what broke |
 
 ## Tech stack
 
-- React Native 0.87 (New Architecture), React 19, TypeScript
+- React Native 0.88 (New Architecture), React 19, TypeScript
 - React Navigation 7 (bottom tabs + native stack)
 - [TanStack Query](https://tanstack.com/query/latest) for server state
 - [InversifyJS](https://inversify.io) + `reflect-metadata` for dependency injection

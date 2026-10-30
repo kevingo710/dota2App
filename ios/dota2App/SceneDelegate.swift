@@ -1,39 +1,56 @@
+import React
+import React_RCTAppDelegate
+import ReactAppDependencyProvider
 import UIKit
 
-class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+class SceneDelegate: RCTDefaultReactNativeFactoryDelegate, UIWindowSceneDelegate {
   var window: UIWindow?
+
+  var reactNativeFactory: RCTReactNativeFactory?
 
   func scene(
     _ scene: UIScene,
     willConnectTo session: UISceneSession,
     options connectionOptions: UIScene.ConnectionOptions
   ) {
-    guard
-      let windowScene = scene as? UIWindowScene,
-      let appDelegate = UIApplication.shared.delegate as? AppDelegate,
-      let factory = appDelegate.reactNativeFactory
-    else {
+    guard let windowScene = scene as? UIWindowScene else {
       return
     }
 
-    var launchOptions: [UIApplication.LaunchOptionsKey: Any] = [:]
-    if let url = connectionOptions.urlContexts.first?.url {
-      launchOptions[.url] = url
-    } else if let activity = connectionOptions.userActivities.first(where: {
-      $0.activityType == NSUserActivityTypeBrowsingWeb
-    }), let url = activity.webpageURL {
-      launchOptions[.url] = url
-    }
+    self.dependencyProvider = RCTAppDependencyProvider()
+    reactNativeFactory = RCTReactNativeFactory(delegate: self)
 
     let window = UIWindow(windowScene: windowScene)
     self.window = window
-    // Libraries such as RCTDeviceInfo still read the window from the app delegate.
-    appDelegate.window = window
 
-    factory.startReactNative(
+#if DEBUG
+    reactNativeFactory?.devMenuConfiguration = RCTDevMenuConfiguration(
+      devMenuEnabled: true,
+      shakeGestureEnabled: true,
+      keyboardShortcutsEnabled: true
+    )
+#endif
+
+    reactNativeFactory?.startReactNative(
       withModuleName: "dota2App",
       in: window,
-      launchOptions: launchOptions.isEmpty ? nil : launchOptions
+      connectionOptions: connectionOptions
     )
+  }
+
+  func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+    RCTLinkingManager.scene(scene, openURLContexts: URLContexts)
+  }
+
+  func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
+    RCTLinkingManager.scene(scene, continue: userActivity)
+  }
+
+  override func bundleURL() -> URL? {
+#if DEBUG
+    RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "index")
+#else
+    Bundle.main.url(forResource: "main", withExtension: "jsbundle")
+#endif
   }
 }
