@@ -47,17 +47,23 @@ UDID="${UDID:-$(xcrun simctl list devices booted | grep '(Booted)' | head -1 | s
 log "pod install"
 # A React Native upgrade changes the version of local podspecs such as
 # React-Core-prebuilt; CocoaPods then refuses and names the `pod update` to
-# run. Run exactly that once (the first 0.88 upgrade run failed here).
-if ! out="$(cd ios && bundle exec pod install 2>&1)"; then
-  printf '%s\n' "$out"
-  pods="$(printf '%s\n' "$out" | sed -nE 's/.*run `pod update ([A-Za-z0-9_-]+) --no-repo-update`.*/\1/p' | sort -u | tr '\n' ' ')"
-  [[ -n "$pods" ]] || die "pod install failed"
+# run. It names one pod per attempt (0.88 needed ReactNativeDependencies, then
+# React-Core-prebuilt), so collect the names and retry a few times.
+named() { sed -nE 's/.*run `pod update ([A-Za-z0-9_-]+) --no-repo-update`.*/\1/p'; }
+out="$(cd ios && bundle exec pod install 2>&1)" && ok=1 || ok=0
+printf '%s\n' "$out"
+pods=""
+for _ in 1 2 3 4 5; do
+  ((ok)) && break
+  new="$(printf '%s\n' "$out" | named)"
+  [[ -n "$new" ]] || die "pod install failed"
+  pods="$(printf '%s\n%s\n' "$pods" "$new" | grep . | sort -u | tr '\n' ' ')"
   log "pod update $pods--no-repo-update (local podspec version changed)"
   # shellcheck disable=SC2086
-  (cd ios && bundle exec pod update $pods --no-repo-update) || die "pod update failed"
-else
+  out="$(cd ios && bundle exec pod update $pods --no-repo-update 2>&1)" && ok=1 || ok=0
   printf '%s\n' "$out"
-fi
+done
+((ok)) || die "pod update failed"
 
 log "building and installing on $UDID (Metro keeps serving this checkout)"
 npx react-native run-ios --udid "$UDID" --no-packager || die "iOS build failed"
