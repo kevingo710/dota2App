@@ -138,7 +138,7 @@ server (read-only) into Claude Code, which writes the Cypher itself:
 
 ## Tech stack
 
-- React Native 0.87 (New Architecture), React 19, TypeScript
+- React Native 0.88 (New Architecture), React 19, TypeScript
 - React Navigation 7 (bottom tabs + native stack)
 - [TanStack Query](https://tanstack.com/query/latest) for server state
 - [InversifyJS](https://inversify.io) + `reflect-metadata` for dependency injection
