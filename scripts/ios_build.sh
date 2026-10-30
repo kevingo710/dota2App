@@ -45,7 +45,19 @@ UDID="${UDID:-$(xcrun simctl list devices booted | grep '(Booted)' | head -1 | s
 [[ -n "$UDID" ]] || die "no booted simulator; run: xcrun simctl boot <device>"
 
 log "pod install"
-(cd ios && bundle exec pod install) || die "pod install failed"
+# A React Native upgrade changes the version of local podspecs such as
+# React-Core-prebuilt; CocoaPods then refuses and names the `pod update` to
+# run. Run exactly that once (the first 0.88 upgrade run failed here).
+if ! out="$(cd ios && bundle exec pod install 2>&1)"; then
+  printf '%s\n' "$out"
+  pods="$(printf '%s\n' "$out" | sed -nE 's/.*run `pod update ([A-Za-z0-9_-]+) --no-repo-update`.*/\1/p' | sort -u | tr '\n' ' ')"
+  [[ -n "$pods" ]] || die "pod install failed"
+  log "pod update $pods--no-repo-update (local podspec version changed)"
+  # shellcheck disable=SC2086
+  (cd ios && bundle exec pod update $pods --no-repo-update) || die "pod update failed"
+else
+  printf '%s\n' "$out"
+fi
 
 log "building and installing on $UDID (Metro keeps serving this checkout)"
 npx react-native run-ios --udid "$UDID" --no-packager || die "iOS build failed"
