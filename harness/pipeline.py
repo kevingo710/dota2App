@@ -82,6 +82,10 @@ class Pipeline:
         self.results.append(result)
         self.event(f"agent:{name}:done", turns=result.turns, seconds=round(result.seconds),
                    error=result.error[:120] or None)
+        if result.quota:
+            # Why: out of quota, every retry fails the same way and the
+            # failure reads as the agent's.
+            raise PipelineError("quota", result.error)
         return result
 
     def agent_json(self, name: str, prompt: str, required: set[str], artifact: str) -> dict:

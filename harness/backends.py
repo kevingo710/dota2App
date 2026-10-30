@@ -38,6 +38,8 @@ class AgentResult:
     cost_usd: float = 0.0
     seconds: float = 0.0
     error: str = ""
+    # Out of quota: retrying cannot help.
+    quota: bool = False
     raw: str = field(default="", repr=False)
 
     @property
@@ -135,6 +137,7 @@ class ClaudeBackend(Backend):
             tokens=usage.get("input_tokens", 0) + usage.get("output_tokens", 0)
             + usage.get("cache_read_input_tokens", 0),
             seconds=data.get("duration_ms", 0) / 1000, error=error,
+            quota=data.get("api_error") == "usage_limit_reached",
         )
 
 
