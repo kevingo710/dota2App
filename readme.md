@@ -224,3 +224,7 @@ Remove the window shadow from macOS screenshots:
 ```sh
 defaults write com.apple.screencapture disable-shadow -bool TRUE; killall SystemUIServer
 ```
+
+## License
+
+[MIT](./LICENSE). To cite this project, use the "Cite this repository" button or [CITATION.cff](./CITATION.cff).

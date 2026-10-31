@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it as below."
+title: "dota2App: an agent team with deterministic verification, evals and hybrid model routing"
+authors:
+  - family-names: "Gracia Orejuela"
+    given-names: "Kevin José"
+    orcid: "https://orcid.org/0009-0005-0308-4873"
+repository-code: "https://github.com/kevingo710/dota2App"
+license: MIT
+version: 1.0.0
+date-released: 2026-10-31
