@@ -5,7 +5,9 @@
 import 'reflect-metadata';
 import {AppRegistry} from 'react-native';
 import App from './App';
-import {name as appName} from './app.json';
+import appJson from './app.json';
+
+const appName = appJson.name;
 // Importing the font makes webpack emit it; the URL is injected as @font-face below.
 import ioniconsFontUrl from '@react-native-vector-icons/ionicons/fonts/Ionicons.ttf';
 
