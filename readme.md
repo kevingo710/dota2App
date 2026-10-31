@@ -190,55 +190,14 @@ yarn android
 
 ## Architecture
 
-Clean Architecture: the business rules don't know about React, the network or
-the UI, so each layer can change or be tested on its own.
+Clean Architecture with a strict dependency rule: the business logic knows
+nothing about the UI, the network or any framework, and the outer layers depend
+on it, never the other way round. Dependency injection wires the layers
+together, server state is cached and refreshed automatically, and every piece
+can be tested in isolation with fakes.
 
-```mermaid
-flowchart LR
-  P["presentation<br/>screens · hooks · navigation"] --> D["domain<br/>entities · use cases · repository interfaces"]
-  DA["data<br/>DTOs · mappers · repositories"] --> D
-  DA --> I["infrastructure<br/>HTTP client"]
-  C(["core<br/>DI container · query client"])
-  C -. wires .-> P
-  C -. wires .-> DA
-  C -. wires .-> I
-```
-
-| Layer | Owns | May not import |
-| --- | --- | --- |
-| `domain/` | entities, use cases, repository interfaces | React, React Native, axios, TanStack Query, other layers |
-| `data/` | API models (DTOs), mappers to entities, repository implementations | React, React Native, `presentation/` |
-| `infrastructure/` | the HTTP client | React, React Native, `data/`, `presentation/` |
-| `presentation/` | screens, components, hooks, navigation, theme | axios, `data/`, `infrastructure/` |
-| `core/` | composition root: DI container and the TanStack Query client | (sees everything) |
-
-These rules are not a convention: `harness/check_architecture.py` fails the
-gate and CI on any import that crosses a boundary.
-
-**How a screen gets its data**
-
-```
-HomeScreen → useHeroes → useQuery → GetHeroesUseCase → HeroRepository → HeroRemoteDataSource → HttpClient
-```
-
-- **Dependency injection:** InversifyJS (`reflect-metadata` + legacy decorators
-  via Babel). Bindings live in `src/core/di/modules.ts`; screens resolve use
-  cases with `useInjection(TYPES.X)`.
-- **Server state:** TanStack Query caches results (5 min stale time, 2
-  retries) and refetches when the app returns to the foreground.
-- **Testing:** any dependency can be swapped for a fake with
-  `container.rebind(...)`, so use cases and hooks are tested without the
-  network.
-
-### Adding a feature
-
-1. **Domain:** entity, repository interface and use case in `src/domain`.
-2. **Data:** data source and repository in `src/data`, mapping API DTOs to
-   entities in `src/data/mappers`.
-3. **Wiring:** tokens in `src/core/di/types.ts`, bindings in
-   `src/core/di/modules.ts`.
-4. **Presentation:** a hook in `src/presentation/hooks` with `useQuery` /
-   `useMutation`, and query keys in `src/presentation/queries`.
+The dependency rule is checked automatically on every change, so neither an
+agent nor a person can break it without the build going red.
 
 ## Tips
 
