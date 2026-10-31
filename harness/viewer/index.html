@@ -5,7 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Agent Graph Live</title>
 <!-- Served by harness/graph.py serve. Polls /api/graph (Cypher on Neo4j) and
-     draws the pipeline, the routes per model and the run as it happens. -->
+     draws the pipeline, the routes per model and the run as it happens.
+     Anywhere but localhost (GitHub Pages) it draws ./snapshot.json once:
+     Pages serves files, not Neo4j. ?embed=1 shows only the graph (the landing
+     page's iframe). -->
 <style>
   :root {
     --bg: #0d1016; --panel: #151a23; --line: #2a3140; --text: #e6e9ef; --muted: #8a93a6;
@@ -51,6 +54,8 @@
   .small { font-size: 11px; fill: var(--muted); }
   .section { font-size: 10.5px; letter-spacing: 1.6px; fill: var(--muted); font-weight: 600; }
   @media (max-width: 900px) { main { grid-template-columns: 1fr; } aside { border-left: 0; } }
+  body.embed header, body.embed aside { display: none; }
+  body.embed main { grid-template-columns: 1fr; min-height: 0; }
 </style>
 </head>
 <body>
@@ -81,6 +86,8 @@ const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;
 const fmt = t => { t = Math.round(t || 0); return t >= 60 ? `${Math.floor(t / 60)}m${String(t % 60).padStart(2, "0")}s` : `${t}s`; };
 const params = new URLSearchParams(location.search);
 let selected = params.get("run"), lastJson = "";
+const isLocal = ["localhost", "127.0.0.1"].includes(location.hostname);
+if (params.get("embed") === "1") document.body.classList.add("embed");
 
 function stagePositions(stages) {
   const gap = (W - 160) / Math.max(stages.length - 1, 1);
@@ -268,8 +275,23 @@ async function tick() {
   } catch (e) { /* the server restarts: try again on the next tick */ }
   setTimeout(tick, 600);
 }
-document.getElementById("runs").onchange = e => { selected = e.target.value || null; lastJson = ""; };
-tick();
+async function showSnapshot() {
+  try {
+    const d = await (await fetch("./snapshot.json")).json();
+    header(d);
+    if (d.stages.length) render(d);
+  } catch (e) {
+    document.getElementById("canvas").innerHTML = `<div class="empty">Graph snapshot unavailable.</div>`;
+  }
+}
+
+if (isLocal) {
+  document.getElementById("runs").onchange = e => { selected = e.target.value || null; lastJson = ""; };
+  tick();
+} else {
+  document.getElementById("runs").hidden = true;
+  showSnapshot();
+}
 </script>
 </body>
 </html>
