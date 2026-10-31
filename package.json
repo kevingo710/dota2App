@@ -7,7 +7,9 @@
     "ios": "react-native run-ios",
     "lint": "eslint .",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+    "web": "webpack serve",
+    "web:build": "webpack --mode production"
   },
   "dependencies": {
     "@legendapp/list": "^3.6.0",
