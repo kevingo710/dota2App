@@ -1,0 +1,387 @@
+{
+ "backend": "hybrid",
+ "routes": [
+  {
+   "agent": "implementer",
+   "kind": "ROUTED_TO",
+   "label": "qwen3-14b",
+   "local": true,
+   "model": "ollama/qwen3-14b-agent:latest",
+   "pass_rate": 0.667,
+   "runs": 3
+  },
+  {
+   "agent": "implementer",
+   "kind": "ESCALATES_TO",
+   "label": "Claude Haiku",
+   "local": false,
+   "model": "haiku",
+   "pass_rate": 1.0,
+   "runs": 3
+  },
+  {
+   "agent": "planner",
+   "kind": "ROUTED_TO",
+   "label": "Claude Sonnet",
+   "local": false,
+   "model": "sonnet",
+   "pass_rate": null,
+   "runs": null
+  },
+  {
+   "agent": "reviewer",
+   "kind": "ROUTED_TO",
+   "label": "Claude Sonnet",
+   "local": false,
+   "model": "sonnet",
+   "pass_rate": 1.0,
+   "runs": 4
+  },
+  {
+   "agent": "test-writer",
+   "kind": "ROUTED_TO",
+   "label": "Claude Haiku",
+   "local": false,
+   "model": "haiku",
+   "pass_rate": 1.0,
+   "runs": 2
+  },
+  {
+   "agent": "visual-qa",
+   "kind": "ROUTED_TO",
+   "label": "gemma4",
+   "local": true,
+   "model": "ollama/gemma4-agent:latest",
+   "pass_rate": 0.667,
+   "runs": 3
+  }
+ ],
+ "run": {
+  "backend": "hybrid",
+  "branch": "agent/20261028-132502-on-home-under-the-search-box-show-how-ma",
+  "cost": 0.1278,
+  "escalations": 1,
+  "id": "demo",
+  "last": "end",
+  "log": [
+   "  299.3s verdict agent=reviewer verdict=fail",
+   "  299.3s agent:implementer step=5 route=ollama/qwen3-14b-agent:latest",
+   " 2999.3s agent:implementer:done turns=0 seconds=2700 error=timed out after 45 min",
+   " 3002.8s gate ok=False",
+   " 3002.8s escalate agent=implementer route=claude:haiku",
+   " 3002.8s agent:implementer step=6 route=claude:haiku",
+   " 3034.3s agent:implementer:done turns=6 seconds=30",
+   " 3036.8s gate ok=True",
+   " 3036.8s agent:reviewer step=7 route=claude:sonnet",
+   " 3048.8s agent:reviewer:done turns=3 seconds=11",
+   " 3048.8s verdict agent=reviewer verdict=pass",
+   " 3051.4s gate ok=True",
+   " 3051.5s commit status=pass",
+   " 3051.6s end status=pass cost=0.1278"
+  ],
+  "replay": true,
+  "request": "On Home, under the search box, show how many heroes match the current search, e.g. '127 heroes'. Use the singular for one result.",
+  "status": "pass",
+  "t": 3051.6,
+  "updated": 1793446205.51173
+ },
+ "runs": [
+  {
+   "backend": "hybrid",
+   "id": "demo",
+   "status": "pass"
+  }
+ ],
+ "stages": [
+  {
+   "agent": "planner",
+   "kind": "agent",
+   "name": "planner",
+   "on_fail": [],
+   "order": 0,
+   "role": "judge",
+   "tools": [
+    "Read",
+    "Grep",
+    "Glob"
+   ],
+   "when": null
+  },
+  {
+   "agent": "implementer",
+   "kind": "agent",
+   "name": "implementer",
+   "on_fail": [],
+   "order": 1,
+   "role": "builder",
+   "tools": [
+    "Read",
+    "Edit",
+    "Write",
+    "Grep",
+    "Glob",
+    "Bash"
+   ],
+   "when": null
+  },
+  {
+   "agent": "test-writer",
+   "kind": "agent",
+   "name": "test-writer",
+   "on_fail": [],
+   "order": 2,
+   "role": "builder",
+   "tools": [
+    "Read",
+    "Edit",
+    "Write",
+    "Grep",
+    "Glob",
+    "Bash"
+   ],
+   "when": "plan.tests"
+  },
+  {
+   "agent": null,
+   "kind": "check",
+   "name": "gate",
+   "on_fail": [
+    "implementer"
+   ],
+   "order": 3,
+   "role": null,
+   "tools": null,
+   "when": null
+  },
+  {
+   "agent": "reviewer",
+   "kind": "agent",
+   "name": "reviewer",
+   "on_fail": [
+    "implementer"
+   ],
+   "order": 4,
+   "role": "judge",
+   "tools": [
+    "Read",
+    "Grep",
+    "Glob",
+    "Bash"
+   ],
+   "when": null
+  },
+  {
+   "agent": "visual-qa",
+   "kind": "agent",
+   "name": "visual-qa",
+   "on_fail": [
+    "implementer"
+   ],
+   "order": 5,
+   "role": "judge",
+   "tools": [
+    "Bash",
+    "Read"
+   ],
+   "when": "visual"
+  },
+  {
+   "agent": null,
+   "kind": "end",
+   "name": "commit",
+   "on_fail": [],
+   "order": 6,
+   "role": null,
+   "tools": null,
+   "when": null
+  }
+ ],
+ "steps": [
+  {
+   "agent": "planner",
+   "end": 20.3,
+   "escalated": false,
+   "id": "demo#1",
+   "label": "Claude Sonnet",
+   "local": false,
+   "model": "sonnet",
+   "n": 1,
+   "name": "#1 planner",
+   "route": "claude:sonnet",
+   "run": "demo",
+   "seconds": 18,
+   "seq": 1,
+   "status": "done",
+   "t": 1.0,
+   "turns": 5,
+   "type": "Call"
+  },
+  {
+   "agent": "implementer",
+   "end": 257.8,
+   "escalated": false,
+   "id": "demo#2",
+   "label": "qwen3-14b",
+   "local": true,
+   "model": "ollama/qwen3-14b-agent:latest",
+   "n": 2,
+   "name": "#2 implementer",
+   "route": "ollama/qwen3-14b-agent:latest",
+   "run": "demo",
+   "seconds": 237,
+   "seq": 2,
+   "status": "done",
+   "t": 20.3,
+   "turns": 4,
+   "type": "Call"
+  },
+  {
+   "agent": "test-writer",
+   "end": 286.9,
+   "escalated": false,
+   "id": "demo#3",
+   "label": "Claude Haiku",
+   "local": false,
+   "model": "haiku",
+   "n": 3,
+   "name": "#3 test-writer",
+   "route": "claude:haiku",
+   "run": "demo",
+   "seconds": 28,
+   "seq": 3,
+   "status": "done",
+   "t": 257.8,
+   "turns": 6,
+   "type": "Call"
+  },
+  {
+   "id": "demo#4",
+   "kind": "gate",
+   "name": "gate \u2713",
+   "ok": true,
+   "run": "demo",
+   "seq": 4,
+   "t": 289.6,
+   "type": "Check"
+  },
+  {
+   "agent": "reviewer",
+   "end": 299.3,
+   "escalated": false,
+   "id": "demo#5",
+   "label": "Claude Sonnet",
+   "local": false,
+   "model": "sonnet",
+   "n": 4,
+   "name": "#4 reviewer",
+   "route": "claude:sonnet",
+   "run": "demo",
+   "seconds": 8,
+   "seq": 5,
+   "status": "done",
+   "t": 289.6,
+   "turns": 3,
+   "type": "Call",
+   "verdict": "fail"
+  },
+  {
+   "agent": "implementer",
+   "end": 2999.3,
+   "error": "timed out after 45 min",
+   "escalated": false,
+   "id": "demo#6",
+   "label": "qwen3-14b",
+   "local": true,
+   "model": "ollama/qwen3-14b-agent:latest",
+   "n": 5,
+   "name": "#5 implementer",
+   "route": "ollama/qwen3-14b-agent:latest",
+   "run": "demo",
+   "seconds": 2700,
+   "seq": 6,
+   "status": "error",
+   "t": 299.3,
+   "turns": 0,
+   "type": "Call"
+  },
+  {
+   "id": "demo#7",
+   "kind": "gate",
+   "name": "gate \u2717",
+   "ok": false,
+   "run": "demo",
+   "seq": 7,
+   "t": 3002.8,
+   "type": "Check"
+  },
+  {
+   "agent": "implementer",
+   "end": 3034.3,
+   "escalated": true,
+   "id": "demo#8",
+   "label": "Claude Haiku",
+   "local": false,
+   "model": "haiku",
+   "n": 6,
+   "name": "#6 implementer",
+   "route": "claude:haiku",
+   "run": "demo",
+   "seconds": 30,
+   "seq": 8,
+   "status": "done",
+   "t": 3002.8,
+   "turns": 6,
+   "type": "Call"
+  },
+  {
+   "id": "demo#9",
+   "kind": "gate",
+   "name": "gate \u2713",
+   "ok": true,
+   "run": "demo",
+   "seq": 9,
+   "t": 3036.8,
+   "type": "Check"
+  },
+  {
+   "agent": "reviewer",
+   "end": 3048.8,
+   "escalated": false,
+   "id": "demo#10",
+   "label": "Claude Sonnet",
+   "local": false,
+   "model": "sonnet",
+   "n": 7,
+   "name": "#7 reviewer",
+   "route": "claude:sonnet",
+   "run": "demo",
+   "seconds": 11,
+   "seq": 10,
+   "status": "done",
+   "t": 3036.8,
+   "turns": 3,
+   "type": "Call",
+   "verdict": "pass"
+  },
+  {
+   "id": "demo#11",
+   "kind": "gate",
+   "name": "gate \u2713",
+   "ok": true,
+   "run": "demo",
+   "seq": 11,
+   "t": 3051.4,
+   "type": "Check"
+  },
+  {
+   "id": "demo#12",
+   "kind": "commit",
+   "name": "commit \u2713",
+   "ok": true,
+   "run": "demo",
+   "seq": 12,
+   "t": 3051.5,
+   "type": "Check"
+  }
+ ]
+}
