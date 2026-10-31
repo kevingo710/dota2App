@@ -27,8 +27,15 @@ if [[ "${1:-}" != "--force" && -f "$STAMP" && "$(cat "$STAMP")" == "$(inputs_has
   exit 0
 fi
 
-echo "==> npx $YARN install"
-npx --yes "$YARN" install --non-interactive --network-timeout 300000
+# Frozen first: when yarn.lock already satisfies package.json (an agent only
+# edited "scripts", say), a plain install still re-resolves the lock. On
+# 2026-10-31 that rewrote ~2000 unrelated lines and the reviewer failed the
+# run. Only a lock that really is out of date gets the plain install.
+echo "==> npx $YARN install --frozen-lockfile"
+if ! npx --yes "$YARN" install --frozen-lockfile --non-interactive --network-timeout 300000; then
+  echo "==> yarn.lock does not match package.json: npx $YARN install"
+  npx --yes "$YARN" install --non-interactive --network-timeout 300000
+fi
 mkdir -p "$(dirname "$STAMP")"
 # The install may have rewritten yarn.lock: stamp what is installed now.
 inputs_hash >"$STAMP"
