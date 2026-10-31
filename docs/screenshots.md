@@ -2,7 +2,8 @@
 
 `scripts/screenshots.sh` recaptures every screen of the app on the booted iOS
 simulator and writes them to `screenshots/` (home, explore, superstar, detail,
-settings). Run it whenever the UI changes so the README stays accurate.
+settings), plus a store-style version of each in `screenshots/framed/` that the
+README shows. Run it whenever the UI changes so the README stays accurate.
 
 ## Prerequisites
 
@@ -18,6 +19,8 @@ scripts/screenshots.sh                  # capture into screenshots/
 scripts/screenshots.sh --wait 30        # slower devices / cold API
 scripts/screenshots.sh --out /tmp/shots # dry run somewhere else
 scripts/screenshots.sh --no-verify      # skip the OCR check
+scripts/screenshots.sh --no-frame       # skip the framed versions
+scripts/screenshots.sh --frame-only     # re-frame existing captures (no simulator)
 ```
 
 Environment overrides: `UDID`, `BUNDLE_ID`, `HERO_ID` (hero opened by the
@@ -43,6 +46,12 @@ should ever end up in a commit.
    for that screen is missing (e.g. `Dota 2 Heroes` on home,
    `Juggernaut` on detail). This is the substitute for eyeballing the images.
 4. **Resize.** `sips -Z 1200` downscales to ~552x1200 so the repo stays small.
+5. **Frame.** `scripts/frame_screenshot.swift` (CoreGraphics, no extra
+   dependencies) draws each capture inside an iPhone frame (rounded display,
+   Dynamic Island, side buttons) on the app's background colors, with the
+   headline from `store_title` in the script above it, and writes a 600x1300
+   PNG to `screenshots/framed/`. The frame is drawn, not an Apple bezel image,
+   so there is nothing to license.
 
 ## Manual fallback
 

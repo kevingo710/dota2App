@@ -14,19 +14,20 @@ React Native app that lists the 127 Dota 2 heroes from the [OpenDota API](https:
 
 ## Screenshots
 
-Captured on the iPhone 18 Pro simulator (iOS 27). Regenerate them with
-`scripts/screenshots.sh` (booted simulator + `yarn ios`); the process is
-documented in [docs/screenshots.md](./docs/screenshots.md).
+<p align="center">
+  <img src="./screenshots/framed/home.png" width="32%" alt="Home: searchable heroes grid" />
+  <img src="./screenshots/framed/explore.png" width="32%" alt="Explore: attribute and role filters" />
+  <img src="./screenshots/framed/superstar.png" width="32%" alt="Superstar: hero of the day" />
+</p>
+<p align="center">
+  <img src="./screenshots/framed/detail.png" width="32%" alt="Hero detail: attributes, stats and abilities" />
+  <img src="./screenshots/framed/settings.png" width="32%" alt="Settings: data sources and cache" />
+</p>
 
-<p>
-  <img src="./screenshots/home.png" width="24%" alt="Home: searchable heroes grid" />
-  <img src="./screenshots/explore.png" width="24%" alt="Explore: attribute and role filters" />
-  <img src="./screenshots/superstar.png" width="24%" alt="Superstar: hero of the day" />
-</p>
-<p>
-  <img src="./screenshots/detail.png" width="24%" alt="Hero detail: attributes, stats and abilities" />
-  <img src="./screenshots/settings.png" width="24%" alt="Settings: data sources and cache" />
-</p>
+Captured on the iPhone 18 Pro simulator (iOS 27) and framed by
+`scripts/screenshots.sh` (booted simulator + `yarn ios`); the raw captures are
+in [screenshots/](./screenshots) and the process is documented in
+[docs/screenshots.md](./docs/screenshots.md).
 
 ## Built by an agent team
 
