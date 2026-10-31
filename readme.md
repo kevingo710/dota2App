@@ -190,33 +190,55 @@ yarn android
 
 ## Architecture
 
-Clean Architecture with an InversifyJS container (`reflect-metadata` + legacy decorators via Babel):
+Clean Architecture: the business rules don't know about React, the network or
+the UI, so each layer can change or be tested on its own.
 
-```
-src/
-  domain/          entities, repository interfaces, use cases (no framework imports)
-  data/            DTOs, mappers, data sources, repository implementations
-  infrastructure/  HttpClient (axios)
-  core/di/         TYPES tokens, ContainerModules, container, DIProvider/useInjection
-  core/query/      TanStack Query client (refetch when the app returns to foreground)
-  presentation/    screens (Home, Explore, Superstar, Settings, HeroDetail), navigation, components, hooks, theme
-```
-
-Dependencies point inwards: `presentation -> domain <- data -> infrastructure`.
-
-```
-HomeScreen -> useHeroes -> useQuery -> GetHeroesUseCase -> HeroRepository -> HeroRemoteDataSource -> HttpClient
-HeroDetailScreen -> useHeroDetails -> GetHeroDetailsUseCase -> ...
+```mermaid
+flowchart LR
+  P["presentation<br/>screens · hooks · navigation"] --> D["domain<br/>entities · use cases · repository interfaces"]
+  DA["data<br/>DTOs · mappers · repositories"] --> D
+  DA --> I["infrastructure<br/>HTTP client"]
+  C(["core<br/>DI container · query client"])
+  C -. wires .-> P
+  C -. wires .-> DA
+  C -. wires .-> I
 ```
 
-Bindings live in `src/core/di/modules.ts`. Components resolve use cases with `useInjection(TYPES.X)` and call them from TanStack Query hooks; tests can `container.rebind(...)` any dependency with a fake.
+| Layer | Owns | May not import |
+| --- | --- | --- |
+| `domain/` | entities, use cases, repository interfaces | React, React Native, axios, TanStack Query, other layers |
+| `data/` | API models (DTOs), mappers to entities, repository implementations | React, React Native, `presentation/` |
+| `infrastructure/` | the HTTP client | React, React Native, `data/`, `presentation/` |
+| `presentation/` | screens, components, hooks, navigation, theme | axios, `data/`, `infrastructure/` |
+| `core/` | composition root: DI container and the TanStack Query client | (sees everything) |
+
+These rules are not a convention: `harness/check_architecture.py` fails the
+gate and CI on any import that crosses a boundary.
+
+**How a screen gets its data**
+
+```
+HomeScreen → useHeroes → useQuery → GetHeroesUseCase → HeroRepository → HeroRemoteDataSource → HttpClient
+```
+
+- **Dependency injection:** InversifyJS (`reflect-metadata` + legacy decorators
+  via Babel). Bindings live in `src/core/di/modules.ts`; screens resolve use
+  cases with `useInjection(TYPES.X)`.
+- **Server state:** TanStack Query caches results (5 min stale time, 2
+  retries) and refetches when the app returns to the foreground.
+- **Testing:** any dependency can be swapped for a fake with
+  `container.rebind(...)`, so use cases and hooks are tested without the
+  network.
 
 ### Adding a feature
 
-1. Add the entity, repository interface and use case in `src/domain`.
-2. Implement the data source / repository in `src/data` (map API DTOs to entities in `src/data/mappers`).
-3. Add tokens in `src/core/di/types.ts` and bind them in `src/core/di/modules.ts`.
-4. Expose it to screens through a hook in `src/presentation/hooks` using `useQuery` / `useMutation`.
+1. **Domain:** entity, repository interface and use case in `src/domain`.
+2. **Data:** data source and repository in `src/data`, mapping API DTOs to
+   entities in `src/data/mappers`.
+3. **Wiring:** tokens in `src/core/di/types.ts`, bindings in
+   `src/core/di/modules.ts`.
+4. **Presentation:** a hook in `src/presentation/hooks` with `useQuery` /
+   `useMutation`, and query keys in `src/presentation/queries`.
 
 ## Tips
 
