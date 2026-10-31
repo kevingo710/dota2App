@@ -103,6 +103,31 @@ def check_routing() -> None:
         check("route: a malformed route is rejected", True)
 
 
+def check_agent_stdin() -> None:
+    """An agent CLI must not wait on the launcher's stdin (opencode reads a
+    non-TTY stdin to EOF): run one under a pipe that never closes."""
+    import subprocess
+    probe = (
+        "import sys; sys.path.insert(0, %r)\n"
+        "from backends import Backend\n"
+        "class Reader(Backend):\n"
+        "    def command(self, *a): return [sys.executable, '-c', 'import sys; sys.stdin.read()']\n"
+        "    def parse(self, out):\n"
+        "        from backends import AgentResult; return AgentResult()\n"
+        "print(Reader().run('hi', timeout=10).error or 'ok')\n"
+    ) % str(HERE.parent)
+    proc = subprocess.Popen([sys.executable, "-c", probe], stdin=subprocess.PIPE,
+                            stdout=subprocess.PIPE, text=True)
+    try:
+        proc.wait(timeout=20)  # stdin stays open: wait(), not communicate()
+        out = proc.stdout.read()
+    except subprocess.TimeoutExpired:
+        proc.kill()
+        out = "hung"
+    proc.stdin.close()
+    check("agent: an open launcher stdin does not block the agent", out.strip() == "ok", out.strip())
+
+
 def resolve_cmd(router, agent: str) -> list[str]:
     from backends import resolve
     return resolve(router.route(agent)).command("hi", ROOT, agent, None, 10)
@@ -297,6 +322,7 @@ def main() -> int:
 
     check_compare()
     check_routing()
+    check_agent_stdin()
     check_matrix()
     check_run_failure_path()
     check_scope()
