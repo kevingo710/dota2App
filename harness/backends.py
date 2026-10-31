@@ -75,8 +75,12 @@ class Backend:
         cmd = self.command(prompt, cwd, agent, session, max_turns)
         started = time.time()
         try:
+            # No stdin: `opencode run` reads a non-TTY stdin to EOF before it
+            # starts the session, so an inherited pipe that never closes (a
+            # background launcher, the bot) hung every local agent for its
+            # whole timeout with zero turns (2026-10-31).
             proc = subprocess.run(cmd, cwd=cwd, capture_output=True, text=True,
-                                  env=env, timeout=timeout)
+                                  env=env, timeout=timeout, stdin=subprocess.DEVNULL)
         except subprocess.TimeoutExpired:
             return AgentResult(error=f"timed out after {timeout // 60} min",
                                seconds=time.time() - started)
