@@ -140,12 +140,9 @@ server (read-only) into Claude Code, which writes the Cypher itself:
 
 ## Tech stack
 
-- React Native 0.88 (New Architecture), React 19, TypeScript
-- React Navigation 7 (bottom tabs + native stack)
-- [TanStack Query](https://tanstack.com/query/latest) for server state
-- [InversifyJS](https://inversify.io) + `reflect-metadata` for dependency injection
-- [LegendList](https://legendapp.com/open-source/list/) for the heroes lists
-- Ionicons (`@react-native-vector-icons/ionicons`), Axios, Jest, ESLint, Prettier
+- React Native (New Architecture), React, TypeScript
+- Server-state caching and dependency injection
+- Jest, ESLint and Prettier
 
 Hero and ability images are loaded from Valve's Steam CDN (`cdn.cloudflare.steamstatic.com`).
 
