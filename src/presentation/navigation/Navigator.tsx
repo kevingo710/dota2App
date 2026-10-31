@@ -12,6 +12,9 @@ import type {RootStackParamList, TabParamList} from './types';
 import colors from '../theme/colors';
 
 const Tab = createBottomTabNavigator<TabParamList>();
+// Web clips tab labels to one line, and beside the icon a 390px bar leaves
+// "Superstar" ~49px; iOS lets the text overflow its box, so it keeps the row.
+const LABEL_POSITION = Platform.OS === 'web' ? 'below-icon' : 'beside-icon';
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 interface TabIconProps {
@@ -61,7 +64,7 @@ const Tabs = () => {
         options={{
           tabBarLabel: 'Home',
           tabBarIcon: HomeIcon,
-          tabBarLabelPosition: 'beside-icon',
+          tabBarLabelPosition: LABEL_POSITION,
         }}
       />
       <Tab.Screen
@@ -70,7 +73,7 @@ const Tabs = () => {
         options={{
           tabBarLabel: 'Explore',
           tabBarIcon: ExploreIcon,
-          tabBarLabelPosition: 'beside-icon',
+          tabBarLabelPosition: LABEL_POSITION,
         }}
       />
       <Tab.Screen
@@ -79,7 +82,7 @@ const Tabs = () => {
         options={{
           tabBarLabel: 'Superstar',
           tabBarIcon: SuperstarIcon,
-          tabBarLabelPosition: 'beside-icon',
+          tabBarLabelPosition: LABEL_POSITION,
         }}
       />
       <Tab.Screen
@@ -88,7 +91,7 @@ const Tabs = () => {
         options={{
           tabBarLabel: 'Settings',
           tabBarIcon: SettingsIcon,
-          tabBarLabelPosition: 'beside-icon',
+          tabBarLabelPosition: LABEL_POSITION,
         }}
       />
     </Tab.Navigator>
