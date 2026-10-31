@@ -53,11 +53,12 @@
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      padding: 40px 40px;
+      padding: 28px 40px 0;
       max-width: var(--max-width);
       margin: 0 auto;
     }
     .header h1 {
+      margin: 0;
       font-size: 34px;
       font-weight: 600;
       letter-spacing: -0.03em;
@@ -83,7 +84,7 @@
     .main {
       display: flex;
       justify-content: center;
-      padding: 40px 40px;
+      padding: 24px 40px;
       max-width: var(--max-width);
       margin: 0 auto;
     }
@@ -116,7 +117,7 @@
     .card-phone {
       flex: 1 1 400px;
       flex-direction: column;
-      align-items: flex-start;
+      align-items: center;
       gap: 12px;
     }
     .label {
@@ -134,6 +135,8 @@
     }
     .phone-frame iframe {
       border: none;
+      /* The screen's corners follow the frame (62px radius - 11px padding). */
+      border-radius: 51px;
     }
     #how {
       display: grid;
