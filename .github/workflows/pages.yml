@@ -1,0 +1,58 @@
+name: Pages
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - web/**
+      - src/**
+      - index.web.js
+      - App.tsx
+      - app.json
+      - webpack.config.js
+      - babel.config.js
+      - package.json
+      - yarn.lock
+      - harness/viewer/**
+      - scripts/build-pages.sh
+      - scripts/snapshot-herodata.mjs
+      - .github/workflows/pages.yml
+  workflow_dispatch: {}
+  schedule:
+    - cron: '0 6 * * 1'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+      - run: yarn install --frozen-lockfile
+      - run: scripts/build-pages.sh _site
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/deploy-pages@v4
+        id: deployment

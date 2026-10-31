@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>dota2App</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #08090A;
+      --text: #F7F8F8;
+      --muted: #8A8F98;
+      --border: 1px solid rgba(255,255,255,0.08);
+      --max-width: 1240px;
+    }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+    }
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background: var(--bg);
+    }
+    .wordmark {
+      font-size: 24px;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+    }
+    nav a {
+      color: var(--text);
+      text-decoration: none;
+      margin-left: 20px;
+    }
+    .btn {
+      background: #F7F8F8;
+      color: #08090A;
+      border-radius: 8px;
+      min-height: 36px;
+      padding: 0 14px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 28px 40px 0;
+      max-width: var(--max-width);
+      margin: 0 auto;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 34px;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+    }
+    .header p {
+      color: var(--muted);
+      margin-top: 10px;
+    }
+    .stats {
+      display: flex;
+      align-items: center;
+      margin-top: 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+    }
+    .stats span {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 999px;
+      padding: 6px 12px;
+    }
+    .main {
+      display: flex;
+      justify-content: center;
+      padding: 24px 40px;
+      max-width: var(--max-width);
+      margin: 0 auto;
+    }
+    .panel {
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 12px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .card {
+      padding: 20px;
+      display: flex;
+    }
+    .card-graph {
+      flex: 999 1 560px;
+      min-width: 0;
+      min-height: 640px;
+    }
+    .card-graph > iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    .card-phone {
+      flex: 1 1 400px;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+    .label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .phone-frame {
+      background: #000;
+      border-radius: 62px;
+      padding: 11px;
+      display: flex;
+      width: max-content;
+    }
+    .phone-frame iframe {
+      border: none;
+      /* The screen's corners follow the frame (62px radius - 11px padding). */
+      border-radius: 51px;
+    }
+    #how {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+      padding: 60px 40px;
+      max-width: var(--max-width);
+      margin: 0 auto;
+    }
+    #how h2 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+    #how p {
+      color: var(--muted);
+    }
+    footer {
+      text-align: center;
+      padding: 40px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    @media (max-width: 480px) {
+      nav,
+      .header,
+      .main,
+      #how,
+      footer {
+        padding: 12px;
+      }
+      .header {
+        flex-direction: column;
+      }
+      .card {
+        padding: 12px;
+      }
+      #how {
+        grid-template-columns: 1fr;
+      }
+      .phone-scale {
+        width: 309px;
+        height: 650px;
+        overflow: hidden;
+      }
+      .phone-frame {
+        transform: scale(0.75);
+        transform-origin: top left;
+      }
+    }
+    /* At 360px the 309px box does not fit the card: shrink the scale so it does. */
+    @media (max-width: 380px) {
+      .phone-scale {
+        width: 280px;
+        height: 589px;
+      }
+      .phone-frame {
+        transform: scale(0.68);
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="https://github.com/kevingo710/dota2App" class="wordmark">dota2App</a>
+    <div>
+      <a href="#how">How it works</a>
+      <a href="https://github.com/kevingo710/dota2App/tree/master/docs">Docs</a>
+      <a class="btn" href="https://github.com/kevingo710/dota2App">GitHub</a>
+    </div>
+  </nav>
+  <div class="header">
+    <div>
+      <h1>A mobile app built and verified by AI agents</h1>
+      <p>A real agent run on the left, the app it shipped on the right. Tap around: it runs in your browser.</p>
+    </div>
+    <div class="stats">
+      <span>hybrid routing · 4/4 at −87% cost</span>
+    </div>
+  </div>
+  <div class="main">
+    <div class="panel">
+      <div class="cards">
+        <div class="card card-graph">
+          <iframe src="viewer/?embed=1" title="Agent run graph"></iframe>
+        </div>
+        <div class="card card-phone">
+          <div class="label">THE APP IT SHIPPED</div>
+          <div class="phone-scale">
+            <div class="phone-frame">
+              <iframe src="app/" title="Dota 2 Heroes app" width="390" height="844"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <section id="how">
+    <div>
+      <h2>01 Deterministic gate</h2>
+      <p>Types, lint, tests, Clean Architecture layers and a secret scan. No agent's work counts until the gate is green.</p>
+    </div>
+    <div>
+      <h2>02 Evals for every agent</h2>
+      <p>Each agent has its own eval cases. A change to an agent is compared against the last run before it lands.</p>
+    </div>
+    <div>
+      <h2>03 Hybrid routing</h2>
+      <p>Each agent runs on Claude or a local model, picked by an eval matrix, and escalates when a local fix fails.</p>
+    </div>
+  </section>
+  <footer>
+    MIT licensed · Kevin Gracia Orejuela · Hero data: OpenDota (live) and Valve (snapshot)
+  </footer>
+</body>
+</html>
