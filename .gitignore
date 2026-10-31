@@ -88,3 +88,9 @@ telegram.md
 
 # npm lockfile: this is a yarn project (yarn.lock is the source of truth)
 package-lock.json
+
+# web build output (webpack, see webpack.config.js)
+dist/
+
+# GitHub Pages build (scripts/build-pages.sh)
+_site/
