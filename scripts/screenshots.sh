@@ -2,7 +2,8 @@
 # Capture screenshots of every screen on the booted iOS simulator.
 # See docs/screenshots.md for the full write-up of the process.
 #
-# Usage: scripts/screenshots.sh [--wait SECONDS] [--no-verify] [--out DIR]
+# Usage: scripts/screenshots.sh [--wait SECONDS] [--no-verify] [--no-frame] [--out DIR]
+#        scripts/screenshots.sh --frame-only   # re-frame existing captures, no simulator
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -15,14 +16,18 @@ OUT_DIR="${OUT_DIR:-screenshots}"
 MAX_HEIGHT="${MAX_HEIGHT:-1200}"
 METRO_PORT="${METRO_PORT:-8081}"
 VERIFY=1
+FRAME=1
+FRAME_ONLY=0
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --wait) WAIT_SECONDS="$2"; shift 2 ;;
     --no-verify) VERIFY=0; shift ;;
+    --no-frame) FRAME=0; shift ;;
+    --frame-only) FRAME_ONLY=1; shift ;;
     --out) OUT_DIR="$2"; shift 2 ;;
     -h|--help)
-      sed -n '2,6p' "$0"
+      sed -n '2,7p' "$0"
       exit 0
       ;;
     *) echo "unknown option: $1" >&2; exit 2 ;;
@@ -42,6 +47,40 @@ expected_text() {
     *) die "no expected text for screen '$1'" ;;
   esac
 }
+
+# Headline drawn above each device in screenshots/framed/ (README gallery)
+store_title() {
+  case "$1" in
+    home) echo "Every hero, one search away" ;;
+    explore) echo "Filter by attribute and role" ;;
+    superstar) echo "A new hero every day" ;;
+    detail) echo "Stats, attributes and abilities" ;;
+    settings) echo "Sources and cache in one place" ;;
+    *) die "no store title for screen '$1'" ;;
+  esac
+}
+
+SCREENS=(home explore superstar detail settings)
+
+# Put every capture in $OUT_DIR inside an iPhone frame with its headline.
+frame_all() {
+  local bin
+  bin="$(mktemp -d)/frame_screenshot"
+  log "compiling device framer"
+  swiftc -O -o "$bin" "$ROOT/scripts/frame_screenshot.swift"
+  mkdir -p "$OUT_DIR/framed"
+  for screen in "${SCREENS[@]}"; do
+    [[ -f "$OUT_DIR/$screen.png" ]] || die "missing $OUT_DIR/$screen.png"
+    "$bin" "$OUT_DIR/$screen.png" "$OUT_DIR/framed/$screen.png" "$(store_title "$screen")"
+    log "wrote $OUT_DIR/framed/$screen.png"
+  done
+  rm -rf "$(dirname "$bin")"
+}
+
+if [[ "$FRAME_ONLY" == 1 ]]; then
+  frame_all
+  exit 0
+fi
 
 # --- preflight ---------------------------------------------------------------
 
@@ -66,7 +105,6 @@ fi
 TMP="$(mktemp -d)"
 APP_BACKUP="$TMP/App.tsx.bak"
 OCR_BIN="$TMP/verify_screen"
-SCREENS=(home explore superstar detail settings)
 
 restore() {
   cp "$APP_BACKUP" "$ROOT/App.tsx"
@@ -106,5 +144,7 @@ for screen in "${SCREENS[@]}"; do
   sips -Z "$MAX_HEIGHT" "$full" --out "$OUT_DIR/$screen.png" >/dev/null
   log "wrote $OUT_DIR/$screen.png"
 done
+
+[[ "$FRAME" == 1 ]] && frame_all
 
 log "done: ${SCREENS[*]} in $OUT_DIR/ (App.tsx restored)"
