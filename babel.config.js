@@ -4,7 +4,15 @@ module.exports = function (api) {
   api.cache.using(() => isWeb);
 
   return {
-    presets: ['module:@react-native/babel-preset'],
+    presets: [
+      // webpack bundles ES modules itself; CommonJS output breaks its interop.
+      isWeb
+        ? [
+            'module:@react-native/babel-preset',
+            {disableImportExportTransform: true},
+          ]
+        : 'module:@react-native/babel-preset',
+    ],
     plugins: [
       'babel-plugin-transform-typescript-metadata',
       ['@babel/plugin-proposal-decorators', {legacy: true}],
