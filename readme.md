@@ -142,12 +142,9 @@ server (read-only) into Claude Code, which writes the Cypher itself:
 
 ## Tech stack
 
-- React Native 0.88 (New Architecture), React 19, TypeScript
-- React Navigation 7 (bottom tabs + native stack)
-- [TanStack Query](https://tanstack.com/query/latest) for server state
-- [InversifyJS](https://inversify.io) + `reflect-metadata` for dependency injection
-- [LegendList](https://legendapp.com/open-source/list/) for the heroes lists
-- Ionicons (`@react-native-vector-icons/ionicons`), Axios, Jest, ESLint, Prettier
+- React Native (New Architecture), React, TypeScript
+- Server-state caching and dependency injection
+- Jest, ESLint and Prettier
 
 Hero and ability images are loaded from Valve's Steam CDN (`cdn.cloudflare.steamstatic.com`).
 
@@ -192,33 +189,14 @@ yarn android
 
 ## Architecture
 
-Clean Architecture with an InversifyJS container (`reflect-metadata` + legacy decorators via Babel):
+Clean Architecture with a strict dependency rule: the business logic knows
+nothing about the UI, the network or any framework, and the outer layers depend
+on it, never the other way round. Dependency injection wires the layers
+together, server state is cached and refreshed automatically, and every piece
+can be tested in isolation with fakes.
 
-```
-src/
-  domain/          entities, repository interfaces, use cases (no framework imports)
-  data/            DTOs, mappers, data sources, repository implementations
-  infrastructure/  HttpClient (axios)
-  core/di/         TYPES tokens, ContainerModules, container, DIProvider/useInjection
-  core/query/      TanStack Query client (refetch when the app returns to foreground)
-  presentation/    screens (Home, Explore, Superstar, Settings, HeroDetail), navigation, components, hooks, theme
-```
-
-Dependencies point inwards: `presentation -> domain <- data -> infrastructure`.
-
-```
-HomeScreen -> useHeroes -> useQuery -> GetHeroesUseCase -> HeroRepository -> HeroRemoteDataSource -> HttpClient
-HeroDetailScreen -> useHeroDetails -> GetHeroDetailsUseCase -> ...
-```
-
-Bindings live in `src/core/di/modules.ts`. Components resolve use cases with `useInjection(TYPES.X)` and call them from TanStack Query hooks; tests can `container.rebind(...)` any dependency with a fake.
-
-### Adding a feature
-
-1. Add the entity, repository interface and use case in `src/domain`.
-2. Implement the data source / repository in `src/data` (map API DTOs to entities in `src/data/mappers`).
-3. Add tokens in `src/core/di/types.ts` and bind them in `src/core/di/modules.ts`.
-4. Expose it to screens through a hook in `src/presentation/hooks` using `useQuery` / `useMutation`.
+The dependency rule is checked automatically on every change, so neither an
+agent nor a person can break it without the build going red.
 
 ## Tips
 
