@@ -1,4 +1,4 @@
-# dota2App: unofficial Dota 2 hero browser (fan project)
+# Hero Browser: unofficial Dota 2 fan project
 
 > [!IMPORTANT]
 > **Unofficial, non-commercial hobby project**: a sample app inspired by the
@@ -8,11 +8,11 @@
 > trademarks and property of Valve; the [MIT licence](./LICENSE) covers only
 > this repository's own code. See [NOTICE.md](./NOTICE.md).
 
-[![CI](https://github.com/kevingo710/dota2App/actions/workflows/ci.yml/badge.svg)](https://github.com/kevingo710/dota2App/actions/workflows/ci.yml)
+[![CI](https://github.com/kevingo710/hero-browser/actions/workflows/ci.yml/badge.svg)](https://github.com/kevingo710/hero-browser/actions/workflows/ci.yml)
 
 React Native app that lists the 127 Dota 2 heroes from the [OpenDota API](https://docs.opendota.com/) and shows a full hero profile (stats, attributes and abilities) from Valve's Dota 2 data.
 
-▶️ **[Try it in your browser](https://kevingo710.github.io/dota2App/)**: the app (React Native on the web) next to a real agent run, no install.
+▶️ **[Try it in your browser](https://kevingo710.github.io/hero-browser/)**: the app (React Native on the web) next to a real agent run, no install.
 
 ## Screens
 

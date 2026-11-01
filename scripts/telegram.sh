@@ -215,7 +215,7 @@ fi
 
 # --- send --------------------------------------------------------------------
 
-[[ -n "$CAPTION" ]] || CAPTION="dota2App${SCREEN:+ - $SCREEN}"
+[[ -n "$CAPTION" ]] || CAPTION="Hero Browser${SCREEN:+ - $SCREEN}"
 # Telegram caps photo captions at 1024 characters.
 CAPTION="${CAPTION:0:1000}"
 
