@@ -1,6 +1,6 @@
 # Notice: unofficial fan project
 
-**Hero Browser is an unofficial, non-commercial hobby project made by a fan.** It
+**MobaDex is an unofficial, non-commercial hobby project made by a fan.** It
 is only an example and a test bed: a sample app, inspired by the game, used to
 learn React Native and to demonstrate the agent harness in this repository. It is not affiliated with, endorsed,
 sponsored or approved by Valve Corporation, and it is not an official Dota 2
@@ -36,5 +36,5 @@ official Dota 2 or Valve app.
 ## Takedown requests
 
 If you are a rights holder and want any content removed or changed, please
-[open an issue](https://github.com/kevingo710/hero-browser/issues) and it will be
+[open an issue](https://github.com/kevingo710/mobadex/issues) and it will be
 addressed promptly.
