@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Assemble the GitHub Pages site (https://kevingo710.github.io/hero-browser/):
+# Assemble the GitHub Pages site (https://kevingo710.github.io/mobadex/):
 #
 #   /          web/landing/index.html: the agent graph and the app side by side
 #   /app/      the React Native app built for the web (webpack + react-native-web)
@@ -12,13 +12,13 @@
 # Usage: scripts/build-pages.sh [outDir]        (default: _site)
 #        PAGES_BASE=/ scripts/build-pages.sh    for a site served from the root
 # Preview: serve the parent of a folder named like the base, e.g.
-#        scripts/build-pages.sh /tmp/site/hero-browser && python3 -m http.server -d /tmp/site
+#        scripts/build-pages.sh /tmp/site/mobadex && python3 -m http.server -d /tmp/site
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 OUT="${1:-_site}"
-BASE="${PAGES_BASE:-/hero-browser/}"
+BASE="${PAGES_BASE:-/mobadex/}"
 
 case "$OUT" in
   "" | / | . | ..) echo "refusing to use '$OUT' as the output directory" >&2; exit 2 ;;
