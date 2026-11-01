@@ -1,7 +1,8 @@
 # Notice: unofficial fan project
 
-**dota2App is an unofficial, non-commercial hobby project made by a fan for
-learning and demonstration purposes.** It is not affiliated with, endorsed,
+**dota2App is an unofficial, non-commercial hobby project made by a fan.** It
+is only an example and a test bed: a sample app, inspired by the game, used to
+learn React Native and to demonstrate the agent harness in this repository. It is not affiliated with, endorsed,
 sponsored or approved by Valve Corporation, and it is not an official Dota 2
 product.
 
@@ -27,9 +28,10 @@ third-party content, including:
 
 ## Non-commercial
 
-This project has no ads, in-app purchases, donations or paid tiers, and it is
-not published on the App Store or Google Play. It must not be used to
-impersonate an official Dota 2 or Valve app.
+This project has no ads, in-app purchases, donations or paid tiers. It is not
+published on the App Store or Google Play, and there is no intention to
+publish or monetize it in any form. It must not be used to impersonate an
+official Dota 2 or Valve app.
 
 ## Takedown requests
 

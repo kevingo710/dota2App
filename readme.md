@@ -1,7 +1,9 @@
 # dota2App: unofficial Dota 2 hero browser (fan project)
 
 > [!IMPORTANT]
-> **Unofficial, non-commercial hobby project.** Not affiliated with, endorsed
+> **Unofficial, non-commercial hobby project**: a sample app inspired by the
+> game, used as a test bed. It is not and will not be published or monetized.
+> Not affiliated with, endorsed
 > or sponsored by Valve Corporation. Dota 2, hero names, images and lore are
 > trademarks and property of Valve; the [MIT licence](./LICENSE) covers only
 > this repository's own code. See [NOTICE.md](./NOTICE.md).
