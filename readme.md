@@ -1,10 +1,18 @@
-# Dota 2 App
+# MobaDex: an unofficial Dota 2 hero dex (fan project)
 
-[![CI](https://github.com/kevingo710/dota2App/actions/workflows/ci.yml/badge.svg)](https://github.com/kevingo710/dota2App/actions/workflows/ci.yml)
+> [!IMPORTANT]
+> **Unofficial, non-commercial hobby project**: a sample app inspired by the
+> game, used as a test bed. It is not and will not be published or monetized.
+> Not affiliated with, endorsed
+> or sponsored by Valve Corporation. Dota 2, hero names, images and lore are
+> trademarks and property of Valve; the [MIT licence](./LICENSE) covers only
+> this repository's own code. See [NOTICE.md](./NOTICE.md).
+
+[![CI](https://github.com/kevingo710/mobadex/actions/workflows/ci.yml/badge.svg)](https://github.com/kevingo710/mobadex/actions/workflows/ci.yml)
 
 React Native app that lists the 127 Dota 2 heroes from the [OpenDota API](https://docs.opendota.com/) and shows a full hero profile (stats, attributes and abilities) from Valve's Dota 2 data.
 
-▶️ **[Try it in your browser](https://kevingo710.github.io/dota2App/)**: the app (React Native on the web) next to a real agent run, no install.
+▶️ **[Try it in your browser](https://kevingo710.github.io/mobadex/)**: the app (React Native on the web) next to a real agent run, no install.
 
 ## Screens
 
@@ -208,4 +216,4 @@ defaults write com.apple.screencapture disable-shadow -bool TRUE; killall System
 
 ## License
 
-[MIT](./LICENSE). To cite this project, use the "Cite this repository" button or [CITATION.cff](./CITATION.cff).
+[MIT](./LICENSE), for this repository's own code only. Dota 2 content (names, images, lore, data) belongs to Valve Corporation and is not covered by it; see [NOTICE.md](./NOTICE.md). To cite this project, use the "Cite this repository" button or [CITATION.cff](./CITATION.cff).

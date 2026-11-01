@@ -207,8 +207,12 @@ const HeroDetailScreen = ({route, navigation}: Props) => {
                 <AbilityRow key={ability.id} ability={ability} />
               ))}
 
-              <Text style={styles.sectionTitle}>Lore</Text>
-              <Text style={styles.lore}>{details.lore}</Text>
+              {details.lore ? (
+                <>
+                  <Text style={styles.sectionTitle}>Lore</Text>
+                  <Text style={styles.lore}>{details.lore}</Text>
+                </>
+              ) : null}
             </>
           ) : null}
         </View>

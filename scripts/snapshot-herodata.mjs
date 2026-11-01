@@ -6,6 +6,11 @@
 // <outDir>/data/heroes/<id>.json instead (src/data/datasources/heroDataUrl.web.ts).
 // Run it after the web build, into the same output directory.
 //
+// The public snapshot keeps only game data (names, stats, ability
+// descriptions). Valve's creative prose (hero bio, hype line, ability lore)
+// is blanked so the Pages site does not republish it; the native app still
+// reads it live from Valve. See NOTICE.md.
+//
 // Usage: node scripts/snapshot-herodata.mjs <outDir>   (e.g. dist/web)
 import {mkdir, writeFile} from 'node:fs/promises';
 import {join} from 'node:path';
@@ -55,11 +60,24 @@ const queue = [...ids];
 const failed = [];
 let written = 0;
 
+// Blanks creative prose; the app hides the Lore and hype blocks when empty.
+const stripProse = body => {
+  const data = JSON.parse(body);
+  for (const hero of data?.result?.data?.heroes ?? []) {
+    hero.bio_loc = '';
+    hero.hype_loc = '';
+    for (const ability of hero.abilities ?? []) {
+      ability.lore_loc = null;
+    }
+  }
+  return JSON.stringify(data);
+};
+
 const worker = async () => {
   for (let id = queue.shift(); id !== undefined; id = queue.shift()) {
     try {
       const body = await withRetries(heroDataUrl(id), `hero ${id}`);
-      await writeFile(join(dir, `${id}.json`), body);
+      await writeFile(join(dir, `${id}.json`), stripProse(body));
       written++;
     } catch (error) {
       failed.push(id);
