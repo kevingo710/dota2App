@@ -101,7 +101,9 @@ const SuperstarScreen = () => {
           />
         ) : details ? (
           <>
-            <Text style={styles.quote}>“{details.hype}”</Text>
+            {details.hype ? (
+              <Text style={styles.quote}>“{details.hype}”</Text>
+            ) : null}
 
             <Text style={styles.sectionTitle}>At a glance</Text>
             <View style={styles.statsRow}>
@@ -121,10 +123,14 @@ const SuperstarScreen = () => {
               </View>
             </View>
 
-            <Text style={styles.sectionTitle}>Lore</Text>
-            <Text numberOfLines={5} style={styles.lore}>
-              {details.lore}
-            </Text>
+            {details.lore ? (
+              <>
+                <Text style={styles.sectionTitle}>Lore</Text>
+                <Text numberOfLines={5} style={styles.lore}>
+                  {details.lore}
+                </Text>
+              </>
+            ) : null}
           </>
         ) : null}
 

@@ -1,6 +1,6 @@
 # Notice: unofficial fan project
 
-**dota2App is an unofficial, non-commercial hobby project made by a fan.** It
+**Hero Browser is an unofficial, non-commercial hobby project made by a fan.** It
 is only an example and a test bed: a sample app, inspired by the game, used to
 learn React Native and to demonstrate the agent harness in this repository. It is not affiliated with, endorsed,
 sponsored or approved by Valve Corporation, and it is not an official Dota 2
@@ -21,7 +21,7 @@ third-party content, including:
 
 | Content | Owner | How the app uses it |
 | --- | --- | --- |
-| Hero names, lore, hype text, ability text and stats | Valve Corporation | Read at runtime from Valve's public datafeed (`dota2.com/datafeed`). The web demo serves a snapshot of it that is built at deploy time and is not committed to this repository. |
+| Hero names, lore, hype text, ability text and stats | Valve Corporation | Read at runtime from Valve's public datafeed (`dota2.com/datafeed`). The web demo serves a snapshot built at deploy time with game data only (names, stats, ability descriptions); hero bios, hype lines and ability lore are removed from it. Nothing is committed to this repository. |
 | Hero and ability images | Valve Corporation | Loaded at runtime from Valve's Steam CDN (`cdn.cloudflare.steamstatic.com`). Not stored in this repository. |
 | Hero roster and statistics | [OpenDota](https://www.opendota.com/) | Read at runtime from the public OpenDota API, subject to its terms. |
 | Screenshots in `screenshots/` | Contain Valve images and text | Shown only to document what the app does. |
@@ -36,5 +36,5 @@ official Dota 2 or Valve app.
 ## Takedown requests
 
 If you are a rights holder and want any content removed or changed, please
-[open an issue](https://github.com/kevingo710/dota2App/issues) and it will be
+[open an issue](https://github.com/kevingo710/hero-browser/issues) and it will be
 addressed promptly.
