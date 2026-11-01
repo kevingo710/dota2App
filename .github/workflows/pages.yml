@@ -40,7 +40,7 @@ jobs:
           cache: yarn
       - run: yarn install --frozen-lockfile
       - run: scripts/build-pages.sh _site
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: _site
 
