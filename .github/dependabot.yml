@@ -1,0 +1,35 @@
+# Dependabot: security fixes and grouped weekly updates.
+# Why: alerts were fixed by hand (PR #17); these PRs go through the same CI
+# gate and patch/minor/security ones auto-merge (dependabot-automerge.yml).
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      security:
+        applies-to: security-updates
+        patterns: ["*"]
+      dev-minor-patch:
+        dependency-type: development
+        update-types: [minor, patch]
+      prod-minor-patch:
+        dependency-type: production
+        update-types: [minor, patch]
+    ignore:
+      # React Native majors need native work (pods, Gradle) and a manual upgrade.
+      - dependency-name: "react-native"
+        update-types: ["version-update:semver-major"]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+
+  # Gemfile (CocoaPods for the iOS build).
+  - package-ecosystem: bundler
+    directory: /
+    schedule:
+      interval: monthly
