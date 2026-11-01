@@ -2086,21 +2086,21 @@
     prompts "^2.4.2"
     semver "^7.5.2"
 
-"@react-native-vector-icons/common@^13.0.4":
-  version "13.0.4"
-  resolved "https://registry.npmjs.org/@react-native-vector-icons/common/-/common-13.0.4.tgz"
-  integrity sha512-1MvNyRf3KIW747rJsmka/+EdEwV92ccVHedEXFV2kQ0lo6D7uvrIBTtffeDidN4//l8+R4bN3IiQv0tXQzaRXQ==
+"@react-native-vector-icons/common@^14.0.0":
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/@react-native-vector-icons/common/-/common-14.0.0.tgz#728d207dcbae05165a99d2cdc689bdecc3489ded"
+  integrity sha512-wlNieCygX7DWFjMDjYuFfk4mcQVLkF1XTm/spxKdlrQMSofzvLOHSd4vkeQwDsWz/D4wbZPdzU3++crmi/x8XA==
   dependencies:
     find-up "^8.0.0"
     picocolors "^1.1.1"
     plist "^3.1.0"
 
-"@react-native-vector-icons/ionicons@^13.1.5":
-  version "13.1.5"
-  resolved "https://registry.npmjs.org/@react-native-vector-icons/ionicons/-/ionicons-13.1.5.tgz"
-  integrity sha512-2g5KjOgx1607tmDNSXHkubR4jMD2bCjWA/xWzngGCYzEJnvRIpqcLW3Qxy5G18Dfqx/DQcrdmgwhDf1c4K4nIw==
+"@react-native-vector-icons/ionicons@^14.0.0":
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/@react-native-vector-icons/ionicons/-/ionicons-14.0.0.tgz#169f7d137b4edabb43b1ce8edfaaec56b6da47bb"
+  integrity sha512-cSi8RZTaPGX6ZUoSCVPd2nseH09Zyh1v9P2tRpy0JHQacVQdYs/5YD9U2JQBvLrzK98QV6cJI/tZoIjBbtmTmw==
   dependencies:
-    "@react-native-vector-icons/common" "^13.0.4"
+    "@react-native-vector-icons/common" "^14.0.0"
 
 "@react-native/asset-utils@0.88.1":
   version "0.88.1"
