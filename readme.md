@@ -1,4 +1,10 @@
-# Dota 2 App
+# dota2App: unofficial Dota 2 hero browser (fan project)
+
+> [!IMPORTANT]
+> **Unofficial, non-commercial hobby project.** Not affiliated with, endorsed
+> or sponsored by Valve Corporation. Dota 2, hero names, images and lore are
+> trademarks and property of Valve; the [MIT licence](./LICENSE) covers only
+> this repository's own code. See [NOTICE.md](./NOTICE.md).
 
 [![CI](https://github.com/kevingo710/dota2App/actions/workflows/ci.yml/badge.svg)](https://github.com/kevingo710/dota2App/actions/workflows/ci.yml)
 
@@ -208,4 +214,4 @@ defaults write com.apple.screencapture disable-shadow -bool TRUE; killall System
 
 ## License
 
-[MIT](./LICENSE). To cite this project, use the "Cite this repository" button or [CITATION.cff](./CITATION.cff).
+[MIT](./LICENSE), for this repository's own code only. Dota 2 content (names, images, lore, data) belongs to Valve Corporation and is not covered by it; see [NOTICE.md](./NOTICE.md). To cite this project, use the "Cite this repository" button or [CITATION.cff](./CITATION.cff).

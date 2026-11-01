@@ -108,9 +108,9 @@ const SettingsScreen = () => {
         </View>
 
         <Text style={styles.footnote}>
-          Dota 2 and all hero assets are property of Valve Corporation. This app
-          uses community and official public data feeds for informational
-          purposes.
+          Unofficial fan project, made as a non-commercial hobby demo. Not
+          affiliated with or endorsed by Valve Corporation. Dota 2, hero names,
+          images and lore are trademarks and property of Valve Corporation.
         </Text>
       </ScrollView>
     </SafeAreaView>
