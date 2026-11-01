@@ -1654,10 +1654,10 @@
     "@jsonjoy.com/buffers" "^1.0.0"
     "@jsonjoy.com/codegen" "^1.0.0"
 
-"@legendapp/list@^3.6.0":
-  version "3.6.0"
-  resolved "https://registry.npmjs.org/@legendapp/list/-/list-3.6.0.tgz"
-  integrity sha512-ndGQjSYdA32LWErJYbXEm4+eta+4bo0NxQO7eA3Xcvh0rXSb1mTGPbUtUkpea5w4MYciLKaE+0hoPxlMcaMtrw==
+"@legendapp/list@^3.7.0":
+  version "3.7.0"
+  resolved "https://registry.yarnpkg.com/@legendapp/list/-/list-3.7.0.tgz#d7d0def18927cfcbc7d25087b4f5ca1ee7a701e5"
+  integrity sha512-Er2D5eKIv+rfbakJ3ra4pD7NCNtOj2m1nrU6s6Ea3dO+x3vgt0h9NE0dn5WHOLIRkPEWHiwbslgl95QxZiEkjg==
   dependencies:
     use-sync-external-store "^1.5.0"
 
@@ -2397,17 +2397,17 @@
   dependencies:
     "@sinonjs/commons" "^3.0.1"
 
-"@tanstack/query-core@5.104.2":
-  version "5.104.2"
-  resolved "https://registry.npmjs.org/@tanstack/query-core/-/query-core-5.104.2.tgz"
-  integrity sha512-/qbsxJK5c3Ve1aFIULWYNcT2jeRUAiD4HME6Eu2ZdpofHoVgAjpkQhLg5xHuOoBkTPQUJLfP7zOxy0qsBcqROA==
+"@tanstack/query-core@5.105.0":
+  version "5.105.0"
+  resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-5.105.0.tgz#c3bbf51a664d4af09b2f404b2595ccdc9a743021"
+  integrity sha512-7p56vRmT/z4UJ6sctGIdl5WRUQyUv53IUpUwEKi2g97zMbO7zh8ZsCLffGAvCPBR4xD72e3VXsDyLwXHhoNTMQ==
 
-"@tanstack/react-query@^5.104.2":
-  version "5.104.2"
-  resolved "https://registry.npmjs.org/@tanstack/react-query/-/react-query-5.104.2.tgz"
-  integrity sha512-xKmzWGhadbE5wGS/ZmXShRITnI9oItox5GO14KvFZco3+vhTAyXS1erYzJWdiY280zapAGJXFUL9nHgwP6SV/g==
+"@tanstack/react-query@^5.105.0":
+  version "5.105.0"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-5.105.0.tgz#16605f0d0fcae9d179071cf48434c4adc4a59497"
+  integrity sha512-y+hMuDERvgg6ay1da0V1a6ZC0ZONt7dELxSFkqRZuwm7p1TTZs0MoXrPlBRflIpRoYjvzQVYxycnLImpFLhWrw==
   dependencies:
-    "@tanstack/query-core" "5.104.2"
+    "@tanstack/query-core" "5.105.0"
 
 "@tybys/wasm-util@^0.10.3":
   version "0.10.4"
@@ -3271,10 +3271,10 @@ available-typed-arrays@^1.0.7:
   dependencies:
     possible-typed-array-names "^1.0.0"
 
-axios@^1.20.0:
-  version "1.20.0"
-  resolved "https://registry.npmjs.org/axios/-/axios-1.20.0.tgz"
-  integrity sha512-r8aOh8j9cGKpgQAqpzrUHnSIc6a59Y3Xf/cv8sy1DrHCkZHzQGEuoq1tARk6qSyDdtQGSDgpb9kFlruzPvrgwg==
+axios@^1.21.0:
+  version "1.21.0"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-1.21.0.tgz#30c363a2652d9649e8b4d2645b34c64ca541ff67"
+  integrity sha512-YCzXMB53Q9PZBsh7yN7wtapit4WepwcHS2fP8QhGsBxSz5YtgYobV7GGlWlAJi+RxfU77GQTQi2DSLUma42EYA==
   dependencies:
     follow-redirects "^1.16.0"
     form-data "^4.0.6"
@@ -7346,10 +7346,10 @@ react-devtools-core@^6.1.5:
     shell-quote "^1.6.1"
     ws "^7"
 
-react-dom@19.3.0:
-  version "19.3.0"
-  resolved "https://registry.npmjs.org/react-dom/-/react-dom-19.3.0.tgz#a0ff19161d7f4e9be5469a07278b0c06e00f9001"
-  integrity sha512-JDk8dgif51OjFoDE70+OT9ICyYr+69HlmihNwp1+Nsfbna3t5sIiCa9ZJktDmQ4/1b/rn26hIAR2uYXDMr5r0Q==
+react-dom@19.3.1:
+  version "19.3.1"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-19.3.1.tgz#b384c53cfcbe9c2a5d09d863b98455de9d68afe2"
+  integrity sha512-Y0bARz53lhEC1NMCASs0/j+faB/zqt3R8hpvg1e8+61ZVJ4UL0UdC4cBbXfZMcIuhrfgeILTLe+ZeBCavQPtKQ==
   dependencies:
     scheduler "^0.28.0"
 
@@ -7380,15 +7380,15 @@ react-native-dotenv@^3.4.12:
   dependencies:
     dotenv "^17.4.2"
 
-react-native-safe-area-context@^5.10.1:
-  version "5.10.1"
-  resolved "https://registry.npmjs.org/react-native-safe-area-context/-/react-native-safe-area-context-5.10.1.tgz"
-  integrity sha512-ax0T3cAHQIhuAjDQpJ9C1Le96aRiM9PF+Kmgg7Y8+mD7QJMEIx04cG0eG3EGUTdvymgOkCrkakgZFwuOIuNQGw==
+react-native-safe-area-context@^5.11.0:
+  version "5.11.0"
+  resolved "https://registry.yarnpkg.com/react-native-safe-area-context/-/react-native-safe-area-context-5.11.0.tgz#550f1bf2b3aa4d7d224647d07ac5de87a18cf5d5"
+  integrity sha512-+QuWQSFt9N+GXg9SEGvB+nG1FdjDd8cTTNcNxZBARu5T0n490VsoRm7CsMkEkjY0mneA342LTpkqgOKxpt5tOQ==
 
-react-native-screens@^4.30.0:
-  version "4.30.0"
-  resolved "https://registry.npmjs.org/react-native-screens/-/react-native-screens-4.30.0.tgz"
-  integrity sha512-FrZG/Q5gqoDu0SgP4d2Ly0qdio5DR1KdGPEYImhkz7tmrhpML4C39m6RYLGd5TVLHZwcCh8NPvW9rylevjD0uQ==
+react-native-screens@^4.30.1:
+  version "4.30.1"
+  resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-4.30.1.tgz#26b9d170175ce24c2c100cee6265658f642e39b7"
+  integrity sha512-wLzZSQpvMx3FxIlDnb6raDJjsv2x45tFLGFz8RFUvxHzsKU9dWOkZYv9fy2siWtFf3eWGcRh66hL+o+dHhRJLQ==
   dependencies:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
@@ -7455,10 +7455,10 @@ react-test-renderer@19.3.1:
     react-is "^19.3.1"
     scheduler "^0.28.0"
 
-react@19.3.0:
-  version "19.3.0"
-  resolved "https://registry.yarnpkg.com/react/-/react-19.3.0.tgz#e20aa3a14687075ce863351b5878b0608c3fbfb2"
-  integrity sha512-E8LUcbtBWt20bbl2YoHfx4ZDBdxVTfOKtCZn9cDSJ4l6/nuoApcpIBcj47t2wZoVX8g2ZHuMHbiShgCR1T5Sog==
+react@19.3.1:
+  version "19.3.1"
+  resolved "https://registry.yarnpkg.com/react/-/react-19.3.1.tgz#26e9523fc36ea06be5050ebb780249a133260ad7"
+  integrity sha512-QNhWdt7nrgVWWQG58QuGsAR3jv3Hbe4mb4vz7w2csnHavciZJgda1CPNaldF6eVxv90ud3jUXpKlHL69gO38yw==
 
 readable-stream@^3.4.0:
   version "3.6.2"
