@@ -76,10 +76,11 @@ def main() -> None:
         source = source[: line_end + 1] + driver + "\n" + source[line_end + 1 :]
         source = replace_once(
             source,
-            "<NavigationContainer theme={MyTheme}>",
+            "<NavigationContainer theme={MyTheme} linking={linking}>",
             "<NavigationContainer\n"
             "          key={SHOT_ROUTE}\n"
             "          theme={MyTheme}\n"
+            "          linking={linking}\n"
             "          initialState={shotState()}>",
             "<NavigationContainer> opening tag",
         )

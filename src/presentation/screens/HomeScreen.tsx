@@ -17,6 +17,7 @@ import {useHeroes} from '../hooks/useHeroes';
 import type {Hero} from '../../domain/entities/Hero';
 import HeroCard from '../components/HeroCard';
 import StateView from '../components/StateView';
+import {heroCountLabel} from '../theme/heroMeta';
 import type {RootStackParamList} from '../navigation/types';
 import colors from '../theme/colors';
 
@@ -63,7 +64,9 @@ const HomeScreen = () => {
       <View style={styles.header}>
         <Text style={styles.title}>Dota 2 Heroes</Text>
         <Text style={styles.subtitle}>
-          {isLoading ? 'Loading roster...' : `${filteredHeroes.length} heroes`}
+          {isLoading
+            ? 'Loading roster...'
+            : heroCountLabel(filteredHeroes.length)}
         </Text>
 
         <View style={styles.searchBox}>

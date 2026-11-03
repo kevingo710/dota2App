@@ -15,7 +15,7 @@ import {useHeroes} from '../hooks/useHeroes';
 import type {Hero, HeroAttribute} from '../../domain/entities/Hero';
 import HeroCard from '../components/HeroCard';
 import StateView from '../components/StateView';
-import {heroAttributes, heroRoles} from '../theme/heroMeta';
+import {heroAttributes, heroCountLabel, heroRoles} from '../theme/heroMeta';
 import type {RootStackParamList} from '../navigation/types';
 import colors from '../theme/colors';
 
@@ -100,7 +100,7 @@ const ExploreScreen = () => {
 
       <View style={styles.resultsRow}>
         <Text style={styles.results}>
-          {isLoading ? 'Loading...' : `${filteredHeroes.length} heroes`}
+          {isLoading ? 'Loading...' : heroCountLabel(filteredHeroes.length)}
         </Text>
         {hasFilters ? (
           <Pressable
