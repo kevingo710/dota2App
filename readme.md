@@ -7,26 +7,6 @@
 [![react-native-web](https://img.shields.io/badge/react--native--web-same_code-61DAFB?logo=react&logoColor=white)](#tech-stack)
 [![CI](https://github.com/kevingo710/mobadex/actions/workflows/ci.yml/badge.svg)](https://github.com/kevingo710/mobadex/actions/workflows/ci.yml)
 
-## ▶️ Use the real app, right now
-
-**[kevingo710.github.io/mobadex](https://kevingo710.github.io/mobadex/)** runs the actual app in your browser through **react-native-web**. It isn't a video or a mockup and there's nothing to install: you search, filter and move between screens for real.
-
-<p align="center">
-  <a href="https://kevingo710.github.io/mobadex/">
-    <img src="./docs/media/web-demo.gif" width="320" alt="The live web demo in use: searching for a hero, opening its profile, filtering the roster and opening the hero of the day" />
-  </a>
-</p>
-
-Three things to try:
-
-1. **Search** for "axe" and open the hero's stats and abilities.
-2. **Explore**: combine the attribute and role filters.
-3. **Superstar**: open the hero of the day.
-
-The same page shows a real run of the agents that built it, next to the app. Why a Dota 2 app? [It's where this started](#why-dota-2).
-
-<sub>Unofficial, non-commercial fan project, not affiliated with Valve. [Details](#unofficial-fan-project).</sub>
-
 ## Screens
 
 - **Home** — searchable roster in a two-column grid
@@ -236,10 +216,8 @@ That was the first time I saw AI in action, and my research into AI started ther
 
 More than nine years on, the agents I work with are built differently, but the idea that hooked me is the same: software that decides how to reach a goal instead of following fixed instructions. MobaDex is where that road has led so far: an app about the game that started it all, built by a team of agents and checked by code that doesn't take their word for it.
 
-## Unofficial fan project
-
-MobaDex is a non-commercial sample app inspired by the game, used as a test bed. It is not and will not be published or monetized. It is not affiliated with, endorsed or sponsored by Valve Corporation. Dota 2, hero names, images and lore are trademarks and property of Valve. See [NOTICE.md](./NOTICE.md).
-
 ## License
 
 [MIT](./LICENSE), for this repository's own code only. Dota 2 content (names, images, lore, data) belongs to Valve Corporation and is not covered by it; see [NOTICE.md](./NOTICE.md). To cite this project, use the "Cite this repository" button or [CITATION.cff](./CITATION.cff).
+
+<sub>Unofficial, non-commercial fan project, not affiliated with Valve. [Details](./NOTICE.md).</sub>
