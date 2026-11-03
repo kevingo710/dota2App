@@ -1,18 +1,31 @@
-# MobaDex: an unofficial Dota 2 hero dex (fan project)
+# MobaDex
 
-> [!IMPORTANT]
-> **Unofficial, non-commercial hobby project**: a sample app inspired by the
-> game, used as a test bed. It is not and will not be published or monetized.
-> Not affiliated with, endorsed
-> or sponsored by Valve Corporation. Dota 2, hero names, images and lore are
-> trademarks and property of Valve; the [MIT licence](./LICENSE) covers only
-> this repository's own code. See [NOTICE.md](./NOTICE.md).
+**A React Native app that runs on iOS, Android and the web from one codebase, built and verified by a team of AI agents.**
 
+[![Live demo](https://img.shields.io/badge/%E2%96%B6_live_demo-try_it_in_your_browser-3DD68C)](https://kevingo710.github.io/mobadex/)
+[![React Native](https://img.shields.io/badge/React_Native-New_Architecture-61DAFB?logo=react&logoColor=white)](#tech-stack)
+[![react-native-web](https://img.shields.io/badge/react--native--web-same_code-61DAFB?logo=react&logoColor=white)](#tech-stack)
 [![CI](https://github.com/kevingo710/mobadex/actions/workflows/ci.yml/badge.svg)](https://github.com/kevingo710/mobadex/actions/workflows/ci.yml)
 
-React Native app that lists the 127 Dota 2 heroes from the [OpenDota API](https://docs.opendota.com/) and shows a full hero profile (stats, attributes and abilities) from Valve's Dota 2 data.
+## ▶️ Use the real app, right now
 
-▶️ **[Try it in your browser](https://kevingo710.github.io/mobadex/)**: the app (React Native on the web) next to a real agent run, no install.
+**[kevingo710.github.io/mobadex](https://kevingo710.github.io/mobadex/)** runs the actual app in your browser through **react-native-web**. It isn't a video or a mockup and there's nothing to install: you search, filter and move between screens for real.
+
+<p align="center">
+  <a href="https://kevingo710.github.io/mobadex/">
+    <img src="./docs/media/web-demo.gif" width="320" alt="The live web demo in use: searching for a hero, opening its profile, filtering the roster and opening the hero of the day" />
+  </a>
+</p>
+
+Three things to try:
+
+1. **Search** for "axe" and open the hero's stats and abilities.
+2. **Explore**: combine the attribute and role filters.
+3. **Superstar**: open the hero of the day.
+
+The same page shows a real run of the agents that built it, next to the app. Why a Dota 2 app? [It's where this started](#why-dota-2).
+
+<sub>Unofficial, non-commercial fan project, not affiliated with Valve. [Details](#unofficial-fan-project).</sub>
 
 ## Screens
 
@@ -150,8 +163,9 @@ server (read-only) into Claude Code, which writes the Cypher itself:
 
 ## Tech stack
 
-- React Native (New Architecture), React, TypeScript
-- Server-state caching and dependency injection
+- React Native 0.88 (New Architecture), React 19, TypeScript
+- `react-native-web` and webpack for the web: same code, only `index.web.js` and `heroDataUrl.web.ts` are web-only
+- React Navigation, TanStack Query for server state, InversifyJS for dependency injection
 - Jest, ESLint and Prettier
 
 Hero and ability images are loaded from Valve's Steam CDN (`cdn.cloudflare.steamstatic.com`).
@@ -213,6 +227,18 @@ Remove the window shadow from macOS screenshots:
 ```sh
 defaults write com.apple.screencapture disable-shadow -bool TRUE; killall SystemUIServer
 ```
+
+## Why Dota 2
+
+On August 11, 2017, at The International in Seattle, OpenAI put a bot on stage to play 1v1 against Dendi, one of the legends of the game. [It won](https://www.youtube.com/watch?v=wiOopO9jTZw). Nobody had scripted its strategies: [it had learned by playing against copies of itself](https://openai.com/index/dota-2/), and it had come up with tricks of its own, like faking an attack to bait a reaction.
+
+That was the first time I saw AI in action, and my research into AI started there. Less than two years later, OpenAI Five [beat OG, the reigning world champions, 2-0](https://openai.com/index/openai-five-defeats-dota-2-world-champions/), with about 45,000 years of simulated play behind it.
+
+More than nine years on, the agents I work with are built differently, but the idea that hooked me is the same: software that decides how to reach a goal instead of following fixed instructions. MobaDex is where that road has led so far: an app about the game that started it all, built by a team of agents and checked by code that doesn't take their word for it.
+
+## Unofficial fan project
+
+MobaDex is a non-commercial sample app inspired by the game, used as a test bed. It is not and will not be published or monetized. It is not affiliated with, endorsed or sponsored by Valve Corporation. Dota 2, hero names, images and lore are trademarks and property of Valve. See [NOTICE.md](./NOTICE.md).
 
 ## License
 

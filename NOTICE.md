@@ -24,7 +24,7 @@ third-party content, including:
 | Hero names, lore, hype text, ability text and stats | Valve Corporation | Read at runtime from Valve's public datafeed (`dota2.com/datafeed`). The web demo serves a snapshot built at deploy time with game data only (names, stats, ability descriptions); hero bios, hype lines and ability lore are removed from it. Nothing is committed to this repository. |
 | Hero and ability images | Valve Corporation | Loaded at runtime from Valve's Steam CDN (`cdn.cloudflare.steamstatic.com`). Not stored in this repository. |
 | Hero roster and statistics | [OpenDota](https://www.opendota.com/) | Read at runtime from the public OpenDota API, subject to its terms. |
-| Screenshots in `screenshots/` | Contain Valve images and text | Shown only to document what the app does. |
+| Screenshots in `screenshots/` and the recording `docs/media/web-demo.gif` | Contain Valve images and text | Shown only to document what the app does. |
 
 ## Non-commercial
 
