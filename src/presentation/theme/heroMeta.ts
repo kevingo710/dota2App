@@ -17,6 +17,9 @@ export const heroAttributes: AttributeMeta[] = [
 export const attributeMeta = (attribute: HeroAttribute): AttributeMeta =>
   heroAttributes.find(meta => meta.value === attribute) ?? heroAttributes[3];
 
+export const heroCountLabel = (count: number): string =>
+  count === 1 ? '1 hero' : `${count} heroes`;
+
 export const heroRoles = [
   'Carry',
   'Support',

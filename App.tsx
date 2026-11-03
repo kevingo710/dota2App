@@ -3,6 +3,7 @@ import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
 import type {Theme} from '@react-navigation/native';
 import colors from './src/presentation/theme/colors';
 import Navigator from './src/presentation/navigation/Navigator';
+import {linking} from './src/presentation/navigation/linking';
 import {DIProvider} from './src/core/di/DIContext';
 import {container} from './src/core/di/container';
 import {QueryClientProvider} from '@tanstack/react-query';
@@ -27,7 +28,7 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <DIProvider container={container}>
-        <NavigationContainer theme={MyTheme}>
+        <NavigationContainer theme={MyTheme} linking={linking}>
           <Navigator />
         </NavigationContainer>
       </DIProvider>

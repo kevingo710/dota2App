@@ -15,6 +15,9 @@ const Tab = createBottomTabNavigator<TabParamList>();
 // Web clips tab labels to one line, and beside the icon a 390px bar leaves
 // "Superstar" ~49px; iOS lets the text overflow its box, so it keeps the row.
 const LABEL_POSITION = Platform.OS === 'web' ? 'below-icon' : 'beside-icon';
+// Browser Back must retrace the tabs in the order they were visited, so web
+// keeps the full history; Android hardware back keeps the default firstRoute.
+const BACK_BEHAVIOR = Platform.OS === 'web' ? 'fullHistory' : undefined;
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 interface TabIconProps {
@@ -42,6 +45,7 @@ const Tabs = () => {
   return (
     <Tab.Navigator
       initialRouteName="Home"
+      backBehavior={BACK_BEHAVIOR}
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: colors.orange,

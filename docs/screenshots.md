@@ -80,6 +80,7 @@ git checkout -- App.tsx
   Release build (`npx react-native run-ios --mode Release`) removes the perf
   caveat but needs a rebuild whenever the navigation state changes.
 - The patcher anchors on exact snippets of `App.tsx`
-  (`<NavigationContainer theme={MyTheme}>`, the `App` component body). If those
+  (`<NavigationContainer theme={MyTheme} linking={linking}>`, the `App` component
+  body). If those
   change, the script exits with a message pointing here; update the anchors in
   `scripts/patch_app_for_screenshots.py`.

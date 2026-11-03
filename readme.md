@@ -144,7 +144,7 @@ server (read-only) into Claude Code, which writes the Cypher itself:
 ## Tech stack
 
 - React Native 0.88 (New Architecture), React 19, TypeScript
-- `react-native-web` and webpack for the web: same code, only `index.web.js` and `heroDataUrl.web.ts` are web-only
+- `react-native-web` and webpack for the web: same code, only `index.web.js`, `heroDataUrl.web.ts` and `linking.web.ts` are web-only
 - React Navigation, TanStack Query for server state, InversifyJS for dependency injection
 - Jest, ESLint and Prettier
 
